@@ -1385,7 +1385,7 @@ function HsCodeFocusOut() {
   $("#itemAlchoholNone").hide()
   $("#TDQUOM").val('--Select--')
   $("#ddptotDutiableQty").val('--Select--')
-  $("#HscodeControl").text('')
+  $("#HscodeControl").hide()
   let typeid = 0
   let code = $('#ItemHsCode').val().trim().toUpperCase()
   var HsCodeF = HsCodeData.filter((hs) => {
@@ -1408,8 +1408,8 @@ function HsCodeFocusOut() {
     typeid = HsCodeF.DUTYTYPID
     $("#HSQTYUOM").val(HsCodeF.UOM)
     var uom = HsCodeF.DuitableUom
-    if (HsCodeF.Out == '1') {
-      $("#HscodeControl").text("CONTROLLED ITEM")
+    if (Number(HsCodeF.Out) == 1) {
+      $("#HscodeControl").show()
     }
     var HSQTYUOM = $("#HSQTYUOM").val()
     if (code.startsWith('87')) {
@@ -2156,13 +2156,20 @@ function ItemEdit(itemnumber) {
     if (itemnumber == items.ItemNo) {
       $('#ItemNo').val(items.ItemNo)
       $('#ItemHsCode').val(items.HSCode)
-      $('#ItmeDescription').val(items.Description)
+
       $('#ItemDgIndicator').val(items.DGIndicator)
+
+      if (items.DGIndicator == "true" || items.DGIndicator == "True") {
+        $("#ItemDgIndicator").prop("checked", true);
+      }
+      else {
+        $("#ItemDgIndicator").prop("checked", false);
+      }
+
       $('#ItemCooInput').val(items.Contry)
       $('#Brand').val(items.Brand)
       $('#Model').val(items.Model)
-      $('#InHAWBOBL').html(`<option>${items.InHAWBOBL}</option>`)
-      $('#OutHAWBOBL').html(`<option>${items.OutHAWBOBL}</option>`)
+      
       $('#TxtTotalDutiableQuantity').val(items.DutiableQty)
       $('#TDQUOM').val(items.DutiableUOM)
       $('#txttotDutiableQty').val(items.TotalDutiableQty)
@@ -2218,7 +2225,14 @@ function ItemEdit(itemnumber) {
       $('#EngineCapacityUom').val(items.EngineCapUOM)
       // orignaldatereg: OrginalDate,
       HsCodeFocusOut()
+      if (items.Description == "") {
+        HsCodeFocusOut()
+      }
+      else {
+        $('#ItmeDescription').val(items.Description)
+      }
       ItemCooOut()
+      DrpInvoiceNoChange()
       if (items.OPQty > 0 || items.IPQty > 0 || items.InPqty > 0 || items.ImPQty > 0) {
         $('#packing_details').prop('checked', true)
         ItemCascShowAll('#packing_details', '.PackingDetails')

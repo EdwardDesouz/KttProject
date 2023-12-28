@@ -1706,19 +1706,19 @@ function ItemLoadData() {
     $("#ItemTable tbody").html("<tr><td colspan = 14 style = 'text-align:center'>No Record</td></tr>")
   }
   else {
-    
+
     for (var itemeData of ItemData) {
 
-      var Color = ItemHsCodeData.filter( (data) => {
-        if (data.HSCode == itemeData.HSCode && data.Inpayment == '1'){
+      var Color = ItemHsCodeData.filter((data) => {
+        if (data.HSCode == itemeData.HSCode && data.Inpayment == '1') {
           return true
         }
       })
-      
-      if (Color.length != 0){
-        Color="red"
+
+      if (Color.length != 0) {
+        Color = "red"
       }
-      else{
+      else {
         Color = '#000'
       }
       itemCurAmountARR.push([
@@ -1864,7 +1864,7 @@ function ItemEdit(Arg) {
         $("#UnitPriceIDShow").prop("checked", true);
         itemCheckUnitPriceFunction();
       }
-      if (i.ShippingMarks1 != "" || i.ShippingMarks2 != "" || i.ShippingMarks3 != "" || i.ShippingMarks4 != "") { 
+      if (i.ShippingMarks1 != "" || i.ShippingMarks2 != "" || i.ShippingMarks3 != "" || i.ShippingMarks4 != "") {
         $("#shippingMarkCheck").prop("checked", true);
         ItemCascShowAll('#shippingMarkCheck', '.ShippingMark')
       }
@@ -1876,7 +1876,7 @@ function ItemEdit(Arg) {
         $("#packing_details").prop("checked", true);
         ItemCascShowAll('#packing_details', '.PackingDetails')
       }
-      
+
       HsOnFocusOut();
       invoiceNumberFunction();
       invoiceTotalLineAmountFunction();
@@ -2093,11 +2093,18 @@ function ItemUploadData() {
 }
 
 function ItemEditAll() {
+  // $('#editAllitemBtn').prop('disabled', true)
+  $('#Loading').show();
+  setTimeout(ItemEditAll1, 1000);
+}
+
+async function ItemEditAll1() {
   $('#Loading').show();
   var ItemAllData = [];
   for (var item of ItemData) {
     ItemEdit(item.ItemNo)
-    let echeck = true;
+    let echeck = false;
+    console.log($('#itemCascID').prop('checked'))
     if ($('#itemCascID').prop('checked')) {
       if ($('#itemProductCode1').val() != "") {
         echeck = true
@@ -2215,6 +2222,7 @@ function ItemConsolidate() {
       },
       error: function (response) {
         $('#Loading').hide();
+        // $('#editAllitemBtn').prop('disabled',true)
       },
     });
   }
@@ -2358,7 +2366,7 @@ function SummaryLoad() {
 
   var SInvoice = (document.getElementsByName('summarySumOfInvoiceAmount')[0].value).split('.');
   var SItem = (document.getElementsByName('summarySumOfItemAmout')[0].value).split('.');
-  if ((SInvoice[0] == SItem[0]) || $('#summaryTotalInvoiceCIFValue').val().trim().toString().toUpperCase() == $('#summaryTotalCIFFOBValue').val().trim().toString().toUpperCase()) {
+  if ((Number(SInvoice[0]) === Number(SItem[0])) || Number($('#summaryTotalInvoiceCIFValue').val()) === Number($('#summaryTotalCIFFOBValue').val())) {
     $('#SUmmaryEqualNot').hide();
   }
   else {

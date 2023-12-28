@@ -1899,7 +1899,7 @@ function FrightAmountInNonCalculation() {
 
   if ($("#InsurenceChargeInNon").val() > 0) {
     let INSC = (Inv + FC) / 100;
-    $("#InsurenceAmountInNon").val(INSC);
+    $("#InsurenceAmountInNon").val(Number(INSC).toFixed(2));
   }
   TotalInvoiceCalculation();
 }
@@ -2307,7 +2307,7 @@ function InvoiceLoadInNon() {
         }')"></i></td>
           <td><i class="fa-regular fa-pen-to-square" style="color: #ff0000;" onclick = "InvoiceEditInNon('${i.SNo
         }')"></i></td>
-          <td>${Number(i.SNo).toString().padStart(3, "0")}</td>
+          <td>${Number(i.SNo).toString().padStart(3, "0")}</td> 
           <td>${i.InvoiceNo}</td>
           <td>${formatDate(i.InvoiceDate)}</td>
           <td>${i.TermType}</td>

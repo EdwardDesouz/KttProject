@@ -1377,7 +1377,7 @@ class ItemInNonExcelUpload(View,SqlDb):
             'ShippingMarks4' : '' ,
             'CerItemQty' : '0.00' ,
             'CerItemUOM' : '--Select--' ,
-            'CIFValOfCer' : '' ,
+            'CIFValOfCer' : '0.00' ,
             'ManufactureCostDate' : '' ,
             'TexCat' : '' ,
             'TexQuotaQty' : '0.00' ,
@@ -1425,56 +1425,126 @@ class ItemInNonExcelUpload(View,SqlDb):
         ContainerInfo.fillna(ContainerColumn, inplace=True)
 
         self.cursor.execute(f"SELECT max(ItemNo) PermitId FROM OutItemDtl WHERE PermitId = '{PermitId}'")
-        itemLen = len(self.cursor.fetchall())
-        print(itemLen)
-
-        row = ''
-
-        # ItemValues = [row['CountryofOrigin'],row['HSCode'],row['HSQty'],row['TotalLineAmount'],row['ItemCode'],row['Description'],row['DGIndicator'],row['Brand'],row['Model'],row['InHAWBOBL'],row['OutHAWBOBL'],row['HSUOM'],row['InvoiceNumber'],row['ItemCurrency'],row['UnitPrice'],row['TotalDutiableQty'],row['TotalDutiableUOM'],row['DutiableQty'],row['DutiableUOM'],row['OuterPackQty'],row['OuterPackUOM'],row['InPackQty'],row['InPackUOM'],row['InnerPackQty'],row['InnerPackUOM'],row['InmostPackQty'],row['InmostPackUOM'],row['TarrifPreferentialCode'],row['OtherTaxRate'],row['OtherTaxUOM'],row['OtherTaxAmount'],row['CurrentLot'],row['PreviousLot'],row['AlcoholPercentage'],row['ShippingMarks1'],row['ShippingMarks2'],row['ShippingMarks3'],row['ShippingMarks4'],row['CerItemQty'],row['CerItemUOM'],row['CIFValOfCer'],row['ManufactureCostDate'],row['TexCat'],row['TexQuotaQty'],row['TexQuotaUOM'],row['CerInvNo'],row['CerInvDate'],row['OriginOfCer'],row['HSCodeCer'],row['PerContent'],row['CertificateDescription'],row['VehicleType'],row['OptionalChrgeUOM'],row['EngineCapcity'],row['Optioncahrge'],row['OptionalSumtotal'],row['OptionalSumExchange'],row['EngineCapUOM'],row['originaldatereg']]
-
-        for item in ItemInfo:
-            print(item)
-
-        # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
-        # self.cursor.execute(query)
         
-        # result = self.cursor.fetchall()
-        # data = ["%s" for i in result]
-        # data = ','.join(data)
-        # print(data)
+        itemLen = self.cursor.fetchone()
+        if str(itemLen[0]) == "None":
+            itemLen = 0
+        else:
+            itemLen = itemLen[0]
+        print("The Final" , itemLen)
+
+        query = f"SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
+        self.cursor.execute(query)
+          
+        result = self.cursor.fetchall()
+        for i in result:
+            print(f"'{i[0]}' : {i[1]}")
+
+
+        for index, row in ItemInfo.iterrows():
+            itemLen += 1
+            data = {
+                'ItemNo' : itemLen,
+                'PermitId' : PermitId,
+                'MessageType' : MsgType,
+                'HSCode' : row['HSCode'],
+                'Description' : row['Description'],
+                'DGIndicator' : row['DGIndicator'],
+                'Contry' : row['CountryofOrigin'],
+                'EndUserDescription' : '',
+                'Brand' : row['Brand'],
+                'Model' : row['Model'],
+                'InHAWBOBL' : row['InHAWBOBL'],
+                'OutHAWBOBL' : row['OutHAWBOBL'],
+                'DutiableQty' : row['DutiableQty'],
+                'DutiableUOM' : row['DutiableUOM'],
+                'TotalDutiableQty' : row['TotalDutiableQty'],
+                'TotalDutiableUOM' : row['TotalDutiableUOM'],
+                'InvoiceQuantity' : '0.00',
+                'HSQty' : row['HSQty'],
+                'HSUOM' : row['HSUOM'],
+                'AlcoholPer' : row['AlcoholPercentage'],
+                'InvoiceNo' : row['InvoiceNumber'],
+                'ChkUnitPrice' : 'False',
+                'UnitPrice' : row['UnitPrice'],
+                'UnitPriceCurrency' : row['ItemCurrency'],
+                'ExchangeRate' : '0.00',
+                'SumExchangeRate' : '0.00',
+                'TotalLineAmount' : row['TotalLineAmount'],
+                'InvoiceCharges' : '0.00',
+                'CIFFOB' : '0.00',
+                'OPQty' : row['OuterPackQty'],
+                'OPUOM' : row['OuterPackUOM'],
+                'IPQty' : row['InPackQty'],
+                'IPUOM' : row['InPackUOM'],
+                'InPqty' : row['InnerPackQty'],
+                'InPUOM' : row['InnerPackUOM'],
+                'ImPQty' : row['InmostPackQty'],
+                'ImPUOM' : row['InmostPackUOM'],
+                'PreferentialCode' : row['TarrifPreferentialCode'],
+                'GSTRate' : '0.00',
+                'GSTUOM' : '--Select--',
+                'GSTAmount' : '0.00',
+                'ExciseDutyRate' : '0.00',
+                'ExciseDutyUOM' : '--Select--',
+                'ExciseDutyAmount' : '0.00',
+                'CustomsDutyRate' : '0.00',
+                'CustomsDutyUOM' : '--Select--',
+                'CustomsDutyAmount' : '0.00',
+                'OtherTaxRate' : row['OtherTaxRate'],
+                'OtherTaxUOM' : row['OtherTaxUOM'],
+                'OtherTaxAmount' : row['OtherTaxAmount'],
+                'CurrentLot' : row['CurrentLot'],
+                'PreviousLot' : row['PreviousLot'],
+                'Making' : '--Select--',
+                'ShippingMarks1' : row['ShippingMarks1'],
+                'ShippingMarks2' : row['ShippingMarks2'],
+                'ShippingMarks3' : row['ShippingMarks3'],
+                'ShippingMarks4' : row['ShippingMarks4'],
+                'CerItemQty' : row['CerItemQty'],
+                'CerItemUOM' : row['CerItemUOM'],
+                'CIFValOfCer' : row['CIFValOfCer'],
+                'ManufactureCostDate' : row['ManufactureCostDate'],
+                'TexCat' : row['TexCat'],
+                'TexQuotaQty' : row['TexQuotaQty'],
+                'TexQuotaUOM' : row['TexQuotaUOM'],
+                'CerInvNo' : row['CerInvNo'],
+                'CerInvDate' : row['CerInvDate'],
+                'OriginOfCer' : row['OriginOfCer'],
+                'HSCodeCer' : row['HSCodeCer'],
+                'PerContent' : row['PerContent'],
+                'CertificateDescription' : row['CertificateDescription'],
+                'TouchUser' : userName,
+                'TouchTime' : TouchTime,
+                'VehicleType' : row['VehicleType'],
+                'OptionalChrgeUOM' : row['OptionalChrgeUOM'],
+                'EngineCapcity' : row['EngineCapcity'],
+                'Optioncahrge' : row['Optioncahrge'],
+                'OptionalSumtotal' : row['OptionalSumtotal'],
+                'OptionalSumExchage' : row['OptionalSumExchange'],
+                'EngineCapUOM' : row['EngineCapUOM'],
+                'orignaldatereg' : row['originaldatereg'],
+            } 
+            try:
+                columns = ', '.join([f'[{key}]' for key in data.keys()])
+                values = ', '.join(['%s' for _ in range(len(data))])
+                insert_statement = f'INSERT INTO OutItemDtl ({columns}) VALUES ({values})'  
+                self.cursor.execute(insert_statement, tuple(data.values()))  
+                self.conn.commit()
+            except Exception as e:
+                print(e)     
+
+        context = {}
+        self.cursor.execute(
+            f"select * from OutItemDtl WHERE PermitId = '{request.POST.get('PermitId')}' ORDER BY ItemNo"
+        )
+        headers = [i[0] for i in self.cursor.description]
+        context.update(
+            {
+                "item": (
+                    pd.DataFrame(list(self.cursor.fetchall()), columns=headers)
+                ).to_dict("records")
+            }
+        )
         
-        
-        # QryItem = "INSERT INTO OutItemDtl (ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,EndUserDescription,Brand,Model,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,CerItemQty,CerItemUOM,CIFValOfCer,ManufactureCostDate,TexCat,TexQuotaQty,TexQuotaUOM,CerInvNo,CerInvDate,OriginOfCer,HSCodeCer,PerContent,CertificateDescription,TouchUser,TouchTime,VehicleType,OptionalChrgeUOM,EngineCapcity,Optioncahrge,OptionalSumtotal,OptionalSumExchage,EngineCapUOM,orignaldatereg) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-        # print(QryItem)
-
-        return JsonResponse({"show":"success"})
-        # for index, row in ItemInfo.iterrows():
-        #     itemLen += 1
-        #     Val = (row['CountryofOrigin'], row['HSCode'], row['HSQty'], row['TotalLineAmount'], row['Description'], row['DGIndicator'], row['Brand'], row['Model'], row['InHAWBOBL'], row['OutHAWBOBL'], row['HSUOM'], row['InvoiceNumber'], row['ItemCurrency'], row['UnitPrice'], row['TotalDutiableQty'], row['TotalDutiableUOM'], row['DutiableQty'], row['DutiableUOM'], row['OuterPackQty'], row['OuterPackUOM'], row['InPackQty'], row['InPackUOM'], row['InnerPackQty'], row['InnerPackUOM'], row['InmostPackQty'], row['InmostPackUOM'], row['TarrifPreferentialCode'], row['OtherTaxRate'], row['OtherTaxUOM'], row['OtherTaxAmount'], row['CurrentLot'], row['PreviousLot'], row['AlcoholPercentage'], row['ShippingMarks1'], row['ShippingMarks2'], row['ShippingMarks3'], row['ShippingMarks4'], itemLen, PermitId, MsgType, userName, TouchTime, "0.00", '0.00', '0.00', '0.00', '0.00', '0.00', '0.00', 'PER', '0.00', '0.00', '', '0.00', '0.00', '', '0.00', '--Select--', '--Select--', '--Select--', '0.00', '0.00', '0.00', None, None, None)  # Add placeholders for missing values
-
-        #     # Print for debugging
-        #     print("Executing Query:", QryItem)
-        #     print("With Values:", Val)
-
-        #     self.cursor.execute(QryItem, (Val,)) 
-
-        # QryCasc = "INSERT INTO OutCASCDtl (ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,PermitId,MessageType,TouchUser,TouchTime,CASCId,EndUserDes) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
-       
-        # for index, row in CascInfo.iterrows():
-        #     if row['ProductCode'] != "":
-        #         ValCasc = (row['ItemNo'],row['ProductCode'],row['Quantity'],row['ProductUOM'],row['RowNo'],row['CascCode1'],row['CascCode2'],row['CascCode3'],PermitId,MsgType,userName,TouchTime,row['CASCId'],row['EndUserDes'])
-        #         self.cursor.execute(QryCasc,ValCasc) 
-        # self.conn.commit()   
-
-        # self.cursor.execute("SELECT ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,Brand,Model,Vehicletype,Enginecapacity,Engineuom,Orginregdate,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,LSPValue,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,TouchUser,TouchTime,OptionalChrgeUOM,Optioncahrge,OptionalSumtotal,OptionalSumExchage FROM  OutItemDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(request.POST.get('PermitId')))
-        # self.item = self.cursor.fetchall()
-
-        # self.cursor.execute("SELECT ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,CASCId FROM OutCASCDtl WHERE PermitId = '{}' ORDER BY ItemNo".format(request.POST.get('PermitId')))
-        # self.casc = self.cursor.fetchall()
-
-        # return JsonResponse({
-        #     "Result":"UPLOAD SUCCESSFULLY...!",
-        #     "item" : (pd.DataFrame(list(self.item), columns=['ItemNo','PermitId','MessageType','HSCode','Description','DGIndicator','Contry','Brand','Model','Vehicletype','Enginecapacity','Engineuom','Orginregdate','InHAWBOBL','OutHAWBOBL','DutiableQty','DutiableUOM','TotalDutiableQty','TotalDutiableUOM','InvoiceQuantity','HSQty','HSUOM','AlcoholPer','InvoiceNo','ChkUnitPrice','UnitPrice','UnitPriceCurrency','ExchangeRate','SumExchangeRate','TotalLineAmount','InvoiceCharges','CIFFOB','OPQty','OPUOM','IPQty','IPUOM','InPqty','InPUOM','ImPQty','ImPUOM','PreferentialCode','GSTRate','GSTUOM','GSTAmount','ExciseDutyRate','ExciseDutyUOM','ExciseDutyAmount','CustomsDutyRate','CustomsDutyUOM','CustomsDutyAmount','OtherTaxRate','OtherTaxUOM','OtherTaxAmount','CurrentLot','PreviousLot','LSPValue','Making','ShippingMarks1','ShippingMarks2','ShippingMarks3','ShippingMarks4','TouchUser','TouchTime','OptionalChrgeUOM','Optioncahrge','OptionalSumtotal','OptionalSumExchage'])).to_dict('records'),
-        #     "casc" : (pd.DataFrame(list(self.casc), columns=['ItemNo','ProductCode','Quantity','ProductUOM','RowNo','CascCode1','CascCode2','CascCode3','CASCId'])).to_dict('records'),
-        # })
-    
+        return JsonResponse(context)            
