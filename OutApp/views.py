@@ -812,8 +812,8 @@ class OutItem(View, SqlDb):
 
 def outItemDelete(request):
     data = json.loads(request.POST.get("Ids"))
+    db = SqlDb()
     try:
-        db = SqlDb()
         db.cursor.execute("DELETE FROM OutItemDtl WHERE Id ")
     except:pass
 
@@ -1174,20 +1174,34 @@ class outSaveSubmit(View, SqlDb):
             "MRDate": request.POST.get("MRDate"),
             "MRTime": request.POST.get("MRTime"),
         }
+        self.cursor.execute(f"SELECT * FROM OutHeaderTbl WHERE PermitId = '{request.POST.get("PermitId")}' AND  MSGId = '{ request.POST.get("MSGId")}' AND JobId = '{request.POST.get("JobId")}' AND Refid = '{request.POST.get("Refid")}' ")
+        result = self.cursor.fetchall()
+        print("The Result Is : ",result)
+        try:
+            if result:
+                columns = ', '.join([f'{key} = %s' for key in data.keys()])
+                
+                qry = f"UPDATE OutHeaderTbl SET {columns} WHERE PermitId = '{request.POST.get("PermitId")}' AND  MSGId = '{ request.POST.get("MSGId")}' AND JobId = '{request.POST.get("JobId")}' AND Refid = '{request.POST.get("Refid")}'"
+                self.cursor.execute(qry, tuple(data.values()))
+                self.conn.commit()
+                print("Updated")
+                return  JsonResponse({"message":"Success"}) 
+            else:
+                columns = ', '.join([f'[{key}]' for key in data.keys()])
+                values = ', '.join(['%s' for _ in range(len(data))])
+                insert_statement = f'INSERT INTO OutHeaderTbl ({columns}) VALUES ({values})'
 
-        columns = ', '.join([f'[{key}]' for key in data.keys()])
-        values = ', '.join(['%s' for _ in range(len(data))])
-        insert_statement = f'INSERT INTO OutHeaderTbl ({columns}) VALUES ({values})'
+                self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(str(request.session['Username']).upper()))
+                ManageUserVal = self.cursor.fetchone()
+                AccountId = ManageUserVal[0]
 
-        self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(str(request.session['Username']).upper()))
-        ManageUserVal = self.cursor.fetchone()
-        AccountId = ManageUserVal[0]
-
-        # Execute the INSERT statement
-        self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{request.POST.get("PermitId")}','OUTDEC','{AccountId}','{request.POST.get("MSGId")}','{str(request.session['Username']).upper()}','{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')")
-        self.cursor.execute(insert_statement, tuple(data.values()))
-        self.conn.commit()
-        return  JsonResponse({"message":"Success"}) 
+                # Execute the INSERT statement
+                self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{request.POST.get("PermitId")}','OUTDEC','{AccountId}','{request.POST.get("MSGId")}','{str(request.session['Username']).upper()}','{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')")
+                self.cursor.execute(insert_statement, tuple(data.values()))
+                self.conn.commit()
+                return  JsonResponse({"message":"Success"}) 
+        except:
+            return  JsonResponse({"message":"Did not Saved"}) 
 
 
 class CopyOutPayment(View,SqlDb):
@@ -1303,6 +1317,7 @@ class OutEdit(View,SqlDb):
         })
         return render(request, "Out/OutNew.html", context)
 
+
 def ItemExcelDownload(request):
     response = HttpResponse(
         open(
@@ -1314,7 +1329,6 @@ def ItemExcelDownload(request):
     response["Content-Disposition"] = f"attachment; filename=OutExcelTemplate.xlsx"
     return response  
 
- 
 
 class ItemInNonExcelUpload(View,SqlDb):
     def __init__(self):
@@ -1431,14 +1445,14 @@ class ItemInNonExcelUpload(View,SqlDb):
             itemLen = 0
         else:
             itemLen = itemLen[0]
-        print("The Final" , itemLen)
+        # print("The Final" , itemLen)
 
-        query = f"SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
-        self.cursor.execute(query)
+        # query = f"SELECT COLUMN_NAME,DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
+        # self.cursor.execute(query)
           
-        result = self.cursor.fetchall()
-        for i in result:
-            print(f"'{i[0]}' : {i[1]}")
+        # result = self.cursor.fetchall()
+        # for i in result:
+        #     print(f"'{i[0]}' : {i[1]}")
 
 
         for index, row in ItemInfo.iterrows():
@@ -1546,5 +1560,57 @@ class ItemInNonExcelUpload(View,SqlDb):
                 ).to_dict("records")
             }
         )
+
+        self.cursor.execute(
+        f"select * from OutCASCDtl WHERE PermitId = '{request.POST.get('PermitId')}' ORDER BY ItemNo"
+        )
+        headers = [i[0] for i in self.cursor.description]
+        context.update(
+            {
+                "casc": (pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict(
+                    "records"
+                )
+            }
+        )
         
         return JsonResponse(context)            
+
+
+def outEditItemall(request):
+    db = SqlDb()
+    # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
+    # db.cursor.execute(query)
+          
+    # result = db.cursor.fetchall()
+    # for i in result:
+    #     print(f"i['{i[0]}']",end=',')
+
+    print("hello ")
+
+    PermitId = request.POST.get('PermitId')
+
+    ItemValue = json.loads(request.POST.get('editItemData'))
+
+    qry = "UPDATE OutItemDtl SET MessageType = %s,HSCode = %s,Description = %s,DGIndicator = %s,Contry = %s,EndUserDescription = %s,Brand = %s,Model = %s,InHAWBOBL = %s,OutHAWBOBL = %s,DutiableQty = %s,DutiableUOM = %s,TotalDutiableQty = %s,TotalDutiableUOM = %s,InvoiceQuantity = %s,HSQty = %s,HSUOM = %s,AlcoholPer = %s,InvoiceNo = %s,ChkUnitPrice = %s,UnitPrice = %s,UnitPriceCurrency = %s,ExchangeRate = %s,SumExchangeRate = %s,TotalLineAmount = %s,InvoiceCharges = %s,CIFFOB = %s,OPQty = %s,OPUOM = %s,IPQty = %s,IPUOM = %s,InPqty = %s,InPUOM = %s,ImPQty = %s,ImPUOM = %s,PreferentialCode = %s,GSTRate = %s,GSTUOM = %s,GSTAmount = %s,ExciseDutyRate = %s,ExciseDutyUOM = %s,ExciseDutyAmount = %s,CustomsDutyRate = %s,CustomsDutyUOM = %s,CustomsDutyAmount = %s,OtherTaxRate = %s,OtherTaxUOM = %s,OtherTaxAmount = %s,CurrentLot = %s,PreviousLot = %s,Making = %s,ShippingMarks1 = %s,ShippingMarks2 = %s,ShippingMarks3 = %s,ShippingMarks4 = %s,CerItemQty = %s,CerItemUOM = %s,CIFValOfCer = %s,ManufactureCostDate = %s,TexCat = %s,TexQuotaQty = %s,TexQuotaUOM = %s,CerInvNo = %s,CerInvDate = %s,OriginOfCer = %s,HSCodeCer = %s,PerContent = %s,CertificateDescription = %s,TouchUser = %s,TouchTime = %s,VehicleType = %s,OptionalChrgeUOM = %s,EngineCapcity = %s,Optioncahrge = %s,OptionalSumtotal = %s,OptionalSumExchage = %s,EngineCapUOM = %s,orignaldatereg = %s  WHERE ItemNo = %s AND PermitId = %s"
+    
+    
+    for i in ItemValue:
+        val = (i['MessageType'],i['HSCode'],i['Description'],i['DGIndicator'],i['Contry'],i['EndUserDescription'],i['Brand'],i['Model'],i['InHAWBOBL'],i['OutHAWBOBL'],i['DutiableQty'],i['DutiableUOM'],i['TotalDutiableQty'],i['TotalDutiableUOM'],i['InvoiceQuantity'],i['HSQty'],i['HSUOM'],i['AlcoholPer'],i['InvoiceNo'],i['ChkUnitPrice'],i['UnitPrice'],i['UnitPriceCurrency'],i['ExchangeRate'],i['SumExchangeRate'],i['TotalLineAmount'],i['InvoiceCharges'],i['CIFFOB'],i['OPQty'],i['OPUOM'],i['IPQty'],i['IPUOM'],i['InPqty'],i['InPUOM'],i['ImPQty'],i['ImPUOM'],i['PreferentialCode'],i['GSTRate'],i['GSTUOM'],i['GSTAmount'],i['ExciseDutyRate'],i['ExciseDutyUOM'],i['ExciseDutyAmount'],i['CustomsDutyRate'],i['CustomsDutyUOM'],i['CustomsDutyAmount'],i['OtherTaxRate'],i['OtherTaxUOM'],i['OtherTaxAmount'],i['CurrentLot'],i['PreviousLot'],i['Making'],i['ShippingMarks1'],i['ShippingMarks2'],i['ShippingMarks3'],i['ShippingMarks4'],i['CerItemQty'],i['CerItemUOM'],i['CIFValOfCer'],i['ManufactureCostDate'],i['TexCat'],i['TexQuotaQty'],i['TexQuotaUOM'],i['CerInvNo'],i['CerInvDate'],i['OriginOfCer'],i['HSCodeCer'],i['PerContent'],i['CertificateDescription'],request.session["Username"],datetime.now(),i['VehicleType'],i['OptionalChrgeUOM'],i['EngineCapcity'],i['Optioncahrge'],i['OptionalSumtotal'],i['OptionalSumExchage'],i['EngineCapUOM'],i['orignaldatereg'],i['ItemNo'],PermitId)
+        db.cursor.execute(qry,val)
+        db.conn.commit()
+
+    context = {}
+    db.cursor.execute(
+        f"select * from OutItemDtl WHERE PermitId = '{request.POST.get('PermitId')}' ORDER BY ItemNo"
+    )
+    headers = [i[0] for i in db.cursor.description]
+    context.update(
+        {
+            "item": (
+                pd.DataFrame(list(db.cursor.fetchall()), columns=headers)
+            ).to_dict("records")
+        }
+    )
+    
+    return JsonResponse(context)
+    

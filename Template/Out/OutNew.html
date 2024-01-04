@@ -1,6 +1,7 @@
 {% extends 'Out/OutList.html' %}
 {% load static %}
 {% block content %}
+
 <link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
 <link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
@@ -1603,7 +1604,8 @@
                     <div class="row mt-3">
                         <div class="col-4"></div>
                         <div class="col-8">
-                            <span1 style="background-color: brown;color: aliceblue;width: 100px; font-size: 12px;" id="HscodeControl">CONTROLLED ITEM</span1>
+                            <span1 style="background-color: brown;color: aliceblue;width: 100px; font-size: 12px;"
+                                id="HscodeControl">CONTROLLED ITEM</span1>
                         </div>
                     </div>
                     <div class="row">
@@ -1657,7 +1659,7 @@
                         <div class="row">
                             <div class="col-4 ">BRAND </div>
                             <div class="col-8">
-                                <input type="text" class="inputStyle HighLight" id="Brand">
+                                <input type="text" class="inputStyle" id="Brand">
                                 <span1 class="ErrColor" id="BrandSpan">FILL COO</span1>
                             </div>
                         </div>
@@ -2512,7 +2514,8 @@
             <div class="row mt-4">
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
-                        onclick="TabHead('InvoiceTab')">PREVIOUS</button></div>
+                        onclick="TabHead('InvoiceTab')">PREVIOUS</button>
+                </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
@@ -2522,7 +2525,8 @@
             <div class="row mt-4">
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="DeleteItem()">DELETE
                         ITEM</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">EDIT ALL ITEM</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="editAllItem()">EDIT ALL
+                        ITEM</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button">CONSOLIDATE</button></div>
                 <div class="col-2"><input type="text" class="inputStyle" placeholder="SEARCH BY ITEM NO..."></div>
             </div>
@@ -2532,7 +2536,7 @@
             <br>
             <table id="ItemTable" style="width: 100%;">
                 <thead>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" onclick="AllItemClicked()" id="checkboxItemTable"></th>
                     <th>EDIT</th>
                     <th>S.NO</th>
                     <th>HS CODE</th>
@@ -2847,11 +2851,13 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-8" id="summarySumOfItemAmout">
-                            <input type="text" class="inputStyle" name="summarySumOfItemAmout" value="0.00"
-                                disabled>
+                            <input type="text" class="inputStyle" name="summarySumOfItemAmout" value="0.00" disabled>
                         </div>
                     </div>
                 </div>
+            </div>
+            <div class="errorIntimationSummary" id="errorIntimationSummary">
+                <p>THE TOTAL ITEM CIF/FOB VALUE DOES NOT EQUAL WITH TOTAL INVOICE CIF VALUE </p>
             </div>
             <!-- <div class="row mt-5">
                 <div class="col-1 mt-2">TRADER REMARKS</div>

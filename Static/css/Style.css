@@ -304,12 +304,15 @@ i {
 #inpaymentTable {
     font-size: 10px;
 }
-#InonPaymentTable{
+
+#InonPaymentTable {
     font-size: 10px;
 }
-#InonPaymentTable tbody tr:hover{
+
+#InonPaymentTable tbody tr:hover {
     background-color: rgb(197, 246, 223);
 }
+
 #ShowColumns {
     background-color: rgb(25, 135, 84);
     color: white;
@@ -710,4 +713,11 @@ span1 {
     color: red;
     display: none;
     font-size: 8px;
+}
+
+.errorIntimationSummary {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    color: red;
 }

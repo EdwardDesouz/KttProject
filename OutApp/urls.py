@@ -22,5 +22,6 @@ urlpatterns = [
     path("outEdit/<id>/", views.OutEdit.as_view()),
     path("OutItemExcelUpload/", views.ItemInNonExcelUpload.as_view()),
     path("OutPaymentCopy/<id>/", views.CopyOutPayment.as_view()),
-    path("OutExcelDownload/",views.ItemExcelDownload)
+    path("OutExcelDownload/",views.ItemExcelDownload),
+    path("outEditItemall/",views.outEditItemall)
 ]
