@@ -586,8 +586,8 @@ input::-webkit-inner-spin-button {
 }
 
 .SearchPopUp {
-    height: 100%;
-    width: 100%;
+    height: 100vh;
+    width: 100vw;
     background: rgba(50, 41, 41, 0.5);
     position: absolute;
     top: 0;
@@ -603,19 +603,20 @@ input::-webkit-inner-spin-button {
 }
 
 .centerPopUp {
-    height: 55vh;
-    width: 45%;
+    height: 70vh;
+    width: 60vw;
     background-color: rgb(252, 252, 252);
     border-radius: 6px;
     border: 2px solid rgb(25, 135, 84);
-    padding: 20px;
+    /* padding: 20px; */
 }
 
 .centerPopUp h1 {
-    background-color: rgb(25, 135, 84);
-    color: #fff;
+    background-color: rgb(25, 135, 84) !important;
+    color: #fff !important;
     font-size: 30px;
     text-align: center;
+    padding: 1rem;
 
 }
 

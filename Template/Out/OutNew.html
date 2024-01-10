@@ -14,7 +14,7 @@
     <div class="col-1">
         <a href="/OutList/" class="ExitButton">ExitForm</a>
     </div>
-</div>
+</div> 
 
 <div class="Container InpaymentNewStyles mt-4 " style="width: 90%;">
     <section style="background-color: #fff;">
@@ -472,7 +472,8 @@
             <div class="row mt-3">
                 <div class="col-2">EXPORTER</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" 
+                    onclick="PartyPopup(Exporter,'EXPORTER PARTY','ExporterCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
                 <div class="col-1">
@@ -540,7 +541,7 @@
             <div class="row mt-5 " style="display: none;" id="OutCargoImporterShow">
                 <div class="col-2 mt-2">IMPORTER</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="PartyImporterPopup(Importer,'IMPORTER','ImporterCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
                 <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
@@ -555,7 +556,7 @@
             <div class="row mt-3" style="display: none;" id="OutInwardCarrierShow">
                 <div class="col-2 mt-2">INWARD CARRIER AGENT</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="PartyImporterPopup(Inward,'INWARD CARRIER AGENT','InwardCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
                 <div class="col-1">
@@ -581,7 +582,7 @@
             <div class="row mt-3 " style="display: none;" id="OutWardCarrierAgentShow">
                 <div class="col-2 mt-2">OUTWARD CARRIER AGENT</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="PartyImporterPopup(OutWard,'OUTWARD CARRIER AGENT','OutwardCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
                 <div class="col-1">
@@ -607,10 +608,11 @@
             <div class="row mt-3">
                 <div class="col-2 mt-2">FREIGHT FORWARDER</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="PartyImporterPopup(Frieght,'FREIGHT FORWARDER','FrieghtCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
+                <div class="col-1">
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE"
                         id="FrieghtCode" onfocus="FrieghtFocusIn()" onfocusout="FrieghtFocusOut()"></div>
                 <div class="col-2"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
                         id="FrieghtCruei"></div>
@@ -622,7 +624,7 @@
             <div class="row mt-3">
                 <div class="col-2 mt-2">CONSIGNEE</div>
                 <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="PartyConsignPopup(Consign,'CONSIGNEE','ConsigneCode')">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
                 <div class="col-1">
@@ -879,7 +881,7 @@
                     <div class="row mt-3">
                         <div class="col-3">RELEASE LOCATION</div>
                         <div class="col-1">
-                            <img src="{% static 'IMG/search.png' %}" width="24px">
+                            <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonReleaseSearchImg('RELEASE LOCATION',ReleaseLocation,'ReleaseLocaName')">
                         </div>
                         <div class="col-2">
                             <input type="text" class="inputStyle HighLight" id="ReleaseLocaName"
@@ -893,7 +895,7 @@
                     <div class="row mt-3">
                         <div class="col-3">RECEIPT LOCATION</div>
                         <div class="col-1">
-                            <img src="{% static 'IMG/search.png' %}" width="24px">
+                            <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonReleaseSearchImg('RECEIPT LOCATION',ReciptLocation,'ReciptLocationCode')">
                         </div>
                         <div class="col-2">
                             <input type="text" class="inputStyle HighLight" id="ReciptLocationCode"
@@ -906,7 +908,9 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-3">STORAGE LOCATION</div>
-                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="24px"></div>
+                        <div class="col-1">
+                            <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonReleaseSearchImg('STORAGE LOCATION',ReciptLocation,'StorageCode')">
+                        </div>
                         <div class="col-2"><input type="text" class="inputStyle" id="StorageCode"
                                 onfocus="StorageFocusIn()" onfocusout="StorageFocusOut()"></div>
                         <div class="col-5"><textarea name="" id="StorageText" class="inputStyle"></textarea></div>
@@ -2565,6 +2569,7 @@
         </div>
         <!---------------------------------------------------Cpc--------------------------------------------------->
         <div class="" id="Cpc" style="display:none">
+            <!-- <div><button type="button" onclick="cpcData()">add btn</button></div> -->
             <div class="row mt-5">
                 <div class="col-2">
                     <input type="checkbox" id="OutAeo" onclick="OutCpcHideShow('#OutAeo','.OutAeoClass','OutAeoName')">
@@ -2586,7 +2591,7 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="text" class="inputStyle" name="OutAeoName"></td>
+                                    <td><input type="text" class="inputStyle" name="OutAeoName"></td> 
                                     <td><input type="text" class="inputStyle" name="OutAeoName"></td>
                                     <td><input type="text" class="inputStyle" name="OutAeoName"></td>
                                     <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"

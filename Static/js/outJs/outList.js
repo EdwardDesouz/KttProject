@@ -254,7 +254,7 @@ function InNonCopy() {
                 //     }
                 // })
             }
-        }
+        } 
     )
 }
 
@@ -551,7 +551,7 @@ function InNonSubmit() {
         PermitNumber = JSON.stringify(checkArr)
         $.ajax({
             type: "GET",
-            url: "/InonSubmit/",
+            url: "/outTransmit/",
             data: {
                 "PermitNumber": PermitNumber,
             },

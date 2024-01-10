@@ -306,19 +306,19 @@ class CargoLocations(View, SqlDb):
         SqlDb.__init__(self)
         self.Partycontext = {}
 
-        self.cursor.execute("SELECT Code,Description FROM ReleaseLocation order by Id")
+        self.cursor.execute("SELECT Code,Description,LocationCode FROM ReleaseLocation order by Id")
         self.Partycontext.update(
             {
-                "releaseLocation": (pd.DataFrame(list (self.cursor.fetchall()), columns=["Code", "Description"])).to_dict("records")
+                "releaseLocation": (pd.DataFrame(list (self.cursor.fetchall()), columns=["Code", "Description","LocationCode"])).to_dict("records")
             }
         )
 
-        self.cursor.execute("SELECT Code,Description FROM ReceiptLocation order by Id")
+        self.cursor.execute("SELECT Code,Description,LocationCode FROM ReceiptLocation order by Id")
         self.Partycontext.update(
             {
                 "reciptLocation": (
                     pd.DataFrame(
-                        list(self.cursor.fetchall()), columns=["Code", "Description"]
+                        list(self.cursor.fetchall()), columns=["Code", "Description",'LocationCode']
                     )
                 ).to_dict("records")
             }
@@ -603,9 +603,7 @@ class OutItem(View, SqlDb):
         headers = [i[0] for i in self.cursor.description]
         context.update(
             {
-                "casc": (
-                    pd.DataFrame(list(self.cursor.fetchall()), columns=headers)
-                ).to_dict("records")
+                "casc": (pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict("records")
             }
         )
 
@@ -1070,6 +1068,16 @@ class outSaveSubmit(View, SqlDb):
         SqlDb.__init__(self)
 
     def post(self, request):
+
+        self.cursor.execute(f"DELETE FROM OutCPCDtl WHERE PermitId = '{request.POST.get("PermitId")}'")
+        self.conn.commit()
+
+        cpcData = json.loads(request.POST.get('cpcData1'))
+        cpcQry = "INSERT INTO OutCPCDtl(PermitId,MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"
+        for i in cpcData:
+            cpcVal = (request.POST.get("PermitId"),"OUTDEC",i[0],i[1],i[2],i[3],i[4],str(request.session['Username']).upper(),datetime.now().strftime("%Y-%m-%d %H:%M:%S"))
+            self.cursor.execute(cpcQry,cpcVal)
+
         data = {
             "Refid": request.POST.get("Refid"),
             "JobId": request.POST.get("JobId"),
@@ -1209,6 +1217,13 @@ class CopyOutPayment(View,SqlDb):
         SqlDb.__init__(self)
 
     def get(self,request,id):
+        query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutCPCDtl'"
+        self.cursor.execute(query)
+            
+        result = self.cursor.fetchall()
+        for i in result:
+            print(i[0],end=',')
+
         Username = request.session['Username'] 
 
         refDate = datetime.now().strftime("%Y%m%d")
@@ -1221,7 +1236,6 @@ class CopyOutPayment(View,SqlDb):
         self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(Username))
         ManageUserVal = self.cursor.fetchone()
         AccountId = ManageUserVal[0]
-
         self.cursor.execute("SELECT COUNT(*) + 1  FROM OutHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'OUTDEC' ".format(refDate))
         self.RefId = ("%03d" % self.cursor.fetchone()[0])
 
@@ -1233,7 +1247,6 @@ class CopyOutPayment(View,SqlDb):
         self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
 
         NowDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
         
         self.cursor.execute(f"INSERT INTO OutHeaderTbl (Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,DeclarningFor,MRDate,MRTime,CondColor) SELECT '{self.RefId}','{self.JobId}','{self.MsgId}','{self.PermitIdInNon}','{ManageUserVal[1]}',MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,'DRF','{Username}','{NowDate}','','COPY',ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,'--Select--',MRDate,MRTime,CondColor FROM OutHeaderTbl WHERE Id = '{id}'")
 
@@ -1248,6 +1261,8 @@ class CopyOutPayment(View,SqlDb):
         self.cursor.execute(f"INSERT INTO OutContainerDtl (PermitId,RowNo,ContainerNo,Size,Weight,SealNo,MessageType,TouchUser,TouchTime) SELECT '{self.PermitIdInNon}',RowNo,ContainerNo,Size,Weight,SealNo,MessageType,'{Username}','{NowDate}' FROM OutContainerDtl WHERE PermitId = '{CopyPermitId}'")
 
         self.cursor.execute(f"INSERT INTO OutFile (Sno,Name,ContentType,Data,DocumentType,InPaymentId,TouchUser,TouchTime,Size,PermitId,Type) SELECT Sno,Name,ContentType,Data,DocumentType,InPaymentId,'{Username}','{NowDate}',Size,'{self.PermitIdInNon}',Type FROM OutFile WHERE PermitId = '{CopyPermitId}' ")
+        
+        self.cursor.execute(f"INSERT INTO OutCPCDtl(PermitId,MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,TouchUser,TouchTime) SELECT '{self.PermitIdInNon}',MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,'{Username}','{NowDate}'  FROM OutCPCDtl WHERE PermitId = '{CopyPermitId}'")
         
         self.conn.commit()
 
@@ -1578,12 +1593,7 @@ class ItemInNonExcelUpload(View,SqlDb):
 
 def outEditItemall(request):
     db = SqlDb()
-    # query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'OutItemDtl'"
-    # db.cursor.execute(query)
-          
-    # result = db.cursor.fetchall()
-    # for i in result:
-    #     print(f"i['{i[0]}']",end=',')
+    
 
     print("hello ")
 
@@ -1614,3 +1624,113 @@ def outEditItemall(request):
     
     return JsonResponse(context)
     
+
+def outTransmit(request):
+    permitNumber1 = json.loads(request.GET.get("PermitNumber"))
+    s = SqlDb('SecondDb')
+    s1 = SqlDb('default')
+
+    
+
+
+    for ID in permitNumber1:
+        s1.cursor.execute(f"SELECT * FROM OutHeaderTbl WHERE Id='{ID}' ")
+        permitNumber = s1.cursor.fetchone()[4]
+        TouchUser = str(request.session['Username']).upper() 
+        refDate = datetime.now().strftime("%Y%m%d")
+        jobDate = datetime.now().strftime("%Y-%m-%d")
+        print(permitNumber)
+
+        s.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(TouchUser))
+        ManageUserVal = s.cursor.fetchone()
+        AccountId = ManageUserVal[0]
+        MailId = ManageUserVal[1]
+
+        s.cursor.execute("SELECT COUNT(*) + 1  FROM OutHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'OUTDEC' ".format(refDate))
+        RefId = ("%03d" % s.cursor.fetchone()[0])
+
+        s.cursor.execute("SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(jobDate,AccountId))
+        JobIdCount = s.cursor.fetchone()[0]
+
+        JobId = f"K{datetime.now().strftime('%y%m%d')}{'%05d' % JobIdCount}" 
+        MsgId = f"{datetime.now().strftime('%Y%m%d')}{'%04d' % JobIdCount}"
+        NewPermitId = f"{TouchUser}{refDate}{RefId}"
+
+        TouchTime = datetime.now().strftime("%Y-%m-%d %H:%M:%S") 
+
+        try:
+            s1.cursor.execute(f"SELECT * FROM OutHeaderTbl WHERE PermitId='{permitNumber}' ")
+            Heading = [i[0] for i in s1.cursor.description]
+            HeadData = [dict(zip(Heading,row)) for row in s1.cursor.fetchall()]
+            HeadQry = ("INSERT INTO OutHeaderTbl (Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,COType,Entryyear,GSPDonorCountry,CerDetailtype1,CerDetailCopies1,CerDetailtype2,CerDetailCopies2,PerCommon,CurrencyCode,AddCerDtl,TransDtl,Recipient,DeclarantCompanyCode,ExporterCompanyCode,Inwardcarriercode,OutwardCarrierAgentCode,FreightForwarderCode,ImporterCompanyCode,InwardCarrierAgentCode,CONSIGNEECode,EndUserCode,Manufacturer,ArrivalDate,ArrivalTime,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,StorageLocation,BlanketStartDate,DepartureDate,DepartureTime,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,TradeRemarks,InternalRemarks,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ResLoaName,RepLocName,RecepitLocName,outHAWB,INHAWB,CertificateNumber,Defrentprinting,Cnb,DeclarningFor,MRDate,MRTime,CondColor) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) ")
+            for head in HeadData:
+                headVal = (RefId,JobId,MsgId,NewPermitId,MailId,head['MessageType'],head['DeclarationType'],head['PreviousPermit'],head['CargoPackType'],head['InwardTransportMode'],head['OutwardTransportMode'],head['BGIndicator'],head['SupplyIndicator'],head['ReferenceDocuments'],head['License'],head['COType'],head['Entryyear'],head['GSPDonorCountry'],head['CerDetailtype1'],head['CerDetailCopies1'],head['CerDetailtype2'],head['CerDetailCopies2'],head['PerCommon'],head['CurrencyCode'],head['AddCerDtl'],head['TransDtl'],head['Recipient'],head['DeclarantCompanyCode'],head['ExporterCompanyCode'],head['Inwardcarriercode'],head['OutwardCarrierAgentCode'],head['FreightForwarderCode'],head['ImporterCompanyCode'],head['InwardCarrierAgentCode'],head['CONSIGNEECode'],head['EndUserCode'],head['Manufacturer'],head['ArrivalDate'],head['ArrivalTime'],head['LoadingPortCode'],head['VoyageNumber'],head['VesselName'],head['OceanBillofLadingNo'],head['ConveyanceRefNo'],head['TransportId'],head['FlightNO'],head['AircraftRegNo'],head['MasterAirwayBill'],head['ReleaseLocation'],head['RecepitLocation'],head['StorageLocation'],head['BlanketStartDate'],head['DepartureDate'],head['DepartureTime'],head['DischargePort'],head['FinalDestinationCountry'],head['OutVoyageNumber'],head['OutVesselName'],head['OutOceanBillofLadingNo'],head['VesselType'],head['VesselNetRegTon'],head['VesselNationality'],head['TowingVesselID'],head['TowingVesselName'],head['NextPort'],head['LastPort'],head['OutConveyanceRefNo'],head['OutTransportId'],head['OutFlightNO'],head['OutAircraftRegNo'],head['OutMasterAirwayBill'],head['TotalOuterPack'],head['TotalOuterPackUOM'],head['TotalGrossWeight'],head['TotalGrossWeightUOM'],head['GrossReference'],head['TradeRemarks'],head['InternalRemarks'],head['DeclareIndicator'],head['NumberOfItems'],head['TotalCIFFOBValue'],head['TotalGSTTaxAmt'],head['TotalExDutyAmt'],head['TotalCusDutyAmt'],head['TotalODutyAmt'],head['TotalAmtPay'],head['Status'],TouchUser,TouchTime,head['PermitNumber'],head['prmtStatus'],head['ResLoaName'],head['RepLocName'],head['RecepitLocName'],head['outHAWB'],head['INHAWB'],head['CertificateNumber'],head['Defrentprinting'],head['Cnb'],head['DeclarningFor'],head['MRDate'],head['MRTime'],head['CondColor'])
+                s.cursor.execute(HeadQry,headVal)
+
+            s.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{NewPermitId}','OUTDEC','{AccountId}','{MsgId}','{TouchUser}','{TouchTime}') ")
+
+            InvoiceQry = "INSERT INTO OutInvoiceDtl (SNo,InvoiceNo,InvoiceDate,TermType,AdValoremIndicator,PreDutyRateIndicator,SupplierImporterRelationship,SupplierCode,ExportPartyCode,TICurrency,TIExRate,TIAmount,TISAmount,OTCCharge,OTCCurrency,OTCExRate,OTCAmount,OTCSAmount,FCCharge,FCCurrency,FCExRate,FCAmount,FCSAmount,ICCharge,ICCurrency,ICExRate,ICAmount,ICSAmount,CIFSUMAmount,GSTPercentage,GSTSUMAmount,MessageType,PermitId,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutInvoiceDtl WHERE PermitId='{permitNumber}' ")
+            InvoiceHead = [i[0] for i in s1.cursor.description]
+            InvoiceData = [dict(zip(InvoiceHead,row)) for row in s1.cursor.fetchall()] 
+            for head in InvoiceData:
+                InvoiceVal= (head['SNo'],head['InvoiceNo'],head['InvoiceDate'],head['TermType'],head['AdValoremIndicator'],head['PreDutyRateIndicator'],head['SupplierImporterRelationship'],head['SupplierCode'],head['ExportPartyCode'],head['TICurrency'],head['TIExRate'],head['TIAmount'],head['TISAmount'],head['OTCCharge'],head['OTCCurrency'],head['OTCExRate'],head['OTCAmount'],head['OTCSAmount'],head['FCCharge'],head['FCCurrency'],head['FCExRate'],head['FCAmount'],head['FCSAmount'],head['ICCharge'],head['ICCurrency'],head['ICExRate'],head['ICAmount'],head['ICSAmount'],head['CIFSUMAmount'],head['GSTPercentage'],head['GSTSUMAmount'],head['MessageType'],NewPermitId,TouchUser,TouchTime)
+                s.cursor.execute(InvoiceQry,InvoiceVal)
+
+            ItemQry = "INSERT INTO OutItemDtl (ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,EndUserDescription,Brand,Model,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,CerItemQty,CerItemUOM,CIFValOfCer,ManufactureCostDate,TexCat,TexQuotaQty,TexQuotaUOM,CerInvNo,CerInvDate,OriginOfCer,HSCodeCer,PerContent,CertificateDescription,TouchUser,TouchTime,VehicleType,OptionalChrgeUOM,EngineCapcity,Optioncahrge,OptionalSumtotal,OptionalSumExchage,EngineCapUOM,orignaldatereg) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutItemDtl WHERE PermitId='{permitNumber}' ")
+            ItemHead = [i[0] for i in s1.cursor.description]
+            ItemData = [dict(zip(ItemHead,row)) for row in s1.cursor.fetchall()]
+            for head in ItemData:
+                ItemVal= (head['ItemNo'],NewPermitId,head['MessageType'],head['HSCode'],head['Description'],head['DGIndicator'],head['Contry'],head['EndUserDescription'],head['Brand'],head['Model'],head['InHAWBOBL'],head['OutHAWBOBL'],head['DutiableQty'],head['DutiableUOM'],head['TotalDutiableQty'],head['TotalDutiableUOM'],head['InvoiceQuantity'],head['HSQty'],head['HSUOM'],head['AlcoholPer'],head['InvoiceNo'],head['ChkUnitPrice'],head['UnitPrice'],head['UnitPriceCurrency'],head['ExchangeRate'],head['SumExchangeRate'],head['TotalLineAmount'],head['InvoiceCharges'],head['CIFFOB'],head['OPQty'],head['OPUOM'],head['IPQty'],head['IPUOM'],head['InPqty'],head['InPUOM'],head['ImPQty'],head['ImPUOM'],head['PreferentialCode'],head['GSTRate'],head['GSTUOM'],head['GSTAmount'],head['ExciseDutyRate'],head['ExciseDutyUOM'],head['ExciseDutyAmount'],head['CustomsDutyRate'],head['CustomsDutyUOM'],head['CustomsDutyAmount'],head['OtherTaxRate'],head['OtherTaxUOM'],head['OtherTaxAmount'],head['CurrentLot'],head['PreviousLot'],head['Making'],head['ShippingMarks1'],head['ShippingMarks2'],head['ShippingMarks3'],head['ShippingMarks4'],head['CerItemQty'],head['CerItemUOM'],head['CIFValOfCer'],head['ManufactureCostDate'],head['TexCat'],head['TexQuotaQty'],head['TexQuotaUOM'],head['CerInvNo'],head['CerInvDate'],head['OriginOfCer'],head['HSCodeCer'],head['PerContent'],head['CertificateDescription'],TouchUser,TouchTime,head['VehicleType'],head['OptionalChrgeUOM'],head['EngineCapcity'],head['Optioncahrge'],head['OptionalSumtotal'],head['OptionalSumExchage'],head['EngineCapUOM'],head['orignaldatereg'])
+                s.cursor.execute(ItemQry,ItemVal)
+
+            ItemCascQry = "INSERT INTO OutCASCDtl (ItemNo,ProductCode,Quantity,ProductUOM,RowNo,CascCode1,CascCode2,CascCode3,PermitId,MessageType,TouchUser,TouchTime,CASCId,EndUserDes) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutCASCDtl WHERE PermitId='{permitNumber}' ")
+            ItemCascHead = [i[0] for i in s1.cursor.description]
+            ItemCascData = [dict(zip(ItemCascHead,row)) for row in s1.cursor.fetchall()]
+            for head in ItemCascData:
+                ItemCascVal= (head['ItemNo'],head['ProductCode'],head['Quantity'],head['ProductUOM'],head['RowNo'],head['CascCode1'],head['CascCode2'],head['CascCode3'],NewPermitId,head['MessageType'],TouchUser,TouchTime,head['CASCId'],head['EndUserDes'])
+                s.cursor.execute(ItemCascQry,ItemCascVal)
+
+            ContainerQry = "INSERT INTO OutContainerDtl (PermitId,RowNo,ContainerNo,Size,Weight,SealNo,MessageType,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutContainerDtl WHERE PermitId='{permitNumber}' ")
+            ContainerHead = [i[0] for i in s1.cursor.description]
+            ContainerData = [dict(zip(ContainerHead,row)) for row in s1.cursor.fetchall()]
+            for head in ContainerData:
+                ContainerVal= (NewPermitId,head['RowNo'],head['ContainerNo'],head['Size'],head['Weight'],head['SealNo'],head['MessageType'],TouchUser,TouchTime)
+                s.cursor.execute(ContainerQry,ContainerVal)
+
+            CpcQry = "INSERT INTO OutCPCDtl (PermitId,MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutCPCDtl WHERE PermitId='{permitNumber}' ")
+            CpcHead = [i[0] for i in s1.cursor.description]
+            CpcData = [dict(zip(CpcHead,row)) for row in s1.cursor.fetchall()]
+            for head in CpcData:
+                CpcVal= (NewPermitId,head['MessageType'],head['RowNo'],head['CPCType'],head['ProcessingCode1'],head['ProcessingCode2'],head['ProcessingCode3'],TouchUser,TouchTime)
+                s.cursor.execute(CpcQry,CpcVal) 
+
+            InfileQry = "INSERT INTO OutFile (Sno,Name,ContentType,Data,DocumentType,InPaymentId,TouchUser,TouchTime,Size,PermitId,Type) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
+            s1.cursor.execute(f"SELECT * FROM OutFile WHERE PermitId='{permitNumber}' ")
+            InFileHead = [i[0] for i in s1.cursor.description]
+            InFileData = [dict(zip(InFileHead,row)) for row in s1.cursor.fetchall()]
+            for head in InFileData:
+                InfileVal= (head['Sno'],head['Name'],head['ContentType'],head['Data'],head['DocumentType'],head['InPaymentId'],TouchUser,TouchTime,head['Size'],NewPermitId,head['Type'])
+                s.cursor.execute(InfileQry,InfileVal)
+
+            s.conn.commit()
+            print("saved SuccessFully")
+        except Exception as e:
+            pass
+        finally:
+            return JsonResponse({"Success":"Genrate"})
+
+    return JsonResponse({"Success":"Genrate"})
+ 
+
+class CpcFIlter(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+    def get(self,request,permitId):
+        self.cursor.execute(f"select * from OutCPCDtl Where PermitId = '{permitId}' ")
+        headers = [i[0] for i in self.cursor.description]
+        return JsonResponse({'cpc':(pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict("records")})

@@ -78,7 +78,7 @@ function TabHead(ID) {
     catch (e) {
       console.log(e)
     }
-    
+
     $("#Summary").show();
   }
   if (ID == "AmendTab") {
@@ -253,7 +253,6 @@ function OutInwardTrasnPortModeChange() {
   }
 }
 
-
 function OutOutwardTrasnPortModeChange() {
   var OutTransPort = $("#OutOutwardTransportMode").val();
   $('#OutwardMode').val(OutTransPort)
@@ -353,7 +352,6 @@ function OutCargoPackTypeChange() {
     $('#CargoPackTypeSpan').hide()
   }
 }
-
 /*------------------------------------------AUTO-COMPLETE---------------------------------*/
 function Autocomplete1(myValues, idName) {
   $(idName)
@@ -796,6 +794,7 @@ function LoadingPortFocusOut() {
     }
   })
 }
+
 function DischargePortFocusIn() {
   var myValues = [];
   for (var i of LoadingPort) {
@@ -829,6 +828,7 @@ function StorageFocusOut() {
     }
   })
 }
+
 function NextPortFocusIn() {
   var myValues = [];
   for (var i of LoadingPort) {
@@ -876,6 +876,7 @@ function InvoiceExporterFocusIn() {
   }
   Autocomplete1(myValues, "#InviceExporterCode");
 }
+
 function InvoiceExporterFocusOut() {
   let Code = $("#InviceExporterCode").val().trim().toUpperCase()
 
@@ -929,7 +930,6 @@ $(function () {
     }
   });
 });
-
 
 $(function () {
   $("#orignaldatereg").datepicker({ dateFormat: "dd/mm/yy" });
@@ -1152,6 +1152,7 @@ function InvoiceLoadData() {
   $('#InvoiceTable tbody').html(InvData)
   $('#DrpInvoiceNo').html(DrpInvoice)
 }
+
 function InvoiceDeleteInNon(Id) {
   $("#Loading").show();
   $.ajax({
@@ -1292,10 +1293,204 @@ function InNonImporeterSearchSelectRow(Arg, Code, Cruei, Name, Name1) {
 
   $("#InNonImporterSerchId").hide();
 }
+
+
+function PartyPopup(Model1, Head, ID) {
+  $("#InNonImporterSerchId").show();
+  var tag = "";
+  for (var i of Model1) {
+    tag += `
+      <tr style="cursor: pointer;" onclick = "PartyPopupSelect('${i.OutUserCode}','${ID}')">
+          <td>${i.OutUserCode}</td>
+          <td>${i.OutUserName}</td>
+          <td>${i.OutUserName1}</td>
+          <td>${i.OutUserCRUEI}</td>
+        </tr>
+    `;
+  }
+  $("#InNonImporterSerchId").html(`
+        <div class="SearchPopUp">
+              <div class="centerPopUp">
+                  <h1>${Head}</h1>
+                  <input type="text" id="InNonSearchImg" class="inputStyle" placeholder="Search Here By Code  " style="width: 30%;margin-top: 10px;" onkeyup="$('#InNonImporterTable').DataTable().search($('#InNonSearchImg').val()).draw();">
+                  <table style="margin-top: 20px;width: 100%;" id = "InNonImporterTable">
+                      <thead>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <th>Name1</th>
+                          <th>Cruei</th>
+                      </thead>
+                      <tbody>${tag}</tbody>
+                  </table>
+                  <button type="button" class="ButtonClick" style="margin-top: 30px;margin-left: 40%;" onclick="$('#InNonImporterSerchId').hide()">CLOSE</button>
+              </div>
+          </div>
+          `);
+  $("#InNonImporterTable").DataTable({
+    pageLength: 5,
+    ordering: false,
+    dom: "rtip",
+    autoWidth: false,
+  });
+}
+
+function PartyImporterPopup(Model1, Head, ID) {
+  $("#InNonImporterSerchId").show();
+  var tag = "";
+  for (var i of Model1) {
+    tag += `
+      <tr style="cursor: pointer;" onclick = "PartyPopupSelect('${i.Code}','${ID}')">
+          <td>${i.Code}</td>
+          <td>${i.CRUEI}</td>
+          <td>${i.Name}</td>
+          <td>${i.Name1}</td>
+        </tr>
+    `;
+  }
+  $("#InNonImporterSerchId").html(`
+        <div class="SearchPopUp">
+              <div class="centerPopUp">
+                  <h1>${Head}</h1>
+                  <input type="text" id="InNonSearchImg" class="inputStyle" placeholder="Search Here By Code  " style="width: 30%;margin-top: 10px;" onkeyup="$('#InNonImporterTable').DataTable().search($('#InNonSearchImg').val()).draw();">
+                  <table style="margin-top: 20px;width: 100%;" id = "InNonImporterTable">
+                      <thead>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <th>Name1</th>
+                          <th>Cruei</th>
+                      </thead>
+                      <tbody>${tag}</tbody>
+                  </table>
+                  <button type="button" class="ButtonClick" style="margin-top: 30px;margin-left: 40%;" onclick="$('#InNonImporterSerchId').hide()">CLOSE</button>
+              </div>
+          </div>
+          `);
+  $("#InNonImporterTable").DataTable({
+    pageLength: 5,
+    ordering: false,
+    dom: "rtip",
+    autoWidth: false,
+  });
+}
+
+function PartyConsignPopup(Model1, Head, ID) {
+  $("#InNonImporterSerchId").show();
+  var tag = "";
+  for (var i of Model1) {
+    tag += `
+      <tr style="cursor: pointer;" onclick = "PartyPopupSelect('${i.ConsigneeCode}','${ID}')">
+          <td>${i.ConsigneeCode}</td>
+          <td>${i.ConsigneeCRUEI}</td>
+          <td>${i.ConsigneeName}</td>
+          <td>${i.ConsigneeName1}</td>
+        </tr>
+    `;
+  }
+  $("#InNonImporterSerchId").html(`
+        <div class="SearchPopUp">
+              <div class="centerPopUp">
+                  <h1>${Head}</h1>
+                  <input type="text" id="InNonSearchImg" class="inputStyle" placeholder="Search Here By Code  " style="width: 30%;margin-top: 10px;" onkeyup="$('#InNonImporterTable').DataTable().search($('#InNonSearchImg').val()).draw();">
+                  <table style="margin-top: 20px;width: 100%;" id = "InNonImporterTable">
+                      <thead>
+                          <th>Code</th>
+                          <th>Name</th>
+                          <th>Name1</th>
+                          <th>Cruei</th>
+                      </thead>
+                      <tbody>${tag}</tbody>
+                  </table>
+                  <button type="button" class="ButtonClick" style="margin-top: 30px;margin-left: 40%;" onclick="$('#InNonImporterSerchId').hide()">CLOSE</button>
+              </div>
+          </div>
+          `);
+  $("#InNonImporterTable").DataTable({
+    pageLength: 5,
+    ordering: false,
+    dom: "rtip",
+    autoWidth: false,
+  });
+}
+
+function PartyPopupSelect(Val, Id) {
+
+  $('#' + Id).val(Val)
+
+  if (Id == 'ExporterCode') {
+    ExportFocusOut()
+  }
+
+  if (Id == 'ImporterCode') {
+    ImportFocusOut()
+  }
+
+  if (Id == 'InwardCode') {
+    InwardFocusOut()
+  }
+  if (Id == 'OutwardCode') {
+    OutwardFocusOut()
+  }
+  if (Id == 'FrieghtCode') {
+    FrieghtFocusOut()
+  }
+  if (Id == 'ConsigneCode') {
+    ConsigneFocusOut()
+  }
+  if (Id == 'ReleaseLocaName') {
+    ReleaseLocationFocusOut()
+  }
+  if (Id == 'ReciptLocationCode') {
+    ReciptFocusOut()
+  }
+  if (Id == 'StorageCode') {
+    StorageFocusOut()
+  }
+
+  $('#InNonImporterSerchId').hide()
+}
+
+function InNonReleaseSearchImg(Head, Table, ID) {
+  $("#InNonImporterSerchId").show();
+  var tag = "";
+  for (var i of Table) {
+    tag += `
+      <tr onclick = "PartyPopupSelect('${i.Code}','${ID}')" style="cursor: pointer;">
+          <td>${i.Code}</td>
+          <td>${i.LocationCode}</td>
+          <td>${i.Description}</td>
+        </tr>
+    `;
+  }
+  $("#InNonImporterSerchId").html(`
+        <div class="SearchPopUp">
+              <div class="centerPopUp">
+                  <h1>${Head}</h1>
+                  <input type="text" id="InNonReleaseSearch" class="inputStyle" placeholder="Search Here By Code  " style="width: 30%;margin-top: 10px;" onkeyup="$('#InNonRelease').DataTable().search($('#InNonReleaseSearch').val()).draw();">
+                  <table style="margin-top: 20px;width: 100%;" id = "InNonRelease">
+                      <thead>
+                          <th>code</th>
+                          <th>locationCode</th>
+                          <th>description</th>
+                      </thead>
+                      <tbody>${tag}</tbody>
+                  </table>
+                  <button type="button" class="ButtonClick" style="margin-top: 30px;margin-left: 40%;" onclick="$('#InNonImporterSerchId').hide()">CLOSE</button>
+              </div>
+          </div>
+          `);
+  $("#InNonRelease").DataTable({
+    pageLength: 5,
+    ordering: false,
+    dom: "rtip",
+    autoWidth: false,
+  });
+}
+
 function CopyExporter() {
   $('#InviceExporterCode').val($('#ExporterCode').val())
   InvoiceExporterFocusOut()
 }
+
 var InhouseData = [];
 var ChkHsCode = [];
 var Country = [];
@@ -1799,6 +1994,7 @@ function CopyOfHsQty(Input, Uom) {
   $(Input).val($("#TxtHSQuantity").val())
   $(Uom).val($("#HSQTYUOM").val())
 }
+
 function ItemCooSearch() {
   $("#InNonImporterSerchId").show();
   var tag = "";
@@ -2398,6 +2594,7 @@ function CascLoad(cascResult) {
     $("#OutItemCascTable5 tbody").html(cascTable5)
   }
 }
+
 function DeleteItem() {
   $("#Loading").show();
   let arr = []
@@ -2426,6 +2623,7 @@ function DeleteItem() {
     })
   }
 }
+
 function AllItemClicked() {
   var tableCheckBox = $('#ItemTable tbody input:checkbox').toArray();
 
@@ -2724,6 +2922,7 @@ function AllDataSave() {
     ValidationPopUp(Tag)
   }
 }
+
 function ValidationPopUp(Tag) {
   $("#InNonImporterSerchId").show();
   $("#InNonImporterSerchId").html(`
@@ -2738,6 +2937,7 @@ function ValidationPopUp(Tag) {
     `
   );
 }
+
 function OutfinalSave() {
 
   let BlanketStartDate = ""
@@ -2770,6 +2970,7 @@ function OutfinalSave() {
       url: url,
       type: "POST",
       data: {
+        cpcData1: JSON.stringify(cpcData()),
         Refid: $('#Refid').val(),
         JobId: $('#JobId').val(),
         MSGId: $('#MSGId').val(),
@@ -2885,6 +3086,7 @@ function OutfinalSave() {
     alert(err)
   }
 }
+
 function summaryPreviousFunction() {
   var Val = $("#PreviousPermitNo").val();
   $("#summaryTradeRemarks").val("PREVIOUS PERMIT NO : " + Val);
@@ -3039,7 +3241,6 @@ function DeleteAttach(Arg) {
   });
 }
 
-
 function hawbOutFunction() {
   var Hawb = $('#Hawb').val().trim().toUpperCase().split(',')
   let ht = "";
@@ -3103,7 +3304,6 @@ function ItemUploadInNon() {
     });
   }
 }
-
 
 function SummaryInvoiceSumofInvoiceAmount(invoiceCurAmountARR) {
   document.getElementById("summarySumOfInvoiceAmount").innerHTML = "";
@@ -3178,6 +3378,7 @@ async function editAllItem() {
   $('#Loading').show()
   setTimeout(editAllItem1, 500)
 }
+
 function editAllItem1() {
 
   var editItemData = []
@@ -3330,3 +3531,187 @@ function errorIntimationSummaryFunction() {
   }
 }
 
+function cpcData() {
+  var cpcAlldata = []
+  const aeoData = document.getElementsByName('OutAeoName')
+  if ($('#OutAeo').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < aeoData.length; i = i + 3) {
+      if (aeoData[i].value != "") {
+        cpcAlldata.push([RowNo, "AEO", aeoData[i].value, aeoData[i + 1].value, aeoData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  const cwcData = document.getElementsByName('OutCwcName')
+  if ($('#OutCwc').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < cwcData.length; i = i + 3) {
+      if (cwcData[i].value != "") {
+        cpcAlldata.push([RowNo, "CWC", cwcData[i].value, cwcData[i + 1].value, cwcData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  const seaData = document.getElementsByName('OutCwcName')
+  if ($('#OutSeaStore').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < seaData.length; i = i + 3) {
+      if (seaData[i].value != "") {
+        cpcAlldata.push([RowNo, "SEASTORE", seaData[i].value, seaData[i + 1].value, seaData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  const stsData = document.getElementsByName('OutStsName')
+  if ($('#OutSts').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < stsData.length; i = i + 3) {
+      if (stsData[i].value != "") {
+        cpcAlldata.push([RowNo, "STS", stsData[i].value, stsData[i + 1].value, stsData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  const stscwcData = document.getElementsByName('OutStsCwcName')
+  if ($('#OutStsCwc').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < stscwcData.length; i = i + 3) {
+      if (stscwcData[i].value != "") {
+        cpcAlldata.push([RowNo, "STS & CWC", stscwcData[i].value, stscwcData[i + 1].value, stscwcData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  const interData = document.getElementsByName('OutInterNationalName')
+  if ($('#OutInterNational').prop('checked')) {
+    let RowNo = 1
+    for (var i = 0; i < interData.length; i = i + 3) {
+      if (interData[i].value != "") {
+        cpcAlldata.push([RowNo, "INTERNATIONAL PERMIT", interData[i].value, interData[i + 1].value, interData[i + 2].value])
+        RowNo += 1
+      }
+    }
+  }
+
+  return cpcAlldata
+}
+
+var CpcData = []
+try {
+  fetch("http://localhost:8000/CpcFIlter/" + document.getElementById('PermitId').value + "/").then(
+    function (response) {
+      return response.json()
+    },
+    function (err) {
+      return err
+    }
+  ).then(
+    function (data) {
+      CpcData = data.cpc
+      loadCpc()
+    }
+  )
+}
+catch (err) {
+  console.log(err)
+}
+
+
+function loadCpc() {
+  if (CpcData.length > 0) {
+    let aeoTbale = ''
+    let cwcTbale = ''
+    let seaTbale = ''
+    let stsTbale = ''
+    let stsCwcTbale = ''
+    let interTbale = ''
+    for (var i of CpcData) {
+
+      if (i.CPCType == "AEO") {
+        $('#OutAeo').prop('checked', true)
+        OutCpcHideShow('#OutAeo', '.OutAeoClass', 'OutAeoName')
+        aeoTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutAeoName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutAeoName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutAeoName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutAeoTable tbody').innerHTML = aeoTbale
+      }
+
+      if (i.CPCType == "CWC") {
+        console.log(i.CPCType)
+        $('#OutCwc').prop('checked', true)
+        OutCpcHideShow('#OutCwc', '.OutCwcClass', 'OutCwcName')
+        cwcTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutCwcName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutCwcName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutCwcName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutCwcTable tbody').innerHTML = cwcTbale
+      }
+
+      if (i.CPCType == "SEASTORE") {
+        $('#OutSeaStore').prop('checked', true)
+        OutCpcHideShow('#OutSeaStore', '.OutSeaStoreClass', 'OutSeaStoreName')
+
+        seaTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutSeaStoreName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutSeaStoreName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutSeaStoreName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutSeaStoreTable tbody').innerHTML = seaTbale
+      }
+
+      if (i.CPCType == "STS") {
+        $('#OutSts').prop('checked', true)
+        OutCpcHideShow('#OutSts', '.OutStsClass', 'OutStsName')
+        stsTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutStsName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutStsName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutStsName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutStsTable tbody').innerHTML = stsTbale
+      }
+
+      if (i.CPCType == "STS & CWC") {
+        $('#OutStsCwc').prop('checked', true)
+        OutCpcHideShow('#OutStsCwc', '.OutStsCwcClass', 'OutStsCwcName')
+        stsCwcTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutStsCwcName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutStsCwcName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutStsCwcName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutStsCwcTable tbody').innerHTML = stsCwcTbale
+      }
+
+      if (i.CPCType == "INTERNATIONAL PERMIT") {
+        $('#OutInterNational').prop('checked', true)
+        OutCpcHideShow('#OutInterNational', '.OutInterNationalClass', 'OutInterNationalName')
+        interTbale += `
+        <tr>
+          <td><input type="text" class="inputStyle" name = "OutInterNationalName" value="${i.ProcessingCode1}"></td>
+          <td><input type="text" class="inputStyle" name = "OutInterNationalName" value="${i.ProcessingCode2}"></td>
+          <td><input type="text" class="inputStyle" name = "OutInterNationalName" value="${i.ProcessingCode3}"></td>
+          <td><i class="fa-regular fa-trash-can" style="color: #ff0000;" onclick="DeleteCasc(this)"></i></td>
+        </tr>`
+        document.querySelector('#OutInterNationalTable tbody').innerHTML = interTbale
+      }
+    }
+  }
+}
