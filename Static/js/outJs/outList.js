@@ -206,14 +206,15 @@ function InpaymentShow(Arg) {
 }
 
 function InpaymentDelete(Arg) {
+
+    console.log(Arg)
+
+
     $.ajax({
-        url: "/InNonHeaderDelete/",
+        url: "/OutDelete/" + Arg + "/",
         type: "GET",
-        data: {
-            "InNonId": Arg,
-        },
         success: function (response) {
-            window.location.href = response;
+            window.location.href = "";
         }
     })
 }
@@ -242,7 +243,7 @@ function InNonCopy() {
         function (v) {
             if (v.checked) {
                 console.log(v.value);
-                window.location.href  = '/OutPaymentCopy/'+v.value+'/'
+                window.location.href = '/OutPaymentCopy/' + v.value + '/'
                 // $.ajax({
                 //     url: "/CopyInNonPayment/",
                 //     data: {
@@ -254,7 +255,7 @@ function InNonCopy() {
                 //     }
                 // })
             }
-        } 
+        }
     )
 }
 

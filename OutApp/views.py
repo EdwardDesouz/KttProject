@@ -187,11 +187,7 @@ class PartyLoad(View, SqlDb):
         self.Partycontext.update(
             {
                 "importer": (
-                    pd.DataFrame(
-                        list(self.cursor.fetchall()),
-                        columns=["Code", "Name", "Name1", "CRUEI"],
-                    )
-                ).to_dict("records"),
+                    pd.DataFrame(list(self.cursor.fetchall()),columns=["Code", "Name", "Name1", "CRUEI"],)).to_dict("records"),
             }
         )
 
@@ -1734,3 +1730,14 @@ class CpcFIlter(View,SqlDb):
         self.cursor.execute(f"select * from OutCPCDtl Where PermitId = '{permitId}' ")
         headers = [i[0] for i in self.cursor.description]
         return JsonResponse({'cpc':(pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict("records")})
+    
+
+class OutDelete(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def get(self,request,id):
+        print("The Id is  : ",id)
+        self.cursor.execute("UPDATE OutHeaderTbl SET STATUS = 'DEL' WHERE Id = '{}' ".format(id))
+        self.conn.commit()
+        return JsonResponse({'message' : 'Deleted : '+str(id)})

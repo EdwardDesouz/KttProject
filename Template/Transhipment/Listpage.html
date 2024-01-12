@@ -4,29 +4,15 @@
 <div class="FinalClassPopup" id="Loading">
     <div class="LoadImg"></div>
 </div>
-<section class="InnonPayemnt-list-Buttons">
-    {% csrf_token %}
-    <div class="First-row">
-        <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>&nbsp;&nbsp;
-        <Button type="button" id="SubmitBtn" style="background-color: indianred;"
-            onclick="InNonSubmit()">SUBMIT</Button>&nbsp;&nbsp; <!--XmlInNon()-->
-        <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>&nbsp;&nbsp;
-        <Button type="button" id="AmendBtn" onclick="InNonAmend()">AMEND</Button>&nbsp;&nbsp;
-        <Button type="button" id="CancelBtn" onclick="InNonCanecl()">CANCEL</Button>&nbsp;&nbsp;
-        <Button type="button" id="PrintStatusBtn" onclick="InNonPrintStatus()">PRINT STATUS</Button>&nbsp;&nbsp;
-        <Button type="button" id="DownloadCcpBtn" onclick="DownloadCcpInNon()">DOWNLOAD CCP</Button>&nbsp;&nbsp;
-        <Button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</Button>&nbsp;&nbsp;
-        <Button type="button" id="DeleteAllBtn" onclick="DeleteAllInNon()">DELETE ALL</Button>&nbsp;&nbsp;
-    </div>
-    <br>
-    <div class="Second-row">
-        <Button type="button" id="MergeBtn">MERGE</Button>&nbsp;&nbsp;
-        <Button type="button" id="UnMergeBtn">UN MERGE</Button>&nbsp;&nbsp;
-        <Button type="button" id="PrintGstBtn" onclick="PrintGstInNon()">ALL LIST</Button>&nbsp;&nbsp;
-        <Button type="button" id="PrintCcpBtn" onclick="PrintCcpInNon()">PRINT CCP</Button>&nbsp;&nbsp;
+<div class="InpaymentBtns">
+    <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>
+    <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</Button>
+    <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>
+    <Button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</Button>
+    <Button type="button" id="MergeBtn">MERGE</Button>
+    <Button type="button" id="UnMergeBtn">UN MERGE</Button>
+</div>
 
-    </div>
-</section>
 
 <section class="InonPayment-list-ShowColumns">
     <div class="row mt-3">

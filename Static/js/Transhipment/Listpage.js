@@ -9,7 +9,7 @@ $(document).ready(function () {
 });
 
 function NewButton() {
-    window.location.href = '/InonPayement/';
+    window.location.href = '/transhipmentnew/';
 }
 
 $(document).ready(function () {

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render 
 from KttApp.views import SqlDb
 from django.views import View
 from KttApp.models import *
@@ -31,4 +31,85 @@ class TranshList(View,SqlDb):
         headers = [i[0] for i in self.cursor.description]
         return JsonResponse((pd.DataFrame(list(self.cursor.fetchall()), columns=headers)).to_dict('records'),safe=False)
     
+class TranshListnew(View, SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
 
+    def get(self, request):
+        Username = request.session["Username"]
+
+        refDate = datetime.now().strftime("%Y%m%d")
+        jobDate = datetime.now().strftime("%Y-%m-%d")
+
+        self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
+
+        AccountId = self.cursor.fetchone()[0]
+
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM TranshipmentHeader WHERE MSGId LIKE '%{}%' AND MessageType = 'TNPDEC' ".format(refDate))
+        self.RefId = "%03d" % self.cursor.fetchone()[0]
+
+        self.cursor.execute("SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(jobDate, AccountId))
+        self.JobIdCount = self.cursor.fetchone()[0]
+
+        self.JobId = f"K{datetime.now().strftime('%y%m%d')}{'%05d' % self.JobIdCount}"
+
+        self.MsgId = f"{datetime.now().strftime('%Y%m%d')}{'%04d' % self.JobIdCount}"
+
+        self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
+
+        self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"+ Username+ "'")
+        InNonHeadData = self.cursor.fetchone()
+        context = {
+            "UserName": Username,
+            "PermitId": self.PermitIdInNon,
+            "JobId": self.JobId,
+            "RefId": self.RefId,
+            "MsgId": self.MsgId,
+            "AccountId": AccountId,
+            "LoginStatus": InNonHeadData[0],
+            "PermitNumber": "",
+            "prmtStatus": "",
+            "DateLastUpdated": InNonHeadData[1],
+            "MailBoxId": InNonHeadData[2],
+            "SeqPool": InNonHeadData[3],
+            "StartSequence": InNonHeadData[4],
+            "TradeNetMailboxID": InNonHeadData[5],
+            "DeclarantName": InNonHeadData[6],
+            "DeclarantCode": InNonHeadData[7],
+            "DeclarantTel": InNonHeadData[8],
+            "CRUEI": InNonHeadData[9],
+            "Code": InNonHeadData[10],
+            "name": InNonHeadData[11],
+            "name1": InNonHeadData[12],
+            "DeclarationType": CommonMaster.objects.filter(TypeId=18, StatusId=1).order_by("Name"),
+            "CargoType": CommonMaster.objects.filter(TypeId=2, StatusId=1),
+            "OutWardTransportMode": CommonMaster.objects.filter(TypeId=3, StatusId=1).order_by("Name"),
+            "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by("Name"),
+            "BgIndicator": CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by("Name"),
+            "DocumentAttachmentType": CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by("Name"),
+            "CoType": CommonMaster.objects.filter(TypeId=16, StatusId=1).order_by("Name"),
+            "CertificateType": CommonMaster.objects.filter(TypeId=17, StatusId=1).order_by("Name"),
+            "Currency": Currency.objects.filter().order_by("Currency"),
+            "Container": CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by("Name"),
+            "TotalOuterPack": CommonMaster.objects.filter(TypeId=10, StatusId=1).order_by("Name"),
+            "InvoiceTermType": CommonMaster.objects.filter(TypeId=7, StatusId=1).order_by("Name"),
+            "Making": CommonMaster.objects.filter(TypeId=12, StatusId=1).order_by("Name"),
+            "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by("Name"),
+        }
+        return render(request, "Transhipment/Newpage.html", context)
+
+
+class TranshItem(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+    def get(self,request,Permitid):
+        return JsonResponse({'message':'Item Page load item'})
+    
+    def post(self,request):
+        query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'TranshipmentItemDtl'"
+        self.cursor.execute(query)
+            
+        result = self.cursor.fetchall()
+        for i in result:
+            print(i[0])
+        return JsonResponse({'message':'Item Saved'}) 
