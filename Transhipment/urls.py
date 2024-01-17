@@ -7,4 +7,5 @@ urlpatterns = [
     path('Transhipmentlist/',views.TranshList.as_view()),
     path('transhipmentnew/',views.TranshListnew.as_view()),
     path('transItem/',views.TranshItem.as_view()),
+    path('transItem/<permit>/',views.TranshItem.as_view()),
 ]

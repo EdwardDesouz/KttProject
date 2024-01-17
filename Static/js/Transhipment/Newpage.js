@@ -2055,7 +2055,7 @@ function ItemCooSearch() {
 
 var ItemData = [];
 var CascData = [];
-var itemfetch = fetch('/OutItem/' + $('#PermitId').val() + "/").then(function (res) {
+var itemfetch = fetch('/transItem/' + $('#PermitId').val() + "/").then(function (res) {
     return res.json()
 }, function (err) {
     return "error"
@@ -2064,7 +2064,7 @@ var itemfetch = fetch('/OutItem/' + $('#PermitId').val() + "/").then(function (r
 itemfetch.then(function (itemfetch) {
     ItemData = itemfetch.item
     CascData = itemfetch.casc
-    ItemLoad()
+    // ItemLoad()
     $("#Loading").hide();
 })
 
@@ -2211,7 +2211,7 @@ function OutItemSave() {
                 HSQty: $('#TxtHSQuantity').val().trim().toUpperCase(),
                 HSUOM: $('#HSQTYUOM').val().trim(),
                 AlcoholPer: $('#txtAlcoholPer').val().trim().toUpperCase(),
-               
+
                 ChkUnitPrice: $('#itemCheckUnitPrice').val().trim().toUpperCase(),
                 UnitPrice: "",
                 UnitPriceCurrency: $('#DRPCurrency').val().trim().toUpperCase(),
@@ -2269,7 +2269,6 @@ function OutItemSave() {
                 OptionalSumtotal: "",
                 OptionalSumExchage: "",
                 EngineCapUOM: $('#EngineCapacityUom').val().trim(),
-                
                 csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             },
             success: (data) => {
