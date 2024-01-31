@@ -536,7 +536,7 @@ function InNonSubmit() {
         PermitNumber = JSON.stringify(checkArr)
         $.ajax({
             type: "GET",
-            url: "/InonSubmit/",
+            url: "/transTransmit/",
             data: {
                 "PermitNumber": PermitNumber,
             },

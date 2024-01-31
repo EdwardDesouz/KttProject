@@ -37,7 +37,7 @@ urlpatterns = [
     path("DownloadCcpInNon/<Data>/", views.DownloadCcpInNon.as_view()),
     path("InNonDelHblHawb/<PermitId>/", views.InNonDelHblHawb.as_view()),
     path("DownloadDataInNon/<Id>/", views.DownloadDataInNon.as_view()),
-    path("InonSubmit/", views.InNonSubmit), 
+    path("InonSubmit/", views.InNonSubmit),  
 ]
 
 router = DefaultRouter()

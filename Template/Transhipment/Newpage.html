@@ -37,7 +37,7 @@
                     <div class="row mt-4">
                         <div class="col-4">MESSAGE TYPE</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" disabled id="MessageType" value="OUTDEC">
+                            <input type="text" class="inputStyle" disabled id="MessageType" value="TNPDEC">
                         </div>
                     </div>
                     <div class="row mt-3">
@@ -80,9 +80,11 @@
                                 <option>{{i.Name}}</option>
                                 {% endfor %}
                             </select>
+                            <span1 id="OutInwardTransportModeSpan">PLEASE SELECT INWARD </span1>
                         </div>
                     </div>
-                    <div class="row mt-3" id="outwardTransportModeShowHide">
+
+                    <div class="row mt-3" id="outwardTransportModeShowHide" style="display: none;">
                         <div class="col-4">OUTWARD TRANSPORT MODE</div>
                         <div class="col-8">
                             <select class="Dropdown " id="OutOutwardTransportMode"
@@ -119,6 +121,7 @@
                             <span1 id="DeclaringForSpan">PLEASE SELECT THE DECLARING FOR</span1>
                         </div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-4">BG INDICATOR</div>
                         <div class="col-8">
@@ -130,55 +133,65 @@
                             </select>
                         </div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-4"><label for="OverRideExchangeRate">OVERRIDE EXCHANGE RATE</label></div>
                         <div class="col-8"><input type="checkbox" id="OverRideExchangeRate" value="False"></div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-4"><label for="SupplyIndicator">SUPPLY INDICATOR</label></div>
                         <div class="col-8"><input type="checkbox" id="SupplyIndicator" value="False"></div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-4"><label for="ReferenceDocuments">REFERENCE DOCUMENT</label></div>
                         <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False"
                                 onclick="OutReferenceDocument()"></div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" >
                         <div class="col-4"><label for="PermitId">PERMIT ID</label></div>
                         <div class="col-8">
                             <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
                         </div>
                     </div>
+
                     <div class="row mt-3">
                         <div class="col-4">USER NAME</div>
                         <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
                                 disabled></div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" >
                         <div class="col-4"><label for="Refid">REF ID</label></div>
                         <div class="col-8">
                             <input type="text" id="Refid" class="inputStyle" value="{{RefId}}" disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" >
                         <div class="col-4"><label for="JobId">JOB ID</label></div>
                         <div class="col-8">
                             <input type="text" id="JobId" class="inputStyle" value="{{JobId}}" disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" style="display: none;">
                         <div class="col-4"><label for="MSGId">MSG ID</label></div>
                         <div class="col-8">
                             <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}" disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" style="display: none;">
                         <div class="col-4"><label for="PermitNumber">PERMIT NUMBER</label></div>
                         <div class="col-8">
                             <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}" disabled>
                         </div>
                     </div>
-                    <div class="row mt-3">
+
+                    <div class="row mt-3" style="display: none;">
                         <div class="col-4"><label for="prmtStatus">PERMIT STATUS</label></div>
                         <div class="col-8">
                             <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}" disabled>
@@ -550,12 +563,17 @@
                 <div class="col-1">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="ImporterCode"
                         onfocus="ImportFocusIn()" onfocusout="ImportFocusOut()">
+                        
                 </div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI" id="ImporterCruei">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI" id="ImporterCruei">
+                    <br>
+                    <span1 id="ImporterCrueiSpan">FILL CRUEI</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME" id="ImporterName">
+                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME" id="ImporterName">
+                    <br>
+                    <span1 id="ImporterNameSpan">FILL NAME</span1>
                 </div>
                 <div class="col-3">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="ImporterName1">
@@ -611,6 +629,7 @@
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="InwardName1">
                 </div>
             </div>
+
             <div class="row mt-3 " style="display: none;" id="OutWardCarrierAgentShow">
                 <div class="col-2 mt-2">OUTWARD CARRIER AGENT</div>
                 <div class="col-1">
@@ -638,6 +657,7 @@
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME1" id="OutwardName1">
                 </div>
             </div>
+
             <div class="row mt-3">
                 <div class="col-2 mt-2">FREIGHT FORWARDER</div>
                 <div class="col-1">
@@ -668,13 +688,13 @@
                         onfocus="ConsigneFocusIn()" onfocusout='ConsigneFocusOut()'>
                 </div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
                         id="ConsigneCruei">
                     <br>
                     <span1 id="ConsigneCrueispan">FILL CRUEI</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CON NAME"
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CON NAME"
                         id="ConsigneConName"><br>
                     <span1 id="ConsigneConNameSpan">FILL CON NAME</span1>
                 </div>
@@ -687,17 +707,17 @@
                 <div class="col-1"></div>
                 <div class="col-1"></div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="ADDRESS"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="ADDRESS"
                         id="ConsigneAddress"><br>
                     <span1 id="ConsigneAddressSpan">FILL THE ADDRESS</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="ADDRESS1"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="ADDRESS1"
                         id="ConsigneAddress1"><br>
                     <span1 id="ConsigneAddress1Span">FILL THE ADDRESS1</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CITY"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="CITY"
                         id="ConsigneCity"><br>
                     <span1 id="ConsigneCitySpan">FILL THE CITY</span1>
                 </div>
@@ -725,7 +745,7 @@
                 <div class="col-1"></div>
                 <div class="col-1"></div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="POSTAL"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="POSTAL"
                         id="ConsignePostal"><br>
                     <span1 id="ConsignePostalSpan">FILL THE POSTAL</span1>
                 </div>
@@ -789,7 +809,8 @@
                 <div class="col-3"></div>
                 <div class="col-3"></div>
             </div>
-            <div class="row mt-3 PartyManufacturer" style="display: none;">
+
+            <!-- <div class="row mt-3 PartyManufacturer" style="display: none;">
                 <div class="col-2 mt-2">MANUFACTURER</div>
                 <div class="col-1">
                     <img src="{% static 'IMG/search.png' %}" width="24px">
@@ -841,7 +862,9 @@
                         placeholder="POSTAL" id="ManuFacturePostal"></div>
                 <div class="col-3"></div>
                 <div class="col-3"></div>
-            </div>
+            </div> -->
+
+
             <div class="row mt-3">
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
@@ -865,7 +888,7 @@
                         <div class="row mt-3">
                             <div class="col-4">TOTAL OUTER PACK</div>
                             <div class="col-3">
-                                <input type="text" class="inputStyle HighLight" id="TotalOuterPack"><br>
+                                <input type="number" class="inputStyle HighLight" id="TotalOuterPack"><br>
                                 <span1 id="TotalOuterPackSpan">FILL TOTAL OUTER PACK</span1>
                             </div>
                             <div class="col-3">
@@ -884,7 +907,7 @@
                         <div class="row mt-3">
                             <div class="col-4">TOTAL GROSS WEIGHT</div>
                             <div class="col-3">
-                                <input type="text" class="inputStyle HighLight" id="TotalGrossWeight"
+                                <input type="number" class="inputStyle HighLight" id="TotalGrossWeight"
                                     onfocusout="CargoGross()"><br>
                                 <span1 id="TotalGrossWeightSpan">FILL THE TOTAL GROSS WEIGHT</span1>
                             </div>
@@ -1055,7 +1078,7 @@
                     </div>
                     <div class="container-fluid" id="OutCargoOblShow">
                         <div class="row mt-3">
-                            <div class="col-4" id="OceanBillofLadingNo">OBL</div>
+                            <div class="col-4" id="OceanBillofLadingNo1">OBL</div>
                             <div class="col-6">
                                 <input type="text" class="inputStyle HighLight" id="OceanBillofLadingNo"><br>
                                 <span1 id="OceanBillofLadingNoSpan">FILL OBL</span1>
@@ -1067,7 +1090,7 @@
                             <div class="col-4" id="OutCargoHbl">HBL</div>
                             <div class="col-6">
                                 <input type="text" class="inputStyle" id="OutCargoHblValue"
-                                    onfocusout="OutCargoHblValueOut()">
+                                    onfocusout="OutCargoHblValueOut()" >
                             </div>
                         </div>
                     </div>
@@ -1722,7 +1745,7 @@
                             <div class="col-5 ">VEHICLE TYPE</div>
                             <div class="col-7">
                                 <select class="Dropdown" id="VehicalTypeUom">
-                                    <option selected>--Select--</option>
+                                    <option selected value="--Select--">--Select--</option>
                                     {% for i in VehicalType %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
                                     {% endfor %}
@@ -1737,7 +1760,7 @@
                             </div>
                             <div class="col-3">
                                 <select class="Dropdown" id="EngineCapacityUom">
-                                    <option selected>--Select--</option>
+                                    <option selected value="--Select--">--Select--</option>
                                     {% for i in EngineCapacity %}
                                     <option value="{{i.Name}}">{{i.Name}}</option>
                                     {% endfor %}
@@ -1888,7 +1911,7 @@
                                     id="TxtExchangeRate" value="0.00"></div>
                         </div>
                     </div>
-                    <!-- <div class="row mt-3 d-none" id="UnitPriceIDShow">
+                    <div class="row mt-3 d-none" id="UnitPriceIDShow">
                         <div class="row">
                             <div class="col-5 ">UNIT PRICE VAL</div>
                             <div class="col-4"><input type="number" class="inputStyle inputNumber" id="UnitPrice"
@@ -1918,7 +1941,7 @@
                             <div class="col-3"><input type="number" class="inputStyle inputNumber"
                                     id="OptionalSumExchage" value="0.00"></div>
                         </div>
-                    </div> -->
+                    </div>
                     <div class="row mt-3">
                         <div class="row">
                             <div class="col-5 ">TOTAL LINE AMOUNT</div>
@@ -2642,7 +2665,7 @@
                 </div>
             </div>
             <!---------------------------------------------------CWC--------------------------------------------------->
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-2">
                     <input type="checkbox" id="OutCwc" onclick="OutCpcHideShow('#OutCwc','.OutCwcClass','OutCwcName')">
                     <label for="OutCwc">CWC</label>
@@ -2673,7 +2696,7 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!---------------------------------------------------SEA STORE--------------------------------------------------->
             <div class="row mt-5">
                 <div class="col-2">
@@ -2743,7 +2766,7 @@
                 </div>
             </div>
             <!---------------------------------------------------STS & CWC--------------------------------------------------->
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-2">
                     <input type="checkbox" id="OutStsCwc"
                         onclick="OutCpcHideShow('#OutStsCwc','.OutStsCwcClass','OutStsName')">
@@ -2776,14 +2799,14 @@
                         </table>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!---------------------------------------------------DEFERRED PRINTING OF CO--------------------------------------------------->
-            <div class="row mt-5">
+            <!-- <div class="row mt-5">
                 <div class="col-2">
                     <input type="checkbox" id="Defrentprinting" value="False" onclick="DefrentprintingClick()">
                     <label for="Defrentprinting">DEFERRED PRINTING OF CO</label>
                 </div>
-            </div>
+            </div> -->
             <!---------------------------------------------------CNB--------------------------------------------------->
             <div class="row mt-5">
                 <div class="col-2">
@@ -2796,7 +2819,7 @@
                 <div class="col-2">
                     <input type="checkbox" id="OutInterNational"
                         onclick="OutCpcHideShow('#OutInterNational','.OutInterNationalClass','OutInterNationalName')">
-                    <label for="OutInterNational">INTERNATIONAL PERMIT EXCHANGE </label>
+                    <label for="OutInterNational">SCHEME</label>
                 </div>
                 <div class="col-8 OutInterNationalClass">
                     <div class="row">
@@ -2841,18 +2864,10 @@
             <div class="row">
                 <div class="col-2">
                     <div class="row mt-3">
-                        <div class="col-12">NO OF INVOICES</div>
-                    </div>
-                    <div class="row mt-3">
                         <div class="col-12">TOTAL CIF/FOB VALUE</div>
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-2">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00" id="summaryInvoiceTotal"
-                                disabled>
-                        </div>
-                    </div>
                     <div class="row mt-2">
                         <div class="col-8"><input type="text" id="TotalCIFFOBValue" class="inputStyle" value="0.00"
                                 disabled>
@@ -2863,9 +2878,6 @@
                     <div class="row mt-3">
                         <div class="col-12">NO OF ITEMS</div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-12">SUM OF INVOICE AMOUNT </div>
-                    </div>
                 </div>
                 <div class="col-2">
                     <div class="row mt-2">
@@ -2873,26 +2885,13 @@
                                 disabled>
                         </div>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-8" id="summarySumOfInvoiceAmount">
-                            <input type="text" class="inputStyle" name="summarySumOfInvoiceAmount" value="0.00"
-                                disabled>
-                        </div>
-                    </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-3">
-                        <div class="col-12">TOTAL INVOICE CIF VALUE</div>
-                    </div>
                     <div class="row mt-3">
                         <div class="col-12">SUM OF ITEM AMOUNT</div>
                     </div>
                 </div>
                 <div class="col-2">
-                    <div class="row mt-2">
-                        <div class="col-8"><input type="text" class="inputStyle" value="0.00"
-                                id="SummarytotalInvoiceCif" disabled></div>
-                    </div>
                     <div class="row mt-2">
                         <div class="col-8" id="summarySumOfItemAmout">
                             <input type="text" class="inputStyle" name="summarySumOfItemAmout" value="0.00" disabled>
@@ -2900,9 +2899,9 @@
                     </div>
                 </div>
             </div>
-            <div class="errorIntimationSummary" id="errorIntimationSummary">
+            <!-- <div class="errorIntimationSummary" id="errorIntimationSummary">
                 <p>THE TOTAL ITEM CIF/FOB VALUE DOES NOT EQUAL WITH TOTAL INVOICE CIF VALUE </p>
-            </div>
+            </div> -->
             <!-- <div class="row mt-5">
                 <div class="col-1 mt-2">TRADER REMARKS</div>
                 <div class="col-2">
@@ -3084,7 +3083,7 @@
     var ConatinerData = []
     function ContainerRefresh() {
         $.ajax({
-            url: '/OutContainer/',
+            url: '/transContainer/',
             type: 'POST',
             data: {
                 'Method': "LOAD",
@@ -3179,7 +3178,7 @@
         if (check) {
             $('#Loading').show();
             $.ajax({
-                url: '/OutContainer/',
+                url: '/transContainer/',
                 type: 'POST',
                 data: {
                     'Method': "SAVE",
@@ -3236,7 +3235,7 @@
         if (check) {
             $('#Loading').show();
             $.ajax({
-                url: '/OutContainer/',
+                url: '/transContainer/',
                 type: 'POST',
                 data: {
                     'Method': "DELETE",
@@ -3325,7 +3324,7 @@
         if (checkedValues.length > 0) {
             $('#Loading').show();
             $.ajax({
-                url: '/OutContainer/',
+                url: '/transContainer/',
                 type: 'POST',
                 data: {
                     'Method': "CHECKDELETE",
@@ -3465,7 +3464,6 @@
     $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
     $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
     $('#EndConsigneCode').val("{{out.EndUserCode}}")
-    $('#ManuFactureCode').val("{{out.Manufacturer}}")
 
     if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
         $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
@@ -3485,9 +3483,9 @@
     $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
     $('#StorageCode').val("{{out.StorageLocation}}")
 
-    if ('01/01/1900' != "{{out.BlanketStartDate|date:'d/m/Y' }}") {
-        $('#BlanketStartDate').val("{{out.BlanketStartDate|date:'d/m/Y' }}")
-    }
+    // if ('01/01/1900' != "{{out.BlanketStartDate|date:'d/m/Y' }}") {
+    //     $('#BlanketStartDate').val("{{out.BlanketStartDate|date:'d/m/Y' }}")
+    // }
 
     if ('01/01/1900' != "{{out.DepartureDate|date:'d/m/Y' }}") {
         $('#DepartureDate').val("{{out.DepartureDate|date:'d/m/Y' }}")
@@ -3526,16 +3524,8 @@
         $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
     }
 
-    // NumberOfItems: ItemData.length,
     $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
-    // TotalGSTTaxAmt: "0.00",
-    // TotalExDutyAmt: "0.00",
-    // TotalCusDutyAmt: "0.00",
-    // TotalODutyAmt: "0.00",
-    // TotalAmtPay: "0.00",
-    // Status: "NEW",
-    // PermitNumber: "PermitNumber",
-    // prmtStatus: "prmtStatus",
+
     $('#ReleaseLocText').val("{{out.ResLoaName}}")
     $('#RecepitLocName').val("{{out.RepLocName}}")
     $('#RecepitLocName').val("{{out.RecepitLocName}}")

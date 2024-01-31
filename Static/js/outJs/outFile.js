@@ -389,9 +389,9 @@ function Autocomplete1(myValues, idName) {
 var Exporter = [];
 var Fright = [];
 var Consign = [];
-var Importer = [];
+var Importer = []; 
 var Inward = [];
-var OutWard = [];
+var OutWard = []; 
 var Frieght = [];
 var ManFacture = [];
 

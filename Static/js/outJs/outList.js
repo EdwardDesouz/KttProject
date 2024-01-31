@@ -195,7 +195,7 @@ function InNonPaymentEdit(arg) {
             "InNonId": arg,
         },
         success: function (response) {
-            window.location.href = response.url;
+            window.location.href = response.url; 
         }
     })
     console.log(arg)

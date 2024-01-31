@@ -11,7 +11,7 @@ from django.db.models import Sum, Min
 from django.views import View
 from rest_framework import viewsets, filters
 from .serializers import *
-from django_filters.rest_framework import DjangoFilterBackend
+from django_filters.rest_framework import DjangoFilterBackend 
 from django.db import connections
 from reportlab.pdfgen import canvas
 import io

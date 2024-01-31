@@ -72,12 +72,12 @@ function TabHead(ID) {
     }
     if (ID == "SummaryTab") {
         $("#SummaryTab").addClass("HeadTabStyleChange");
-        try {
-            errorIntimationSummaryFunction()
-        }
-        catch (e) {
-            console.log(e)
-        }
+        // try {
+        //     errorIntimationSummaryFunction()
+        // }
+        // catch (e) {
+        //     console.log(e)
+        // }
 
         $("#Summary").show();
     }
@@ -189,7 +189,6 @@ function OutDeclarationChange() {
     $('#DeclarationTypeSpan').hide()
 
     var DeclarationVal = $("#DeclarationType").val();
-    console.log(DeclarationVal)
 
     $('#OutCargoImporterShow').hide()
     $('#OutInwardCarrierShow').hide()
@@ -204,8 +203,8 @@ function OutDeclarationChange() {
         $('#outwardTransportModeShowHide').hide()
         $('#InwardTransportModeShowHide select').val('--Select--')
         $('#outwardTransportModeShowHide select').val('--Select--')
-        OutInwardTrasnPortModeChange()
-        OutOutwardTrasnPortModeChange()
+        // OutInwardTrasnPortModeChange()
+        // OutOutwardTrasnPortModeChange()
     }
 
     else if (DeclarationVal == "IGM : INTER-GATEWAY MOVEMENT") {
@@ -228,10 +227,10 @@ function OutInwardTrasnPortModeChange() {
     var OutTransPort = $("#OutInwardTransportMode").val();
     $('#InwardMode').val(OutTransPort)
     $('#OutWardDetailsShow').show();
-    $("#OutCargoImporterShow").hide();
-    $("#OutInwardCarrierShow").hide();
-    $("#OutCargoImporterShow input").val("");
-    $("#OutInwardCarrierShow input").val("");
+    // $("#OutCargoImporterShow").hide();
+    // $("#OutInwardCarrierShow").hide();
+    // $("#OutCargoImporterShow input").val("");
+    // $("#OutInwardCarrierShow input").val("");
     $(".CargoSeaShow").hide();
     $(".CargoRailShow").hide();
     $(".CargoAirShow").hide();
@@ -241,14 +240,14 @@ function OutInwardTrasnPortModeChange() {
     $(".CargoRailShow input").val('');
     $(".CargoAirShow input").val('');
     if (OutTransPort == "1 : Sea" || OutTransPort == "4 : Air") {
-        $("#OutCargoImporterShow").show();
-        $("#OutInwardCarrierShow").show();
+        // $("#OutCargoImporterShow").show();
+        // $("#OutInwardCarrierShow").show();
     }
     else {
-        $("#OutCargoImporterShow").show();
+        // $("#OutCargoImporterShow").show();
     }
     if (OutTransPort == "1 : Sea") {
-        $('#OceanBillofLadingNo').html('OBL');
+        $('#OceanBillofLadingNo1').html('OBL');
         $('#InHAWBOBLlbl').html('IN HBL');
         $('#OutCargoHbl').html('HBL');
         $('#OutCargoOblShow').show();
@@ -257,7 +256,7 @@ function OutInwardTrasnPortModeChange() {
     }
     else if (OutTransPort == "4 : Air") {
         $(".CargoAirShow").show();
-        $('#OceanBillofLadingNo').html('MAWB');
+        $('#OceanBillofLadingNo1').html('MAWB');
         $('#OutCargoHbl').html('HAWB');
         $('#InHAWBOBLlbl').html('IN HAWB');
         $('#OutCargoOblShow').show();
@@ -269,7 +268,7 @@ function OutInwardTrasnPortModeChange() {
     }
     else {
         $(".CargoRailShow").show();
-        $('#OceanBillofLadingNo').html('HBL');
+        $('#OceanBillofLadingNo1').html('HBL');
         $('#InHAWBOBLlbl').html('IN HBL');
         $('#OutCargoHblShow').show();
     }
@@ -279,8 +278,6 @@ function OutOutwardTrasnPortModeChange() {
     var OutTransPort = $("#OutOutwardTransportMode").val();
     $('#OutwardMode').val(OutTransPort)
     $('#OutOutWardDetailShow').show();
-    $("#OutWardCarrierAgentShow").hide();
-    $("#OutWardCarrierAgentShow input").val("");
     $('#OutOutwardSeaShow').hide();
     $('#OutOutwardSeaShow input').val('');
     $('#OutOutRailShow').hide();
@@ -288,10 +285,6 @@ function OutOutwardTrasnPortModeChange() {
     $('#OutOutAirShow').hide();
     $('#OutOutAirShow input').val('');
 
-    if (OutTransPort == "1 : Sea" || OutTransPort == "4 : Air" || OutTransPort == "7 : Pipeline") {
-        $("#OutWardCarrierAgentShow").show();
-
-    }
     if (OutTransPort == "1 : Sea") {
         $("#OutOutwardSeaShow").show();
         $("#OutHAWBOBLlbl").html("OUT HBL");
@@ -313,26 +306,41 @@ function OutOutwardTrasnPortModeChange() {
     }
 }
 
-function OutCoTypeChange() {
-    var CoType = $("#CoType").val();
-    $(".PartyManufacturer").hide();
-    if (CoType != "--Select--") {
-        $(".PartyManufacturer").show();
-        $('.CoTxtile').hide()
-        if (CoType == "TX : Application for textile products") {
-            $('.CoTxtile').show()
-        }
-        else {
-            $('.CoTxtile').hide()
-            $("TexCat").val("")
-            $('TexQuotaQty').val('0.00')
-            $('TexQuotaUOM').val('--Select--')
-        }
-    } else {
-        $(".CoTypeEmpty").val("");
-        $(".CoTypeEmptySelect").val("--Select--");
-    }
-}
+// function OutCoTypeChange() {
+//     var CoType = $("#CoType").val();
+//     $(".PartyManufacturer").hide();
+//     if (CoType != "--Select--") {
+//         $(".PartyManufacturer").show();
+//         $('.CoTxtile').hide()
+//         if (CoType == "TX : Application for textile products") {
+//             $('.CoTxtile').show()
+//         }
+//         else {
+//             $('.CoTxtile').hide()
+//             $("TexCat").val("")
+//             $('TexQuotaQty').val('0.00')
+//             $('TexQuotaUOM').val('--Select--')
+//         }
+//     } else {
+//         $(".CoTypeEmpty").val("");
+//         $(".CoTypeEmptySelect").val("--Select--");
+//     }
+// }
+
+
+$(document).ready(function () {
+    $.ajax({
+        url: "/transfile/",
+        data: {
+            PermitId: $("#PermitId").val(),
+        },
+        success: function (response) {
+            console.log(response)
+            AttachData = response.attachFile;
+            AttachLoad(AttachData);
+        },
+    });
+});
 
 function OutReferenceDocument() {
     if ($("#ReferenceDocuments").prop("checked")) {
@@ -344,7 +352,7 @@ function OutReferenceDocument() {
         $("#OutReferenceShow").hide();
         $(".LicenceHide").val("");
         $.ajax({
-            url: "/AttachOut/",
+            url: "/transfile/",
             data: {
                 Method: "ALLDELETE",
                 PermitId: $("#PermitId").val(),
@@ -415,7 +423,7 @@ var Importer = [];
 var Inward = [];
 var OutWard = [];
 var Frieght = [];
-var ManFacture = [];
+// var ManFacture = [];
 
 // $(document).ready(() => {
 //     $.ajax({
@@ -429,7 +437,7 @@ var ManFacture = [];
 
 $(document).ready(() => {
     $.ajax({
-        url: "/OutParty1/",
+        url: "/transParty1/",
         success: (response) => {
             Importer = response.importer;
             Inward = response.inward;
@@ -446,15 +454,15 @@ $(document).ready(() => {
     })
 })
 
-$(document).ready(() => {
-    $.ajax({
-        url: "/ParytManFacture/",
-        success: (response) => {
-            ManFacture = response.manfacture;
-            ManFactureFocusOut()
-        }
-    })
-})
+// $(document).ready(() => {
+//     $.ajax({
+//         url: "/ParytManFacture/",
+//         success: (response) => {
+//             ManFacture = response.manfacture;
+//             ManFactureFocusOut()
+//         }
+//     })
+// })
 
 var ReleaseLocation = [];
 var ReciptLocation = [];
@@ -474,13 +482,13 @@ $(document).ready(() => {
     })
 })
 
-function ExportFocusIn() {
-    var myValues = [];
-    for (var i of Exporter) {
-        myValues.push(i.OutUserCode + ":" + i.OutUserName);
-    }
-    Autocomplete1(myValues, "#ExporterCode");
-}
+// function ExportFocusIn() {
+//     var myValues = [];
+//     for (var i of Exporter) {
+//         myValues.push(i.OutUserCode + ":" + i.OutUserName);
+//     }
+//     Autocomplete1(myValues, "#ExporterCode");
+// }
 
 // function ExportFocusOut() {
 //     let Code = $("#ExporterCode").val().trim().toUpperCase()
@@ -725,46 +733,46 @@ function CopyConsigne() {
     $("#EndConsignePostal").val($("#ConsignePostal").val())
 }
 
-function ManFactureFocusIn() {
-    var myValues = [];
-    for (var i of ManFacture) {
-        myValues.push(i.ManufacturerCode + ":" + i.ManufacturerName);
-    }
-    Autocomplete1(myValues, "#ManuFactureCode");
-}
+// function ManFactureFocusIn() {
+//     var myValues = [];
+//     for (var i of ManFacture) {
+//         myValues.push(i.ManufacturerCode + ":" + i.ManufacturerName);
+//     }
+//     Autocomplete1(myValues, "#ManuFactureCode");
+// }
 
-function ManFactureFocusOut() {
-    let Code = $("#ManuFactureCode").val().trim()
+// function ManFactureFocusOut() {
+//     let Code = $("#ManuFactureCode").val().trim()
 
-    if (Code != "") {
-        ManFacture.filter((obj) => {
-            if (obj.ManufacturerCode == Code) {
-                $("#ManuFactureCruei").val(obj.ManufacturerCRUEI)
-                $("#ManuFactureName").val(obj.ManufacturerName)
-                $("#ManuFactureName1").val(obj.ManufacturerName1)
-                $("#ManuFactureAddress").val(obj.ManufacturerAddress)
-                $("#ManuFactureAddress1").val(obj.ManufacturerAddress1)
-                $("#ManuFactureCity").val(obj.ManufacturerCity)
-                $("#ManuFactureSubCode").val(obj.ManufacturerSub)
-                $("#ManuFactureSubDivision").val(obj.ManufacturerSubDivi)
-                $("#ManuFactureCountry").val(obj.ManufacturerCountry)
-                $("#ManuFacturePostal").val(obj.ManufacturerPostal)
-            }
-        })
-    }
-    else {
-        $("#ManuFactureCruei").val("")
-        $("#ManuFactureName").val("")
-        $("#ManuFactureName1").val("")
-        $("#ManuFactureAddress").val("")
-        $("#ManuFactureAddress1").val("")
-        $("#ManuFactureCity").val("")
-        $("#ManuFactureSubCode").val("")
-        $("#ManuFactureSubDivision").val("")
-        $("#ManuFactureCountry").val("")
-        $("#ManuFacturePostal").val("")
-    }
-}
+//     if (Code != "") {
+//         ManFacture.filter((obj) => {
+//             if (obj.ManufacturerCode == Code) {
+//                 $("#ManuFactureCruei").val(obj.ManufacturerCRUEI)
+//                 $("#ManuFactureName").val(obj.ManufacturerName)
+//                 $("#ManuFactureName1").val(obj.ManufacturerName1)
+//                 $("#ManuFactureAddress").val(obj.ManufacturerAddress)
+//                 $("#ManuFactureAddress1").val(obj.ManufacturerAddress1)
+//                 $("#ManuFactureCity").val(obj.ManufacturerCity)
+//                 $("#ManuFactureSubCode").val(obj.ManufacturerSub)
+//                 $("#ManuFactureSubDivision").val(obj.ManufacturerSubDivi)
+//                 $("#ManuFactureCountry").val(obj.ManufacturerCountry)
+//                 $("#ManuFacturePostal").val(obj.ManufacturerPostal)
+//             }
+//         })
+//     }
+//     else {
+//         $("#ManuFactureCruei").val("")
+//         $("#ManuFactureName").val("")
+//         $("#ManuFactureName1").val("")
+//         $("#ManuFactureAddress").val("")
+//         $("#ManuFactureAddress1").val("")
+//         $("#ManuFactureCity").val("")
+//         $("#ManuFactureSubCode").val("")
+//         $("#ManuFactureSubDivision").val("")
+//         $("#ManuFactureCountry").val("")
+//         $("#ManuFacturePostal").val("")
+//     }
+// }
 
 function ReleaseLocationFocusIn() {
     var myValues = [];
@@ -1037,26 +1045,26 @@ function MrtTimeOut() {
     }
 }
 
-// function InvoiceDateFunction(Arg) {
-//     if (Arg == "InvoiceDateInNon") {
-//         $("#InvoiceDateSpan").hide();
-//     }
-//     let x = document.getElementById(Arg);
+function InvoiceDateFunction(Arg) {
+    if (Arg == "InvoiceDateInNon") {
+        $("#InvoiceDateSpan").hide();
+    }
+    let x = document.getElementById(Arg);
 
-//     if (x.value.length != 0) {
-//         if (x.value.length == 8) {
-//             if (x.value[0] + x.value[1] <= 31 && x.value[2] + x.value[3] <= 12) {
-//                 x.value = `${x.value[0] + x.value[1]}/${x.value[2] + x.value[3]}/${x.value[4] + x.value[5] + x.value[6] + x.value[7]
-//                     }`;
-//             } else {
-//                 x.value = DateTimeCalculation();
-//             }
-//         } else if (x.value.length == 10) {
-//         } else {
-//             x.value = DateTimeCalculation();
-//         }
-//     }
-// }
+    if (x.value.length != 0) {
+        if (x.value.length == 8) {
+            if (x.value[0] + x.value[1] <= 31 && x.value[2] + x.value[3] <= 12) {
+                x.value = `${x.value[0] + x.value[1]}/${x.value[2] + x.value[3]}/${x.value[4] + x.value[5] + x.value[6] + x.value[7]
+                    }`;
+            } else {
+                x.value = DateTimeCalculation();
+            }
+        } else if (x.value.length == 10) {
+        } else {
+            x.value = DateTimeCalculation();
+        }
+    }
+}
 
 // function InvoiceSave() {
 //     let check = true;
@@ -1592,7 +1600,6 @@ var hsCodeData = fetch('/OutHscode/').then(function (res) {
 })
 hsCodeData.then(function (response) {
     HsCodeData = response.hscode
-    console.log(HsCodeData)
     ItemLoad()
 })
 
@@ -1634,7 +1641,6 @@ function HsCodeFocusOut() {
             typeid = HsCodeF.DUTYTYPID
             $("#HSQTYUOM").val(HsCodeF.UOM)
             var uom = HsCodeF.DuitableUom
-            console.log(HsCodeF);
             if (Number(HsCodeF.Transhipment) == 1) {
                 $("#HscodeControl").show()
                 $('#itemCascID').prop('checked', true)
@@ -2064,7 +2070,7 @@ var itemfetch = fetch('/transItem/' + $('#PermitId').val() + "/").then(function 
 itemfetch.then(function (itemfetch) {
     ItemData = itemfetch.item
     CascData = itemfetch.casc
-    // ItemLoad()
+    ItemLoad()
     $("#Loading").hide();
 })
 
@@ -2076,7 +2082,7 @@ function ItemLoad() {
     ItemData.forEach((item) => {
         var Color = HsCodeData.filter((data) => {
 
-            if (data.HSCode == item.HSCode && data.Out == '1') {
+            if (data.HSCode == item.HSCode && data.Transhipment == '1') {
                 return true
             }
         })
@@ -2201,8 +2207,10 @@ function OutItemSave() {
                 Contry: $('#ItemCooInput').val().trim().toUpperCase(),
                 Brand: $('#Brand').val().trim().toUpperCase(),
                 Model: $('#Model').val().trim().toUpperCase(),
-                InHAWBOBL: $('#OutCargoHblValue').val(),
-                OutHAWBOBL: $('#Hbl').val(),
+                InHAWBOBL: $('#InHAWBOBL').val(),
+                InMAWBOBL: "",
+                OutHAWBOBL: $('#OutHAWBOBL').val(),
+                OutMAWBOBL: "",//$('#OutHAWBOBL').val(),
                 DutiableQty: $('#TxtTotalDutiableQuantity').val().trim().toUpperCase(),
                 DutiableUOM: $('#TDQUOM').val().trim(),
                 TotalDutiableQty: $('#txttotDutiableQty').val().trim().toUpperCase(),
@@ -2211,14 +2219,13 @@ function OutItemSave() {
                 HSQty: $('#TxtHSQuantity').val().trim().toUpperCase(),
                 HSUOM: $('#HSQTYUOM').val().trim(),
                 AlcoholPer: $('#txtAlcoholPer').val().trim().toUpperCase(),
-
                 ChkUnitPrice: $('#itemCheckUnitPrice').val().trim().toUpperCase(),
-                UnitPrice: "",
+                UnitPrice: $('#UnitPrice').val(),
                 UnitPriceCurrency: $('#DRPCurrency').val().trim().toUpperCase(),
                 ExchangeRate: $('#TxtExchangeRate').val().trim().toUpperCase(),
-                SumExchangeRate: "",
+                SumExchangeRate: $('#SumExchangeRate').val(),
                 TotalLineAmount: $('#TxtTotalLineAmount').val().trim().toUpperCase(),
-                InvoiceCharges: "",
+                InvoiceCharges: "0.00",
                 CIFFOB: $('#TxtCIFFOB').val().trim().toUpperCase(),
                 OPQty: $('#TxtOPQty').val().trim().toUpperCase(),
                 OPUOM: $('#OPUOM').val().trim(),
@@ -2261,6 +2268,7 @@ function OutItemSave() {
                 // HSCodeCer: $('#TxtHSCodeCer').val().trim().toUpperCase(),
                 // PerContent: $('#TxtPerOrigin').val().trim().toUpperCase(),
                 CertificateDescription: $('#TxtCerDes').val().trim().toUpperCase(),
+                DrpVehicleType: "",
                 Engineuom: $('#VehicalTypeUom').val(),
                 EngineCapcity: $('#EngineCapacity').val().trim().toUpperCase(),
                 orignaldatereg: OrginalDate,
@@ -2268,18 +2276,17 @@ function OutItemSave() {
                 Optioncahrge: "",
                 OptionalSumtotal: "",
                 OptionalSumExchage: "",
-                EngineCapUOM: $('#EngineCapacityUom').val().trim(),
+                Engineuom: $('#EngineCapacityUom').val(),
                 csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             },
             success: (data) => {
-                console.log(data)
                 $("#Loading").hide()
-                // ItemData = data.item
+                ItemData = data.item
                 // CascData = data.casc
                 // $("#Loading").hide()
-                // alert(data.message)
-                // ItemLoad()
-                // ItemReset()
+                alert(data.message)
+                ItemLoad()
+                ItemReset()
             },
             error: (err) => {
                 alert("did not saved")
@@ -2482,7 +2489,7 @@ function ItemEdit(itemnumber) {
             $('#Optioncahrge').val(items.Optioncahrge)
             $('#OptionalSumtotal').val(items.OptionalSumtotal)
             $('#OptionalSumExchage').val(items.OptionalSumExchage)
-            $('#EngineCapacityUom').val(items.EngineCapUOM)
+            $('#EngineCapacityUom').val(items.Engineuom)
             // orignaldatereg: OrginalDate, 
             HsCodeFocusOut()
             if (items.Description == "") {
@@ -2700,21 +2707,21 @@ function AllDataSave() {
     const HeaderId = [
         ['DeclarationType', 'DeclarationTypeSpan'],
         ['CargoPackType', 'CargoPackTypeSpan'],
-        ['OutOutwardTransportMode', 'OutOutwardTransportModeSpan'],
-        ['DeclaringFor', 'DeclaringForSpan']
+        ['DeclaringFor', 'DeclaringForSpan'],
+        ['OutInwardTransportMode', 'OutInwardTransportModeSpan'],
     ]
 
-    const PartyId = [
-        ['ExporterCruei', 'ExporterCrueiSpan'],
-        ['ExporterName', 'ExporterNameSpan'],
-        ['ExporterCountry', 'ExporterCountrySpan'],
-        ['ConsigneCruei', 'ConsigneCrueispan'],
-        ['ConsigneConName', 'ConsigneConNameSpan'],
-        ['ConsigneAddress', 'ConsigneAddressSpan'],
-        ['ConsigneAddress1', 'ConsigneAddress1Span'],
-        ['ConsigneCity', 'ConsigneCitySpan'],
-        ['ConsignePostal', 'ConsignePostalSpan']
-    ]
+    // const PartyId = [
+    //     ['ExporterCruei', 'ExporterCrueiSpan'],
+    //     ['ExporterName', 'ExporterNameSpan'],
+    //     ['ExporterCountry', 'ExporterCountrySpan'],
+    //     ['ConsigneCruei', 'ConsigneCrueispan'],
+    //     ['ConsigneConName', 'ConsigneConNameSpan'],
+    //     ['ConsigneAddress', 'ConsigneAddressSpan'],
+    //     ['ConsigneAddress1', 'ConsigneAddress1Span'],
+    //     ['ConsigneCity', 'ConsigneCitySpan'],
+    //     ['ConsignePostal', 'ConsignePostalSpan']
+    // ]
     const CargoID = [
         ['TotalOuterPack', 'TotalOuterPackSpan'],
         ['TotalOuterPackUOM', 'TotalOuterPackUOMSpan'],
@@ -2727,29 +2734,65 @@ function AllDataSave() {
 
     for (let i of HeaderId) {
         if ($(`#${i[0]}`).val() == "--Select--") {
+            if ('OutInwardTransportMode' == i[0]) {
+                if ($('#DeclarationType').val() == "BRE : BLANKET REMOVAL") {
+                    continue;
+                }
+            }
             $(`#${i[1]}`).show()
             HeaderCheck = false
         }
     }
 
-
-    for (let i of PartyId) {
-        if ($(`#${i[0]}`).val().trim() == "") {
-            $(`#${i[1]}`).show()
+    if ($('#DeclarationType').val() == "BRE : BLANKET REMOVAL" || $('#DeclarationType').val() == "IGM : INTER-GATEWAY MOVEMENT" || $('#DeclarationType').val() == "REM : REMOVAL") {
+        if ($('#ImporterCruei').val() == "") {
+            $("#ImporterCrueiSpan").show()
+            PartyCheck = false
+        }
+        if ($('#ImporterName').val() == "") {
+            $("#ImporterNameSpan").show()
             PartyCheck = false
         }
     }
 
-    if ($('#OutInwardTransportMode').val() == "1 : Sea") {
-        if ($('#InwardCruei').val().trim() == "") {
-            $('#InwardCrueiSpan').show()
+    if ($('#DeclarationType').val() == "IGM : INTER-GATEWAY MOVEMENT" || $('#DeclarationType').val() == "TTF : THRU TRANSHIPMENT WITHIN SAME FTZ" || $('#DeclarationType').val() == "TTI : THRU TRANSHIPMENT WITH INTER-GATEWAY MOVEMENT") {
+        if ($('#InwardCruei').val() == "") {
+            $("#InwardCrueiSpan").show()
+            PartyCheck = false
+        }
+        if ($('#InwardName').val() == "") {
+            $("#InwardNameSpan").show()
             PartyCheck = false
         }
 
-        if ($('#InwardName').val().trim() == "") {
-            $('#InwardNameSpan').show()
+        if ($('#OutwardCruei').val() == "") {
+            $("#OutwardCrueiSpan").show()
             PartyCheck = false
         }
+        if ($('#OutwardName').val() == "") {
+            $("#OutwardNameSpan").show()
+            PartyCheck = false
+        }
+
+    }
+
+    // for (let i of PartyId) {
+    //     if ($(`#${i[0]}`).val() == "") {
+    //         $(`#${i[1]}`).show()
+    //         PartyCheck = false
+    //     }
+    // }
+
+    if ($('#OutInwardTransportMode').val() == "1 : Sea") {
+        // if ($('#InwardCruei').val().trim() == "") {
+        //     $('#InwardCrueiSpan').show()
+        //     PartyCheck = false
+        // }
+
+        // if ($('#InwardName').val().trim() == "") {
+        //     $('#InwardNameSpan').show()
+        //     PartyCheck = false
+        // }
         if ($('#ArrivalDate').val().trim() == "") {
             $('#ArrivalDateSpan').show()
             CargoCheck = false
@@ -2771,9 +2814,9 @@ function AllDataSave() {
             CargoCheck = false
         }
     }
+
     else if ($('#OutInwardTransportMode').val() == "4 : Air") {
         if ($('#ArrivalDate').val().trim() == "") {
-            console.log(("ITS FIND"));
             $('#ArrivalDateSpan').show()
             CargoCheck = false
         }
@@ -2786,6 +2829,7 @@ function AllDataSave() {
             CargoCheck = false
         }
     }
+
     else if ($('#OutInwardTransportMode').val() == "N : Not Required" || $('#OutInwardTransportMode').val() == '--Select--') {
 
     }
@@ -2910,16 +2954,9 @@ function AllDataSave() {
         SummaryCheck = false
     }
 
-
-
     if (!CargoCheck) {
         FinalCheck = false
         Tag += "<h1 class='FinalH1'>PLEASE CHECK THE CARGO PAGE</h1><hr>"
-    }
-
-    if (InvoiceData.length == 0) {
-        FinalCheck = false
-        Tag += "<h1 class='FinalH1'>PLEASE CHECK THE INVOICE PAGE</h1><hr>"
     }
 
     if (ItemData.length == 0) {
@@ -2947,7 +2984,6 @@ function AllDataSave() {
         OutfinalSave()
     }
     else {
-        // alert("PLEASE FILL THE ALL DATA")
         ValidationPopUp(Tag)
     }
 }
@@ -2969,11 +3005,13 @@ function ValidationPopUp(Tag) {
 
 function OutfinalSave() {
 
-    let BlanketStartDate = ""
-    if ($('#BlanketStartDate').val() != "") {
-        BlanketStartDate = $("#BlanketStartDate").val().split("/");
-        BlanketStartDate = `${BlanketStartDate[2]}/${BlanketStartDate[1]}/${BlanketStartDate[0]}`;
-    }
+    // let BlanketStartDate = ""
+    // if ($('#BlanketStartDate').val() != "") {
+    //     BlanketStartDate = $("#BlanketStartDate").val().split("/");
+    //     BlanketStartDate = `${BlanketStartDate[2]}/${BlanketStartDate[1]}/${BlanketStartDate[0]}`;
+    // }
+
+    $('#Loading').show()
 
     let DepartureDate = ""
     if ($('#DepartureDate').val() != "") {
@@ -2993,7 +3031,7 @@ function OutfinalSave() {
         MRDate = `${MRDate[2]}/${MRDate[1]}/${MRDate[0]}`;
     }
 
-    const url = "/outSaveSubmit/"
+    const url = "/transave/"
     try {
         $.ajax({
             url: url,
@@ -3015,6 +3053,7 @@ function OutfinalSave() {
                 SupplyIndicator: $('#SupplyIndicator').val(),
                 ReferenceDocuments: $('#ReferenceDocuments').val(),
                 License: $('#licence1').val() + "-" + $('#licence2').val() + "-" + $('#licence3').val() + "-" + $('#licence4').val() + "-" + $('#licence5').val(),
+                // Correct ^
                 COType: $('#CoType').val(),
                 Entryyear: "",//$('#Entryyear').val(),//dont save
                 GSPDonorCountry: "--Select--",//$('#GSPDonorCountry').val(),//dont save
@@ -3026,19 +3065,20 @@ function OutfinalSave() {
                 CurrencyCode: $('#CurrencyCode').val(),
                 AddCerDtl: $('#AddCerDtl1').val() + "-" + $('#AddCerDtl2').val() + "-" + $('#AddCerDtl3').val() + "-" + $('#AddCerDtl4').val() + "-" + $('#AddCerDtl5').val(),
                 TransDtl: $('#TransDtl1').val() + "-" + $('#TransDtl2').val() + "-" + $('#TransDtl3').val() + "-" + $('#TransDtl4').val() + "-" + $('#TransDtl5').val(),
+                // Not Correct ^
+
                 Recipient: $('#Recipient1').val() + "-" + $('#Recipient2').val() + "-" + $('#Recipient3').val(),
                 DeclarantCompanyCode: $('#DeclarantCompanyCode').val(),
-                ExporterCompanyCode: $('#ExporterCode').val().trim().toUpperCase(),
-                Inwardcarriercode: $('#InwardCode').val().trim().toUpperCase(),//
+                ImporterCompanyCode: $('#ImporterCode').val().trim().toUpperCase(),
+                HandlingAgentCode: $('#handlingCode').val().trim().toUpperCase(),
+                InwardCarrierAgentCode: $('#InwardCode').val().trim().toUpperCase(),//
                 OutwardCarrierAgentCode: $('#OutwardCode').val().trim().toUpperCase(),
                 FreightForwarderCode: $('#FrieghtCode').val().trim().toUpperCase(),
-                ImporterCompanyCode: $('#ImporterCode').val().trim().toUpperCase(),
-                InwardCarrierAgentCode: $('#InwardCode').val().trim().toUpperCase(),
-                CONSIGNEECode: $('#ConsigneCode').val().trim().toUpperCase(),
+                ClaimantPartyCode: "",//No field
                 EndUserCode: $('#EndConsigneCode').val().trim().toUpperCase(),
-                Manufacturer: $('#ManuFactureCode').val().trim().toUpperCase(),
                 ArrivalDate: ArrivalDate,
-                ArrivalTime: $('#ArrivalTime').val(),
+
+                // ArrivalTime: $('#ArrivalTime').val(),
                 LoadingPortCode: $('#LoadingPortCode').val().trim().toUpperCase(),
                 VoyageNumber: $('#VoyageNumber').val().trim().toUpperCase(),
                 VesselName: $('#VesselName').val().trim().toUpperCase(),
@@ -3051,9 +3091,11 @@ function OutfinalSave() {
                 ReleaseLocation: $('#ReleaseLocaName').val().toUpperCase(),
                 RecepitLocation: $('#ReciptLocationCode').val().toUpperCase(),
                 StorageLocation: $('#StorageCode').val().toUpperCase(),
-                BlanketStartDate: BlanketStartDate,
+                // BlanketStartDate: BlanketStartDate,
+                RemovalStartDate: "",//Craete new field 
                 DepartureDate: DepartureDate,
-                DepartureTime: $('#DepartureTime').val(),
+                // DepartureTime: $('#DepartureTime').val(),
+
                 DischargePort: $('#DischargePort').val().trim().toUpperCase(),
                 FinalDestinationCountry: $('#FinalDestinationCountry').val().trim().toUpperCase(),
                 OutVoyageNumber: $('#OutVoyageNumber').val().trim().toUpperCase(),
@@ -3073,6 +3115,8 @@ function OutfinalSave() {
                 OutMasterAirwayBill: $('#OutMasterAirwayBill').val(),//
                 TotalOuterPack: $('#TotalOuterPack').val(),
                 TotalOuterPackUOM: $('#TotalOuterPackUOM').val(),
+
+
                 TotalGrossWeight: $('#PermitGrossWeight').val(),
                 TotalGrossWeightUOM: $('#TotalGrossWeightUOM').val(),
                 GrossReference: $('#GrossReference').val().trim().toUpperCase(),
@@ -3087,27 +3131,32 @@ function OutfinalSave() {
                 TotalODutyAmt: "0.00",
                 TotalAmtPay: "0.00",
                 Status: "NEW",
-                PermitNumber: "PermitNumber",
-                prmtStatus: "prmtStatus",
-                ResLoaName: $('#ReleaseLocText').val(),
-                RepLocName: $('#RecepitLocName').val(),
+                PermitNumber: "",
+                prmtStatus: "",
+                ReleaseLocName: $('#ReleaseLocText').val(),
                 RecepitLocName: $('#RecepitLocName').val(),
-                outHAWB: $('#Hbl').val(),
-                INHAWB: $('#Hawb').val(),
-                CertificateNumber: "",
-                Defrentprinting: $('#Defrentprinting').val(),
                 Cnb: $('#OutCnb').val(),
                 DeclarningFor: $('#DeclaringFor').val(),
+                INHAWB: $('#Hawb').val(),
+                outHAWB: $('#Hbl').val(),
                 MRDate: MRDate,
-                MRTime: $('#MRTime').val(),
+                MRTime: MRDate + " " + $('#MRTime').val(),
                 csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             },
             success: ((response) => {
-                console.log(response);
                 if (response.message == "Success") {
-                    window.location.href = '/OutList/'
+                    window.location.href = '/Transhipment/'
+                    $('#Loading').hide()
                 }
-            })
+                else {
+                    alert("somthing Error Did not saved")
+                    $('#Loading').hide()
+                }
+            }),
+            error: (err) => {
+                $('#Loading').hide()
+            }
+
         })
     }
     catch (err) {
@@ -3115,6 +3164,16 @@ function OutfinalSave() {
         alert(err)
     }
 }
+
+$(document).ready(() => {
+    $.ajax({
+        url: "/transave/",
+        success: (response) => {
+            console.log(response);
+        }
+    })
+})
+
 
 function summaryPreviousFunction() {
     var Val = $("#PreviousPermitNo").val();
@@ -3217,7 +3276,7 @@ function HeaderDocumentAttch() {
         $.ajax({
             type: "POST",
             dataType: "json",
-            url: "/AttachOut/",
+            url: "/transfile/",
             processData: false,
             contentType: false,
             mimeType: "multipart/form-data",
@@ -3252,11 +3311,12 @@ function AttachLoad(Val) {
     } else {
         $("#HeaderDocumentTableshow").hide();
     }
+    // OutReferenceDocument()
 }
 
 function DeleteAttach(Arg) {
     $.ajax({
-        url: "/AttachOut/",
+        url: "/transfile/",
         data: {
             Method: "DELETE",
             Data: Arg,
@@ -3285,7 +3345,10 @@ function OutCargoHblValueOut() {
     for (var i of Hawb) {
         ht += `<option>${i}</option>`;
     }
-    $("#InHAWBOBL").html(ht);
+    if (Hawb != "") {
+        $("#InHAWBOBL").html(ht);
+    }
+
 }
 
 function OutWardCargoHblValueOut() {
@@ -3334,41 +3397,41 @@ function ItemUploadInNon() {
     }
 }
 
-function SummaryInvoiceSumofInvoiceAmount(invoiceCurAmountARR) {
-    document.getElementById("summarySumOfInvoiceAmount").innerHTML = "";
-    let a = invoiceCurAmountARR;
-    let k = [];
-    let c = [];
-    let j = 0;
+// function SummaryInvoiceSumofInvoiceAmount(invoiceCurAmountARR) {
+//     document.getElementById("summarySumOfInvoiceAmount").innerHTML = "";
+//     let a = invoiceCurAmountARR;
+//     let k = [];
+//     let c = [];
+//     let j = 0;
 
-    for (let i = 0; i < a.length; i++) {
-        if (i == 0) {
-            k.push(a[i][0]);
-            c.push(a[i]);
-        } else {
-            if (k.includes(a[i][0])) {
-                let n1 = k.indexOf(a[i][0]);
-                let m = c[n1][1] + a[i][1];
-                c[n1][1] = m;
-            } else {
-                k.push(a[i][0]);
-                c.push(a[i]);
-            }
-        }
-    }
-    for (let y = 0; y < c.length; y++) {
-        var x = document.createElement("INPUT");
-        x.setAttribute("type", "text");
-        x.setAttribute("class", "inputStyle");
-        x.setAttribute("disabled", false);
-        x.setAttribute("value", `${c[y][0]} : ${c[y][1].toFixed(2)}`);
-        x.setAttribute("name", 'summarySumOfInvoiceAmount');
-        // x.setAttribute("id", 'summarySumOfInvoiceAmount');
-        document.getElementById('summarySumOfInvoiceAmount').appendChild(x);
-    }
-    let artst = c.toString()
-    // document.getElementById('summaryInvoiceAmount').innerHTML = artst.replaceAll(",", " ");
-}
+//     for (let i = 0; i < a.length; i++) {
+//         if (i == 0) {
+//             k.push(a[i][0]);
+//             c.push(a[i]);
+//         } else {
+//             if (k.includes(a[i][0])) {
+//                 let n1 = k.indexOf(a[i][0]);
+//                 let m = c[n1][1] + a[i][1];
+//                 c[n1][1] = m;
+//             } else {
+//                 k.push(a[i][0]);
+//                 c.push(a[i]);
+//             }
+//         }
+//     }
+//     for (let y = 0; y < c.length; y++) {
+//         var x = document.createElement("INPUT");
+//         x.setAttribute("type", "text");
+//         x.setAttribute("class", "inputStyle");
+//         x.setAttribute("disabled", false);
+//         x.setAttribute("value", `${c[y][0]} : ${c[y][1].toFixed(2)}`);
+//         x.setAttribute("name", 'summarySumOfInvoiceAmount');
+//         // x.setAttribute("id", 'summarySumOfInvoiceAmount');
+//         document.getElementById('summarySumOfInvoiceAmount').appendChild(x);
+//     }
+//     let artst = c.toString()
+//     // document.getElementById('summaryInvoiceAmount').innerHTML = artst.replaceAll(",", " ");
+// }
 
 function SummarySumofItemAmd(itemCurAmountARR) {
     document.getElementById("summarySumOfItemAmout").innerHTML = "";
@@ -3431,7 +3494,6 @@ function editAllItem1() {
                 ch = false
             }
         }
-
         if (ch) {
             editItemData.push({
                 // CascDatas: CascSave(),
@@ -3511,7 +3573,7 @@ function editAllItem1() {
                 Optioncahrge: $('#Optioncahrge').val().trim().toUpperCase(),
                 OptionalSumtotal: $('#OptionalSumtotal').val().trim().toUpperCase(),
                 OptionalSumExchage: $('#OptionalSumExchage').val().trim().toUpperCase(),
-                EngineCapUOM: $('#EngineCapacityUom').val().trim(),
+                Engineuom: $('#EngineCapacityUom').val(),
                 orignaldatereg: '',
 
             })
@@ -3523,7 +3585,6 @@ function editAllItem1() {
     }
 
     if (editItemData.length != 0) {
-        console.log(editItemData);
         $.ajax({
             url: "/outEditItemall/",
             method: "POST",
@@ -3533,7 +3594,6 @@ function editAllItem1() {
                 csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
             },
             success: (response) => {
-                console.log(response)
                 ItemData = response.item;
                 // CascData = response.casc;
                 ItemLoad();
@@ -3548,17 +3608,17 @@ function editAllItem1() {
     }
 }
 
-function errorIntimationSummaryFunction() {
-    $('#errorIntimationSummary').hide()
-    var invA = document.getElementsByName('summarySumOfInvoiceAmount')
-    var iteA = document.getElementsByName('summarySumOfItemAmout')
-    if (invA[0].value !== iteA[0].value) {
-        $('#errorIntimationSummary').show()
-    }
-    if ($('#SummarytotalInvoiceCif').val() !== $('#TotalCIFFOBValue').val()) {
-        $('#errorIntimationSummary').show()
-    }
-}
+// function errorIntimationSummaryFunction() {
+//     $('#errorIntimationSummary').hide()
+//     // var invA = document.getElementsByName('summarySumOfInvoiceAmount')
+//     var iteA = document.getElementsByName('summarySumOfItemAmout')
+//     // if (invA[0].value !== iteA[0].value) {
+//     //     $('#errorIntimationSummary').show()
+//     // }
+//     if ($('#SummarytotalInvoiceCif').val() !== $('#TotalCIFFOBValue').val()) {
+//         $('#errorIntimationSummary').show()
+//     }
+// }
 
 function cpcData() {
     var cpcAlldata = []
@@ -3622,7 +3682,7 @@ function cpcData() {
         let RowNo = 1
         for (var i = 0; i < interData.length; i = i + 3) {
             if (interData[i].value != "") {
-                cpcAlldata.push([RowNo, "INTERNATIONAL PERMIT", interData[i].value, interData[i + 1].value, interData[i + 2].value])
+                cpcAlldata.push([RowNo, "SCHEME", interData[i].value, interData[i + 1].value, interData[i + 2].value])
                 RowNo += 1
             }
         }
@@ -3676,7 +3736,6 @@ function loadCpc() {
             }
 
             if (i.CPCType == "CWC") {
-                console.log(i.CPCType)
                 $('#OutCwc').prop('checked', true)
                 OutCpcHideShow('#OutCwc', '.OutCwcClass', 'OutCwcName')
                 cwcTbale += `
@@ -3729,7 +3788,7 @@ function loadCpc() {
                 document.querySelector('#OutStsCwcTable tbody').innerHTML = stsCwcTbale
             }
 
-            if (i.CPCType == "INTERNATIONAL PERMIT") {
+            if (i.CPCType == "SCHEME") {
                 $('#OutInterNational').prop('checked', true)
                 OutCpcHideShow('#OutInterNational', '.OutInterNationalClass', 'OutInterNationalName')
                 interTbale += `

@@ -104,7 +104,7 @@ DATABASES = {
     #     "ENGINE": "mssql",
     #     "NAME": "KttDb",#TestPortal#KaizenPortal
     #     "USER": "sa", 
-    #     "PASSWORD": "123",
+    #     "PASSWORD": "123", 
     #     "HOST": "DESKTOP-FKJ2C5R\MSSQLSERVERSS",
     #     'PORT': '',
     #     'OPTIONS': {

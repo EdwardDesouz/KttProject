@@ -3,7 +3,7 @@ from . import views
 
 urlpatterns = [
     path("OutList/", views.OutList),
-    path("outListTable/", views.outListTable.as_view()),
+    path("outListTable/", views.outListTable.as_view()), 
     path("Out/", views.OutNew.as_view()), 
     path("OutParty/", views.OutParty.as_view()),
     path("OutParty1/", views.PartyLoad.as_view()),

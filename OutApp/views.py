@@ -1203,6 +1203,7 @@ class outSaveSubmit(View, SqlDb):
                 self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{request.POST.get("PermitId")}','OUTDEC','{AccountId}','{request.POST.get("MSGId")}','{str(request.session['Username']).upper()}','{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')")
                 self.cursor.execute(insert_statement, tuple(data.values()))
                 self.conn.commit()
+                
                 return  JsonResponse({"message":"Success"}) 
         except:
             return  JsonResponse({"message":"Did not Saved"}) 
