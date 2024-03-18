@@ -279,6 +279,7 @@ def InpaymentNew(request, arg):
     return render(request, "Inpayment/InpaymentNew.html", context)
 
 
+
 def InpaymentHeader(request):
     Username = request.session["Username"]
     s = SqlDb()

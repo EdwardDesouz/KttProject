@@ -523,7 +523,7 @@
                             </div>
                             <div class="col-4">
                                 <select class="Dropdown HighLight" id="CargoOuterPack" style="width: 90%;">
-                                    <option selected>--Select--</option> 
+                                    <option selected>--Select--</option>
                                     {% for i in totalOuterPack %}
                                     <option>{{i.Name}}</option>
                                     {% endfor %}
@@ -999,7 +999,7 @@
                         <tr id="InvoiceInsurenceRow">
                             <td>
                                 <label for="InvoiceInsurence">INSURANCE VALUE ( <input type="checkbox"
-                                        id="InvoiceInsurence" onclick="CheckFunction('InvoiceInsurence')" value="False"> 
+                                        id="InvoiceInsurence" onclick="CheckFunction('InvoiceInsurence')" value="False">
                                     INCL. OTHER VALUE )</label>
                             </td>
                             <td>
@@ -1993,7 +1993,7 @@
                     </div>
                 </div>
             </div>
-            <!---------------------------------------------- BUTTONS ---------------------------------------> 
+            <!---------------------------------------------- BUTTONS --------------------------------------->
             <div class="row mt-4">
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
@@ -2005,9 +2005,10 @@
                 <div class="col-3"></div>
             </div>
             <div class="row mt-4">
-                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemDelete()">DELETE 
+                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemDelete()">DELETE
                         ITEM</button></div>
-                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemEditAll()" id="editAllitemBtn">EDIT
+                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemEditAll()"
+                        id="editAllitemBtn">EDIT
                         ALL ITEM</button></div>
                 <div class="col-2"><button class="MoveOnButtons showDisable" type="button"
                         onclick="ItemConsolidate()">CONSOLIDATE</button></div>
@@ -3497,7 +3498,7 @@
         $('#FinalCheckBox').prop('checked', true);
     }
     $('#summaryNoOfItems').val("{{head.NumberOfItems|escapejs}}")
-    $('#summaryTotalCIFFOBValue').val("{{head.TotalCIFFOBValue|escapejs}}") 
+    $('#summaryTotalCIFFOBValue').val("{{head.TotalCIFFOBValue|escapejs}}")
     $('#summaryTotalGstValue').val("{{head.TotalGSTTaxAmt|escapejs}}")
     $('#summaryExciseDuty').val("{{head.TotalExDutyAmt|escapejs}}")
     $('#summaryCustomsDuty').val("{{head.TotalCusDutyAmt|escapejs}}")
@@ -3726,8 +3727,7 @@
     $('#AddInvoiceBtn').prop('disabled', true);
     $('.showDisable').prop('disabled', true);
     $('i').prop('disabled', false);
-    $('#FinalSubmitDiv').html(`
-    <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
+    $('#FinalSubmitDiv').html(`<button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
     `);
 </script>
 {% endif %}

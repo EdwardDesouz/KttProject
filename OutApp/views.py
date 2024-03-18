@@ -1178,8 +1178,10 @@ class outSaveSubmit(View, SqlDb):
             "MRDate": request.POST.get("MRDate"),
             "MRTime": request.POST.get("MRTime"),
         }
+        
         self.cursor.execute(f"SELECT * FROM OutHeaderTbl WHERE PermitId = '{request.POST.get("PermitId")}' AND  MSGId = '{ request.POST.get("MSGId")}' AND JobId = '{request.POST.get("JobId")}' AND Refid = '{request.POST.get("Refid")}' ")
         result = self.cursor.fetchall()
+
         print("The Result Is : ",result)
         try:
             if result:
@@ -1201,6 +1203,7 @@ class outSaveSubmit(View, SqlDb):
 
                 # Execute the INSERT statement
                 self.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{request.POST.get("PermitId")}','OUTDEC','{AccountId}','{request.POST.get("MSGId")}','{str(request.session['Username']).upper()}','{datetime.now().strftime("%Y-%m-%d %H:%M:%S")}')")
+                
                 self.cursor.execute(insert_statement, tuple(data.values()))
                 self.conn.commit()
                 
@@ -1308,7 +1311,7 @@ class OutEdit(View,SqlDb):
             "Code": InNonHeadData[10],
             "name": InNonHeadData[11],
             "name1": InNonHeadData[12],
-            "DeclarationType": CommonMaster.objects.filter(TypeId=15, StatusId=1).order_by("Name"),
+            "DeclarationType": CommonMaster.objects.filter(TypeId=15, StatusId=1).order_by("Name"), 
             "CargoType": CommonMaster.objects.filter(TypeId=2, StatusId=1),
             "OutWardTransportMode": CommonMaster.objects.filter(TypeId=3, StatusId=1).order_by("Name"),
             "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by("Name"),

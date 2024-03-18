@@ -13,4 +13,6 @@ urlpatterns = [
     path("transContainer/", views.ContainerSave.as_view()),
     path("transave/", views.TransSave.as_view()),
     path("transTransmit/", views.Transmit),
+    path('transhipmentEdit/<arg>/', views.TranshipmentEdit.as_view()),
+    path('transhipmentCopy/<arg>/', views.TranshipmentCopy.as_view()),
 ]

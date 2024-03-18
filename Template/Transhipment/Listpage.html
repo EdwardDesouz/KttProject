@@ -6,8 +6,8 @@
 </div>
 <div class="InpaymentBtns">
     <Button type="button" id="NewBtn" onclick="NewButton()">NEW</Button>
-    <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</Button>
-    <Button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</Button>
+    <Button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="TransmitData()">TRANSMIT</Button>
+    <Button type="button" id="CopyBtn" onclick="TransmitCopy()">COPY</Button>
     <Button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</Button>
     <Button type="button" id="MergeBtn">MERGE</Button>
     <Button type="button" id="UnMergeBtn">UN MERGE</Button>
@@ -54,7 +54,7 @@
         <option value="{{i}}">{{i}}</option>
         {% endfor %}
     </select>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT
+    <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT
         DATA</button>
     <label style="margin-left: 20px;">SEARCH</label>
     <input type="text" class="inputStyle" style="width: 180px;margin-left: 20px;" id="InonPaymentTableSearch">

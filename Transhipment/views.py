@@ -695,13 +695,13 @@ class TransSave(View, SqlDb):
     def get(self, request):
         
         query = f"SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = 'TranshipmentItemDtl'"
-        self.cursor.execute(query)
+        self.cursor.execute(query) 
 
         result = self.cursor.fetchall()
         for i in result:
-            print(f"head['{i[0]}']",end=',')
+            print(f"{i[0]}",end=',')
         return JsonResponse({"message": "loading"})
-
+    
     def post(self, request):
         Refid = request.POST.get('Refid')
         JobId = request.POST.get('JobId')
@@ -834,7 +834,6 @@ class TransSave(View, SqlDb):
         
         return  JsonResponse({"message":"Success"}) 
 
-    
 
 def Transmit(request):
     permitNumber1 = json.loads(request.GET.get("PermitNumber"))# this Records Select check boxes id's
@@ -874,7 +873,7 @@ def Transmit(request):
                 headVal = (RefId,JobId,MsgId,NewPermitId,MailId,head['MessageType'],head['DeclarationType'],head['PreviousPermit'],head['CargoPackType'],head['InwardTransportMode'],head['OutwardTransportMode'],head['BGIndicator'],head['SupplyIndicator'],head['ReferenceDocuments'],head['License'],head['Recipient'],head['DeclarantCompanyCode'],head['ImporterCompanyCode'],head['HandlingAgentCode'],head['InwardCarrierAgentCode'],head['OutwardCarrierAgentCode'],head['FreightForwarderCode'],head['ClaimantPartyCode'],head['EndUserCode'],head['ArrivalDate'],head['LoadingPortCode'],head['VoyageNumber'],head['VesselName'],head['OceanBillofLadingNo'],head['ConveyanceRefNo'],head['TransportId'],head['FlightNO'],head['AircraftRegNo'],head['MasterAirwayBill'],head['ReleaseLocation'],head['RecepitLocation'],head['StorageLocation'],head['RemovalStartDate'],head['DepartureDate'],head['DischargePort'],head['FinalDestinationCountry'],head['OutVoyageNumber'],head['OutVesselName'],head['OutOceanBillofLadingNo'],head['VesselType'],head['VesselNetRegTon'],head['VesselNationality'],head['TowingVesselID'],head['TowingVesselName'],head['NextPort'],head['LastPort'],head['OutConveyanceRefNo'],head['OutTransportId'],head['OutFlightNO'],head['OutAircraftRegNo'],head['OutMasterAirwayBill'],head['TotalOuterPack'],head['TotalOuterPackUOM'],head['TotalGrossWeight'],head['TotalGrossWeightUOM'],head['GrossReference'],head['TradeRemarks'],head['InternalRemarks'],head['DeclareIndicator'],head['NumberOfItems'],head['TotalCIFFOBValue'],head['TotalGSTTaxAmt'],head['TotalExDutyAmt'],head['TotalCusDutyAmt'],head['TotalODutyAmt'],head['TotalAmtPay'],head['Status'],TouchUser,TouchTime,head['PermitNumber'],head['prmtStatus'],head['ReleaseLocName'],head['RecepitLocName'],head['Cnb'],head['DeclarningFor'],head['INHAWB'],head['outHAWB'],head['MRDate'],head['MRTime'])
                 s.cursor.execute(HeadQry,headVal)
 
-            s.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{NewPermitId}','INPDEC','{AccountId}','{MsgId}','{TouchUser}','{TouchTime}') ")
+            s.cursor.execute(f"INSERT INTO PermitCount (PermitId,MessageType,AccountId,MsgId,TouchUser,TouchTime) VALUES ('{NewPermitId}','TNPDEC','{AccountId}','{MsgId}','{TouchUser}','{TouchTime}') ")
 
             ItemQry = "INSERT INTO TranshipmentItemDtl (ItemNo,PermitId,MessageType,HSCode,Description,DGIndicator,Contry,Brand,Model,Vehicletype,Enginecapacity,Engineuom,Orginregdate,InHAWBOBL,OutHAWBOBL,DutiableQty,DutiableUOM,TotalDutiableQty,TotalDutiableUOM,InvoiceQuantity,HSQty,HSUOM,AlcoholPer,InvoiceNo,ChkUnitPrice,UnitPrice,UnitPriceCurrency,ExchangeRate,SumExchangeRate,TotalLineAmount,InvoiceCharges,CIFFOB,OPQty,OPUOM,IPQty,IPUOM,InPqty,InPUOM,ImPQty,ImPUOM,PreferentialCode,GSTRate,GSTUOM,GSTAmount,ExciseDutyRate,ExciseDutyUOM,ExciseDutyAmount,CustomsDutyRate,CustomsDutyUOM,CustomsDutyAmount,OtherTaxRate,OtherTaxUOM,OtherTaxAmount,CurrentLot,PreviousLot,LSPValue,Making,ShippingMarks1,ShippingMarks2,ShippingMarks3,ShippingMarks4,TouchUser,TouchTime,OptionalChrgeUOM,Optioncahrge,OptionalSumtotal,OptionalSumExchage) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"  
             s1.cursor.execute(f"SELECT * FROM TranshipmentItemDtl WHERE PermitId='{permitNumber}' ")
@@ -925,3 +924,118 @@ def Transmit(request):
 
     return JsonResponse({"Success":"Genrate"})
  
+
+ 
+class TranshipmentEdit(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def get(self, request,arg):
+
+        print("The Arg is :",arg)
+
+        Username = request.session["Username"]
+        self.cursor.execute(f"SELECT * FROM TranshipmentHeader WHERE id = {arg}")
+        headers = [i[0] for i in self.cursor.description]
+        transAll = list(self.cursor.fetchall())
+
+        for i in transAll:
+            print(i)
+    
+        jobDate = datetime.now().strftime("%Y-%m-%d")
+
+        self.cursor.execute(
+            "SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username)
+        )
+
+        AccountId = self.cursor.fetchone()[0]
+
+        self.cursor.execute(
+            "SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(
+                jobDate, AccountId
+            )
+        )
+
+        self.cursor.execute(
+            "select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"
+            + Username
+            + "'"
+        )
+        InNonHeadData = self.cursor.fetchone()
+        context = {
+            "UserName": Username,
+            "PermitId": transAll[0][4],
+            "JobId": transAll[0][2],
+            "RefId": transAll[0][1],
+            "MsgId": transAll[0][3],
+            "AccountId": AccountId,
+            "LoginStatus": InNonHeadData[0],
+            "PermitNumber": "",
+            "prmtStatus": "",
+            "DateLastUpdated": InNonHeadData[1],
+            "MailBoxId": InNonHeadData[2],
+            "SeqPool": InNonHeadData[3],
+            "StartSequence": InNonHeadData[4],
+            "TradeNetMailboxID": InNonHeadData[5],
+            "DeclarantName": InNonHeadData[6],
+            "DeclarantCode": InNonHeadData[7],
+            "DeclarantTel": InNonHeadData[8],
+            "CRUEI": InNonHeadData[9],
+            "Code": InNonHeadData[10],
+            "name": InNonHeadData[11],
+            "name1": InNonHeadData[12],
+            "DeclarationType": CommonMaster.objects.filter(
+                TypeId=18, StatusId=1
+            ).order_by("Name"),
+            "CargoType": CommonMaster.objects.filter(TypeId=2, StatusId=1),
+            "OutWardTransportMode": CommonMaster.objects.filter(
+                TypeId=3, StatusId=1
+            ).order_by("Name"),
+            "DeclaringFor": CommonMaster.objects.filter(TypeId=81, StatusId=1).order_by(
+                "Name"
+            ),
+            "BgIndicator": CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by(
+                "Name"
+            ),
+            "DocumentAttachmentType": CommonMaster.objects.filter(
+                TypeId=5, StatusId=1
+            ).order_by("Name"),
+            "CoType": CommonMaster.objects.filter(TypeId=16, StatusId=1).order_by(
+                "Name"
+            ),
+            "CertificateType": CommonMaster.objects.filter(
+                TypeId=17, StatusId=1
+            ).order_by("Name"),
+            "Currency": Currency.objects.filter().order_by("Currency"),
+            "Container": CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by(
+                "Name"
+            ),
+            "TotalOuterPack": CommonMaster.objects.filter(
+                TypeId=10, StatusId=1
+            ).order_by("Name"),
+            "InvoiceTermType": CommonMaster.objects.filter(
+                TypeId=7, StatusId=1
+            ).order_by("Name"),
+            "Making": CommonMaster.objects.filter(TypeId=12, StatusId=1).order_by(
+                "Name"
+            ),
+            "VesselType": CommonMaster.objects.filter(TypeId=14, StatusId=1).order_by(
+                "Name"
+            ),
+        }
+
+        context.update({
+            "OutData" : (pd.DataFrame(transAll, columns=headers)).to_dict("records"),
+        })
+        return render(request, "Transhipment/Newpage.html", context)
+
+
+
+class TranshipmentCopy(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def get(self, request,arg):
+        print(arg)
+        return render(request, "Transhipment/Newpage.html")
+
