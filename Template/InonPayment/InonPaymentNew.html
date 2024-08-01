@@ -7,6 +7,12 @@
 <div class="FinalClassPopup" id="Loading">
     <div class="LoadImg"></div>
 </div>
+<div class="row mt-3">
+    <div class="col-10"></div>
+    <div class="col-1">
+        <a href="/InonPaymentList/" class="ExitButton">ExitForm</a>
+    </div>
+</div>
 <div id="InNonImporterSerchId"></div>
 <div class="Container">
     <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
@@ -220,19 +226,19 @@
                     <div class="row mt-3">
                         <div class="col-4">RECIPIENTS 1</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" id="Recipient1">
+                            <input type="text" class="inputStyle" id="Recipient1" tabindex="11">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">RECIPIENTS 2</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" id="Recipient2">
+                            <input type="text" class="inputStyle" id="Recipient2" tabindex="12">
                         </div>
                     </div>
                     <div class="row mt-3">
                         <div class="col-4">RECIPIENTS 3</div>
                         <div class="col-8">
-                            <input type="text" class="inputStyle" id="Recipient3">
+                            <input type="text" class="inputStyle" id="Recipient3" tabindex="14">
                         </div>
                     </div>
                 </div>
@@ -248,29 +254,29 @@
                         <div class="col-6">
                             <div class="row mt-3">
                                 <div class="col">
-                                    <input type="text" class="inputStyle" id="License1" tabindex="11">
+                                    <input type="text" class="inputStyle" id="License1" tabindex="15">
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col">
-                                    <input type="text" class="inputStyle" id="License2" tabindex="12">
+                                    <input type="text" class="inputStyle" id="License2" tabindex="16">
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col">
-                                    <input type="text" class="inputStyle" id="License3" tabindex="13">
+                                    <input type="text" class="inputStyle" id="License3" tabindex="17">
                                 </div>
                             </div>
                         </div>
                         <div class="col-6">
                             <div class="row mt-3">
                                 <div class="col">
-                                    <input type="text" class="inputStyle" id="License4" tabindex="14">
+                                    <input type="text" class="inputStyle" id="License4" tabindex="18">
                                 </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col">
-                                    <input type="text" class="inputStyle" id="License5" tabindex="15">
+                                    <input type="text" class="inputStyle" id="License5" tabindex="19">
                                 </div>
                             </div>
                         </div>
@@ -289,7 +295,7 @@
                     </div>
                     <div class="row mt-3">
                         <div class="col-5">
-                            <select class="Dropdown" id="HeaddocumentType" tabindex="16">
+                            <select class="Dropdown" id="HeaddocumentType" tabindex="20">
                                 <option selected>--Select--</option>
                                 {% for i in DocumentAttachmentType %}
                                 <option>{{i.Name}}</option>
@@ -297,10 +303,10 @@
                             </select>
                         </div>
                         <div class="col-4">
-                            <input type="file" class="inputChooseFile" id="HeadAttach" tabindex="17"
+                            <input type="file" class="inputChooseFile" id="HeadAttach" tabindex="21"
                                 accept=".pdf,.xlsx,.DOC,.DOCX,.XLS,.XLSX,.PDF,.JPG,.JPEG,.PNG,.BMP,.GIF,.TIF,.TIFF">
                         </div>
-                        <div class="col-2"><button type="button" class="ButtonClick" tabindex="18"
+                        <div class="col-2"><button type="button" class="ButtonClick" tabindex="22"
                                 onclick="HeaderDocumentAttch()">ATTACH</button></div>
                     </div>
                     <div class="row mt-3" style="font-size: 9px;color: red;">
@@ -325,10 +331,90 @@
                     </div>
                 </div>
             </div>
+
+            <div  id="InNonShow" style=display:none;>
+
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <h1 class="Borderdiv">PERMIT CONDITIONS</h1>
+                    </div>
+                </div>
+    
+                <div class="container-fluid mt-5"  >
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-6">PERMIT NO : </div>
+                                <div class="col-6" id="ShowCertificate"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">JOB ID : </div>
+                                <div class="col-6" id="ShowJobId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">CREATE BY : </div>
+                                <div class="col-6" id="ShowCreate"></div>
+                            </div>
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-4">VALIDITY PERIOD :  </div>
+                                <div class="col-6" id="ShowValidityPeriod"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">MSG ID : </div>
+                                <div class="col-6" id="ShowMsgId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">STATUS : </div>
+                                <div class="col-6" id="ShowStatus"></div>
+                            </div>
+                           
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-6">PERMIT APPROVED DATE :  </div>
+                                <div class="col-6" id="ShowCertificateApproved"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">DEC DATE : </div>
+                                <div class="col-6" id="ShowDate"></div>
+                            </div>   
+                            <div class="row mt-3">
+                                <div class="col-3">TRANSMIT USER : </div>
+                                <div class="col-6" id="ShowDate"></div>
+                            </div>                                          
+                        </div>
+                    </div>
+                </div> 
+    
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <table style="width: 100%;" id="">
+                            <thead>
+                                
+                                <th style="padding: 2px;">S.NO</th>
+                                <th style="padding: 2px;">CODE</th>
+                                <th>DESCRIPTION</th>
+                    
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan=14 style='text-align:center'>No Record</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+            </div>
+            
             <div class="row mt-3">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" tabindex="19"
+                <div class="col-2" id="HeaderResetInNon"><button class="MoveOnButtons" type="button"  onclick="HeaderResetInNon()" tabindex="23">RESET</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" tabindex="24"
                         onclick="TabHead('PartyTab')">NEXT</button></div>
                 <div class="col-4"></div>
             </div>
@@ -368,18 +454,18 @@
                             onclick="InNonImporterSave()">+</button>
                     </div>
                     <div class="col-1">
-                        <input type="text" class="inputStyle" placeholder="CODE" id="InNonImporterCode" tabindex="1"
-                            onfocus="InNonImporterIn()" onblur="InNonImporterOut()"><br>
+                        <input type="text" class="inputStyle" placeholder="CODE" id="InNonImporterCode" 
+                            onfocus="InNonImporterIn()" onblur="InNonImporterOut()" tabindex="1"><br>
                         <span class="ErrColor" id="InNonImporterCodeSpan">FILL CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight " placeholder="CRUEI" id="InNonImporterCruei"
-                            tabindex="2" style="width: 80%;" onfocus="TrimKeyUp('InNonImporterCruei')"><br>
+                             style="width: 80%;" onfocus="TrimKeyUp('InNonImporterCruei')" tabindex="2"><br>
                         <span class="ErrColor" id="InNonImporterCrueiSpan">FILL CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" placeholder="NAME" id="InNonImporterName"
-                            tabindex="3" style="width: 80%;" onfocus="TrimKeyUp('InNonImporterName')"><br>
+                             style="width: 80%;" onfocus="TrimKeyUp('InNonImporterName')" tabindex="3"><br>
                         <span class="ErrColor" id="InNonImporterNameSpan">FILL NAME</span>
                     </div>
                     <div class="col-3">
@@ -393,13 +479,13 @@
                     <div class="col-2"><label for="ExporterCode">EXPORTER</label> </div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonExporter,'EXPORTER','ExporterCode','ExporterCruei','ExporterName','ExporterName1')">
+                            onclick="InNonImporeterSearch(InNonExporter,'EXPORTER','ExporterCode','ExporterCruei','ExporterName','ExporterName1')" >
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonExporterSave()">+</button>
+                            onclick="InNonExporterSave()" >+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="ExporterCode"
-                            onfocus="InNonExporterIn()" onblur="InNonExporterOut()" tabindex="5"><br>
+                            onfocus="InNonExporterIn()" onblur="InNonExporterOut()"tabindex="5" ><br>
                         <span class="ErrColor" id="ExporterCodeSpan">FILL CODE</span>
                     </div>
                     <div class="col-2">
@@ -423,9 +509,9 @@
                     <div class="col-2"><label>INWARD CARRIER AGENT</label></div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonInward,'INWARD','InwardCode','InwardCruei','InwardName','InwardName1')">
+                            onclick="InNonImporeterSearch(InNonInward,'INWARD','InwardCode','InwardCruei','InwardName','InwardName1')" >
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonInwardSave()">+</button>
+                            onclick="InNonInwardSave()" >+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="InwardCode" tabindex="9"
@@ -453,9 +539,9 @@
                     <div class="col-2"><label>OUTWARD CARRIER AGENT</label></div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonOutWard,'OUTWARD','OutWardCarreirCode','OutWardCarreirCRUEI','OutWardCarreirName','OutWardCarreirName1')">
+                            onclick="InNonImporeterSearch(InNonOutWard,'OUTWARD','OutWardCarreirCode','OutWardCarreirCRUEI','OutWardCarreirName','OutWardCarreirName1')" >
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonOutwardSave()">+</button>
+                            onclick="InNonOutwardSave()" >+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="OutWardCarreirCode" tabindex="13"
@@ -512,8 +598,8 @@
                 <div class="row mt-3 ">
                     <div class="col-2"><label>CONSIGNEE</label></div>
                     <div class="col-1">
-                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonConsigneImg()">
-                        <button type="button" class="btn" style="font-weight: bold;" onclick="ConsigneSave()">+</button>
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonConsigneImg()" >
+                        <button type="button" class="btn" style="font-weight: bold;" onclick="ConsigneSave()" >+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle " placeholder="CODE" id="ConsignCode" tabindex="21"
@@ -587,9 +673,9 @@
                 <div class="row mt-3">
                     <div class="col-2"><label class="">CLAIMANT PARTY</label></div>
                     <div class="col-1">
-                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonClaimantImg()">
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonClaimantImg()" tabindex="">
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonClaimantSave()">+</button>
+                            onclick="InNonClaimantSave()" tabindex="">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="ClaimantName" tabindex="32"
@@ -621,10 +707,13 @@
 
             <div class="row mt-5">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('HeaderTab')"
+                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('HeaderTab')"tabindex="38"
                         type="button">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')" tabindex="38"
+                <div class="col-2" id="PartyResetInNon">
+                    <button class="MoveOnButtons" id="PartyResetInNon" onclick="PartyresetInNon()" type="button" tabindex="39">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')" tabindex="40"
                         type="button">NEXT</button> </div>
             </div>
             <br><br>
@@ -1100,21 +1189,21 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><input type="checkbox" name="" id=""></td>
+                                    <td><input type="checkbox" name="" id="ContainerRowCheckbox"></td>
                                     <td><i class="fa-regular fa-pen-to-square ContainerEdit"
                                             style="color: #ff0000;"></i></td>
                                     <td><i class="fa-solid fa-trash-can containerDeleteBtn" style="color: #ff0000;"></i>
                                     </td>
-                                    <td><input type="text" value="1" disabled class="inputStyle" style="width: 50px;">
+                                    <td><input type="text" value="1" disabled class="inputStyle" id="ContianerInfovlue" style="width: 50px;">
                                     </td>
                                     <td>
-                                        <input type='text' class="inputStyle">
+                                        <input type='text' class="inputStyle" >
                                         <span class="ErrorColor" style="font-size: 9px;display: none;">THE CONTAINER NO.
                                             FORMAT SHOULD BE 4 ALPHABETS <br>AND FOLLOWED BY 7 DIGIT, FOR EX.:
                                             ABCD1234567</span>
                                     </td>
                                     <td>
-                                        <select class="Dropdown">
+                                        <select class="Dropdown" >
                                             <option selected>--Select--</option>
                                             {% for i in ContainerSizeDrop %}
                                             <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1124,13 +1213,13 @@
                                             REQUIRED</span>
                                     </td>
                                     <td>
-                                        <input type="number" class="inputStyle" maxlength="3"
+                                        <input type="number" class="inputStyle" maxlength="3" id="WeightContainer"
                                             oninput="InputLenth(this)">
                                         <span class="ErrorColor" style="font-size: 9px;display: none;">WEIGHT IS
                                             REQUIRED</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="inputStyle">
+                                        <input type="text" class="inputStyle" >
                                         <span class="ErrorColor" style="font-size: 9px;display: none;">SEAL NO IS
                                             REQUIRED</span>
                                     </td>
@@ -1149,6 +1238,9 @@
                 <div class="col-4"></div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('PartyTab')"
                         type="button">PREVIOUS</button>
+                </div>
+                <div class="col-2" id="CargoResetInNon">
+                    <button class="MoveOnButtons"  onclick="CargoResetInNon()" type="button">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('InvoiceTab')"
                         type="button">NEXT</button> </div>
@@ -1371,7 +1463,7 @@
                         </tr>
                         <tr id="InvoiceGstRowInNon">
                             <td>GST</td>
-                            <td><input type="number" value="8" class="inputStyle" style="width:150px"
+                            <td><input type="number" value="9" class="inputStyle" style="width:150px"
                                     id="InvoiceGstChargeInNon" disabled></td>
                             <td></td>
                             <td></td>
@@ -1387,11 +1479,11 @@
                 <div class="col-2">
                     <button class="MoveOnButtons" onclick="TabHead('CargoTab')" type="button">PREVIOUS</button>
                 </div>
-                <div class="col-2">
+                <div class="col-2" id="AddInvoice">
                     <button class="MoveOnButtons" onclick="InvoiceSaveInNon()" type="button" tabindex="23"
                         id="AddInvoiceBtn">ADD INVOICE</button>
                 </div>
-                <div class="col-2">
+                <div class="col-2" id="InvoiceResetInNon">
                     <button class="MoveOnButtons" onclick="InvoiceResetInNon()" type="button">RESET</button>
                 </div>
                 <div class="col-2">
@@ -1425,7 +1517,7 @@
         <div id="Item" style="display:none">
             <div class="row">
                 <div class="col-7"></div>
-                <div class="col-5">
+                <div class="col-5" id="AddItem">
                     <button type="button" style="width:24%;" class="ButtonClick" onclick="ItemSaveInNon('NEWMOVE')"
                         tabindex="26">ADD
                         ITEM</button>
@@ -1470,7 +1562,7 @@
                                     onfocus="ItemItemCodeInNonIn()" onfocusout="ItemItemCodeInNonOut(this.value)">
                                 <span class="ErrColor" id="ItemItemCodeInNonSpan">FILL THE CODE</span>
                             </div>
-                            <div class="col-1"><button type="button" class="btn" style="font-weight: bold;">+</button>
+                            <div class="col-1"><button type="button" class="btn" onclick="ItemCodeSave()" style="font-weight: bold;">+</button>
                             </div>
                         </div>
                     </div>
@@ -1696,7 +1788,7 @@
                                 <tr>
                                     <td><label for="GstAutoCompute">GST(<input type="checkbox"
                                                 id="GstAutoCompute">AUTO-COMPUTE)</label></td>
-                                    <td><input type="number" class="inputStyle " value=8 id="ItemGSTRate"></td>
+                                    <td><input type="number" class="inputStyle " value="9" id="ItemGSTRate"></td>
                                     <td><input type="text" class="inputStyle" id="ItemGSTUOM" value="PER"></td>
                                     <td><input type="number" class="inputStyle " id="TxtItemSumGST" value="0.00">
                                     </td>
@@ -1943,13 +2035,16 @@
                                         onfocusout="ProductFocusOut(this.value,'itemProductCode1Desc')"><br>
                                     <span class="ErrColor" id="itemProductCode1Span">FILL PRODUCT CODE</span>
                                 </div>
-                                <div class="col-2"><button class="btn1" type="button" tabindex="18"
+                                {% comment %} <div class="col-2"><button class="btn1" type="button" tabindex="18"
                                         onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF
-                                        HS-QUANTITY</button></div>
+                                        HS-QUANTITY</button></div> {% endcomment %}
+                                        <div class="col-2"><button class="btn1" type="button" tabindex="18"
+                                            onclick="CopyHsQuantity('product1CodeCopyInput')">COPY OF
+                                            HS-QUANTITY</button></div>
                                 <div class="col-1"><input type="number" class="inputStyle" value="0.00" tabindex="19"
                                         id="product1CodeCopyInput"></div>
                                 <div class="col-2">
-                                    <select id="product1CodeCopyUom" class="inputStyle " tabindex="20">
+                                    <select id="product1CodeCopyUom" class="inputStyle " tabindex="20" onchange="product1CodeCopyUomChange()">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -1959,7 +2054,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <p id="itemProductCode1Desc" style="color: #ff0000;"></p>
+                                    <p id="itemProductCode1Desc" style="color: #ff0000;"> </p>
                                 </div>
                             </div>
                             <div class="row">
@@ -2007,7 +2102,7 @@
                                 <div class="col-1"><input type="number" class="inputStyle" value="0.00"
                                         id="product2CodeCopyInput"></div>
                                 <div class="col-2">
-                                    <select id="product2CodeCopyUom" class="inputStyle">
+                                    <select id="product2CodeCopyUom" class="inputStyle"  onchange="product2CodeCopyUomChange()">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -2287,7 +2382,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('InvoiceTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemResetInNon()">RESET</button>
+                <div class="col-2" id="ItemResetInNon" ><button class="MoveOnButtons" type="button"  onclick="ItemResetInNon()">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
                 </div>
@@ -2520,7 +2615,7 @@
             </div>
             <!---------------------------------------------- BUTTONS --------------------------------------->
             <div class="row mt-4">
-                <div class="col-3"></div>
+                <div class="col-4"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('ItemTab')">PREVIOUS</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" id="cpcNextBtn"
@@ -2640,7 +2735,7 @@
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" style="width: 80%;" placeholder="DATE" id="SummaryMRD"
-                            onfocusout="InvoiceDateFunction('SummaryMRD')"><br>
+                            onfocusout="InvoiceDateFunction('SummaryMRD')" value="{{currentDate}}" ><br>
                         <span class="ErrorColor" id="SummaryMRDSpan">FILL MRD</span>
                     </div>
                     <div class="col-2">
@@ -2659,23 +2754,23 @@
                 <div class="row">
                     <div class="col-6">
                         <div class="row">
-                            <div class="col-6">IMPORTER</div>
+                            <div class="col-3">IMPORTER</div>
                             <div class="col-6" id="SummaryImporter"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">IN MAWB/OBL</div>
+                            <div class="col-3">IN MAWB/OBL</div>
                             <div class="col-6" id="SummaryInMawbObl"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">IN HAWB/HBL</div>
+                            <div class="col-3">IN HAWB/HBL</div>
                             <div class="col-6" id="SummaryInHawbHbl"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">NO OF PACKING</div>
+                            <div class="col-3">NO OF PACKING</div>
                             <div class="col-6" id="Summarynoofpacking"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">INVOICE AMOUNT</div>
+                            <div class="col-3">INVOICE AMOUNT</div>
                             <div class="col-6" id="summaryInvoiceAmount"></div>
                         </div>
                     </div>
@@ -2685,23 +2780,23 @@
                             <div class="col-6"> </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">OUT MAWB/OBL</div>
+                            <div class="col-3">OUT MAWB/OBL</div>
                             <div class="col-6" id="SummaryOutMawbObl"> </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">OUT HAWB/HBL</div>
+                            <div class="col-3">OUT HAWB/HBL</div>
                             <div class="col-6" id="SummaryOutHawbHbl"> </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">GROSS WEIGHT</div>
+                            <div class="col-3">GROSS WEIGHT</div>
                             <div class="col-6" id="SummaryGrossWeight"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">TOTAL ITEM GST </div>
+                            <div class="col-3">TOTAL ITEM GST </div>
                             <div class="col-6" id="SummaryTotalGst"></div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-6">TOTAL INVOICE GST</div>
+                            <div class="col-3">TOTAL INVOICE GST</div>
                             <div class="col-6" id="SummaryTotalIncoiseGSt"></div>
                         </div>
                     </div>
@@ -3148,6 +3243,7 @@
 
 
     "{% for Data in InNonHeaderData%}"
+    console.log('hai')
     $('#declarationType').val("{{Data.DeclarationType|escapejs}}")
     DeclarationChange()
     $('#PreviousPermitNo').val("{{Data.PreviousPermit|escapejs}}")
@@ -3197,6 +3293,331 @@
     }
     else {
         $("#ArrivalDate").val("{{Data.ArrivalDate|date:'d/m/Y'}}")
+    }
+
+
+
+    $('#InNonLoadingPortInput').val("{{Data.LoadingPortCode|escapejs}}")
+    $('#VoyageNumber').val("{{Data.VoyageNumber|escapejs}}")
+    $('#VesselName').val("{{Data.VesselName|escapejs}}")
+    $('#OceanBillofLadingNo').val("{{Data.OceanBillofLadingNo|escapejs}}")
+    $('#ConveyanceRefNo').val("{{Data.ConveyanceRefNo|escapejs}}")
+    $('#TransportId').val("{{Data.TransportId|escapejs}}")
+    $('#FlightNO').val("{{Data.FlightNO|escapejs}}")
+    $('#AircraftRegNo').val("{{Data.AircraftRegNo|escapejs}}")
+    $('#MasterAirwayBill').val("{{Data.MasterAirwayBill|escapejs}}")
+    $('#InNonReleaseInput').val("{{Data.ReleaseLocation|escapejs}}")
+    $('#InNonReciptInput').val("{{Data.RecepitLocation|escapejs}}")
+    $('#InNonReciptInputText').val("{{Data.RecepilocaName|escapejs}}")
+    $('#InNonStorageInput').val("{{Data.StorageLocation|escapejs}}")
+
+    var dateStringExhibitionSDate = "{{Data.ExhibitionSDate}}";
+    if ("{{Data.ExhibitionSDate}}" == "1900-01-01") {
+        $("#ExhibitionSDate").val("")
+    }
+    else {
+        var dateParts = dateStringExhibitionSDate.split("/");
+        var year = dateParts[0];
+        var month = dateParts[1];
+        var day = dateParts[2];
+        var formattedDate = day + '/' + month + '/' + year;
+        $("#ExhibitionSDate").val(formattedDate);
+        
+    }
+    var dateStringExhibitionEDate = "{{Data.ExhibitionEDate}}";
+    if ("{{Data.ExhibitionEDate}}" == "1900-01-01") {
+        $("#ExhibitionEDate").val("")
+    }
+    else {
+        var dateParts = dateStringExhibitionEDate.split("/");
+        var year = dateParts[0];
+        var month = dateParts[1];
+        var day = dateParts[2];
+        var formattedDate = day + '/' + month + '/' + year;
+        $("#ExhibitionEDate").val(formattedDate);
+        
+    }
+
+
+    if ("{{Data.BlanketStartDate|date:'Y-m-d'}}" == "1900-01-01") {
+        $("#BlanketStartDate").val("")
+    }
+    else {
+        $("#BlanketStartDate").val("{{Data.BlanketStartDate|date:'d/m/Y'}}")
+    }
+    $('#summaryTradeRemarks').val("{{Data.TradeRemarks|escapejs}}")
+    $('#summaryInternalRemarks').val("{{Data.InternalRemarks|escapejs}}")
+    if ("{{Data.DepartureDate|date:'Y-m-d'}}" == "1900-01-01") {
+        $("#DepartureDate").val("")
+    }
+    else {
+        $("#DepartureDate").val("{{Data.DepartureDate|date:'d/m/Y'}}")
+    }
+    $('#InNonDisachargeInput').val("{{Data.DischargePort|escapejs}}")
+    $('#OutVoyageNumber').val("{{Data.OutVoyageNumber|escapejs}}")
+    $('#InNonOutVesselNameInput').val("{{Data.OutVesselName|escapejs}}")
+    $('#OutOceanBillofLadingNo').val("{{Data.OutOceanBillofLadingNo|escapejs}}")
+    $('#InNonVesselNetRegisterInput').val("{{Data.VesselNetRegTon|escapejs}}")
+    $('#InNonTowingVesselIdInput').val("{{Data.TowingVesselID|escapejs}}")
+    $('#InNonTowingVesselNameInput').val("{{Data.TowingVesselName|escapejs}}")
+    $('#InNonNextPortInput').val("{{Data.NextPort|escapejs}}")
+    $('#InNonLastPortInput').val("{{Data.LastPort|escapejs}}")
+    $('#InNonOutConveyanceInput').val("{{Data.OutConveyanceRefNo|escapejs}}")
+    $('#InNonOutTranseportIdInput').val("{{Data.OutTransportId|escapejs}}")
+    $('#InNonOutFlightNumberInput').val("{{Data.OutFlightNO|escapejs}}")
+    $('#InNonOutAirCraftInput').val("{{Data.OutAircraftRegNo|escapejs}}")
+    $('#InNonOutMawbInput').val("{{Data.OutMasterAirwayBill|escapejs}}")
+    $('#InNonTotOuterPackInput').val("{{Data.TotalOuterPack|escapejs}}")
+    $('#CargoPermitGrossWeight').val("{{Data.TotalGrossWeight|escapejs}}")
+    $('#InNonTotalGrossWeightDrop').val("{{Data.TotalGrossWeightUOM|escapejs}}")
+    CargoGrossEdit("{{Data.TotalGrossWeight}}", "{{Data.TotalGrossWeightUOM}}")
+    $('#GrossReference').val("{{Data.GrossReference|escapejs}}")
+    $('#DeclareIndicator').val("{{Data.DeclareIndicator|escapejs}}")
+    if ($("#DeclareIndicator").val() == "True" || $("#DeclareIndicator").val() == "true") {
+        $("#DeclareIndicator").prop("checked", true);
+    }
+    else {
+        $("#DeclareIndicator").prop("checked", false);
+    }
+    $('#summaryNoOfItems').val("{{Data.NumberOfItems|escapejs}}")
+    $('#summaryTotalCIFFOBValue').val("{{Data.TotalCIFFOBValue|escapejs}}")
+    $('#summaryTotalGstValue').val("{{Data.TotalGSTTaxAmt|escapejs}}")
+    $('#summaryExciseDuty').val("{{Data.TotalExDutyAmt|escapejs}}")
+    $('#summaryCustomsDuty').val("{{Data.TotalCusDutyAmt|escapejs}}")
+    $('#itemOtherTaxAmountSummary').val("{{Data.TotalODutyAmt|escapejs}}")
+    $('#summaryTotalPayable').val("{{Data.TotalAmtPay|escapejs}}")
+    $('#InNonReleaseText').val("{{Data.ReleaseLocaName|escapejs}}")
+    $('#CargoInHawb').val("{{Data.Inhabl}}")
+    $('#InNonOutHblHawbInput').val("{{Data.outhbl}}")
+    $('#InNonSeaStoreId').val("{{Data.seastore}}")
+    if ("{{Data.Cnb}}" == "True" || "{{Data.Cnb}}" == "true") {
+        $('#CNB').prop("checked", true)
+        $('#CNB').val("True")
+    }
+    else {
+        $('#CNB').prop("checked", false)
+        $('#CNB').val("False")
+    }
+    $('#DeclaringFor').val("{{Data.DeclarningFor}}")
+    $('#SummaryMRD').val("{{Data.MRDate|date:'d/m/Y'}}")
+    $('#SummaryTIME').val("{{Data.MRTime|time:'h:i A'}}")
+    CargoInHawbOut();
+    CargoOutHawbOut();
+    CpcHideShow();
+
+    "{% endfor %}"
+
+    function TotalOutUom() {
+        "{% for Data in InNonHeaderData%}"
+        $('#InNonTotOuterPackDrop').val("{{Data.TotalOuterPackUOM|escapejs}}")
+        $('#InNonVesselTypeDrop').val("{{Data.VesselType|escapejs}}")
+        $('#InNonVesselNationalityDrop').val("{{Data.VesselNationality|escapejs}}")
+        $('#InNonFinalDestinationSelect').val("{{Data.FinalDestinationCountry|escapejs}}")
+        CargoInHawbOut()
+        "{% endfor %}"
+    }
+
+
+</script>
+
+{% if AmendPages %}
+<script>
+    $("#AmendTab").show();
+    $("#FinalDeclar").hide();
+    $("#FinalSubmitDiv").hide();
+    $("#NextAmendTab11").show();
+    $("#StatusType").val("AME");
+    $("#PermitNumberId").val("{{PermitNumber}}")
+</script>
+{% if AmendEditdata %}
+{% for Am in AmendEditdata %}
+<script>
+    $("#AmendPermitNumber").val("{{Am.Permitno}}")
+    $("#AmendCount").val("{{Am.AmendmentCount}}")
+    $("#AmendUpdateIndicator").val("{{Am.UpdateIndicator}}")
+    $("#AmendPermitNumberReplacement").val("{{Am.ReplacementPermitno}}")
+    $("#AmendDescription").val("{{Am.DescriptionOfReason}}")
+    if ("{{Am.PermitExtension}}" == "True" || "{{Am.PermitExtension}}" == "true") {
+        $("#AmendPermitValidity").val("{{Am.PermitExtension}}")
+        $("#AmendPermitValidity").prop("checked", true)
+    }
+    $("#AmendExtendPeriod").val("{{Am.ExtendImportPeriod}}")
+
+    if ("{{Am.DeclarationIndigator}}" == "True" || "{{Am.DeclarationIndigator}}" == "true") {
+        $("#AmendDeclareIndicator").val("{{Am.DeclarationIndigator}}")
+        $("#AmendDeclareIndicator").prop("checked", true)
+    }
+    $("#AmendType").val("{{Am.AmendType}}")
+</script>
+{% endfor %}
+{% endif %}
+{% endif %}
+
+{% if CancelPages %}
+<script>
+    $("#CancelTab").show()
+    $("#FinalDeclar").hide();
+    $("#FinalSubmitDiv").hide();
+    $("#NextCancelTab11").show();
+    $("#StatusType").val("CNL");
+    $("#CancelPermitNumber").val("{{PermitNumber}}")
+    $("#PermitNumberId").val("{{PermitNumber}}")
+
+    "{% for reson in ReasonForCancel %}"
+    $("#ResonForCancel").append(`<option>{{reson.Name}}:{{reson.Description}}</option>`)
+    "{% endfor %}"
+
+    "{% for CanData in CancelData%}"
+    $("#CancelPermitNumber").val("{{CanData.Permitno}}")
+    $("#CancelUpdateIndicator").val("{{CanData.UpdateIndicator}}")
+    $("#CancelPermitNumberReplacement").val("{{CanData.ReplacementPermitno}}")
+    $("#ResonForCancel").val("{{CanData.ResonForCancel}}")
+    $("#DescriptionOfReason").val("{{CanData.DescriptionOfReason}}")
+    $("#CancelDeclareIndicator").val("{{CanData.DeclarationIndigator}}")
+    if ('{{CanData.DeclarationIndigator}}' == "True") {
+        $("#CancelDeclareIndicator").prop("checked", true)
+    }
+    $("#CancelationType").val("{{CanData.CancelType}}")
+    "{% endfor %}"
+
+    $(document).ready(function () {
+        $.ajax({
+            url: "/AttachInNon/",
+            data: {
+                Method: "LOAD",
+                PermitId: $("#PermitIDInNon").val(),
+                Type: "CNL",
+            },
+            success: function (response) {
+                console.log("Attach Page Loaded ...!");
+                CancelAttachLoad(response.attachFile);
+            },
+        });
+    });
+</script>
+{% endif %}
+
+
+{% if Show %}
+{% for Data in Show%}
+<script>
+    $('#InNonShow').show()
+    $('input').prop('disabled', true);
+    $('select').prop('disabled', true);
+    $('table').prop('disabled', true);
+    $('textarea').prop('disabled', true);
+    $('.ButtonClick').prop('disabled', true);
+    $('#AddInvoiceBtn').prop('disabled', true);
+    $('.showDisable').prop('disabled', true);
+    $('i').prop('disabled', false);
+
+    $('#HeaderResetInNon').hide()
+    $('#PartyresetInNon').hide()
+    $('#CargoResetInNon').hide()
+    $('#ItemResetInNon').hide()
+    $('#AddInvoice').hide()
+    $('#AddItem').hide()
+    $('#InvoiceResetInNon').hide()
+    $('#ShowAddItem').hide()
+    $('#Item span1').hide()
+    document.getElementById('ShowCreate').innerText = "{{ Data.TouchUser }}"; 
+   document.getElementById('ShowJobId').innerText = "{{ Data.JobId }}"; 
+   document.getElementById('ShowMsgId').innerText = "{{ Data.MSGId }}";
+   document.getElementById('ShowStatus').innerText = "{{ Data.Status }}";  
+   document.getElementById('ShowDate').innerText = "{{ Data.MRDate|date:'d/m/Y' }} {{ Data.MRTime|date:'h:i A' }}"; 
+    $('#FinalSubmitDiv').html(`
+    <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
+    `);
+</script>
+{% endfor %}
+
+{% endif %}
+
+
+
+{% if Show %}
+
+{% for Data in Show%}
+
+<script>
+
+    console.log('Hello')
+    
+     $('#declarationType').val("{{Data.DeclarationType|escapejs}}")
+    DeclarationChange()
+    $('#PreviousPermitNo').val("{{Data.PreviousPermit|escapejs}}")
+    $('#CargoPackType').val("{{Data.CargoPackType|escapejs}}")
+    CargoPackChange()
+    $('#inwardTranseportMode').val("{{Data.InwardTransportMode|escapejs}}")
+    InwardChange()
+    $('#OutwardTranseportMode').val("{{Data.OutwardTransportMode|escapejs}}")
+    OutwardChange()
+    $('#BgIndicator').val("{{Data.BGIndicator|escapejs}}")
+    $('#SupplyIndicator').val("{{Data.SupplyIndicator|escapejs}}")
+    if ("{{Data.SupplyIndicator|escapejs}}" == "True" || "{{Data.SupplyIndicator|escapejs}}" == "true") {
+        $('#SupplyIndicator').prop("checked", true)
+    }
+    else {
+        $('#SupplyIndicator').prop("checked", false)
+    }
+    $('#ReferenceDocuments').val("{{Data.ReferenceDocuments|escapejs}}")
+    if ("{{Data.ReferenceDocuments|escapejs}}" == "True" || "{{Data.ReferenceDocuments|escapejs}}" == "true") {
+        $('#ReferenceDocuments').prop("checked", true)
+        ReferenceDocument()
+    }
+    else {
+        $('#ReferenceDocuments').prop("checked", false)
+    }
+    let LiceInNon = ("{{Data.License|escapejs}}").split('-')
+    $('#License1').val(LiceInNon[0])
+    $('#License2').val(LiceInNon[1])
+    $('#License3').val(LiceInNon[2])
+    $('#License4').val(LiceInNon[3])
+    $('#License5').val(LiceInNon[4])
+    let ReciInNon = ("{{Data.Recipient|escapejs}}").split('-')
+    $('#Recipient1').val(ReciInNon[0])
+    $('#Recipient2').val(ReciInNon[1])
+    $('#Recipient3').val(ReciInNon[2])
+    $('#declarationCompanyCode').val("{{Data.DeclarantCompanyCode|escapejs}}")
+    $('#InNonImporterCode').val("{{Data.ImporterCompanyCode|escapejs}}")
+    $('#ExporterCode').val("{{Data.ExporterCompanyCode|escapejs}}")
+    $('#InwardCode').val("{{Data.InwardCarrierAgentCode|escapejs}}")
+    $('#OutWardCarreirCode').val("{{Data.OutwardCarrierAgentCode|escapejs}}")
+    $('#ConsignCode').val("{{Data.ConsigneeCode|escapejs}}")
+    $('#FreightForwarderCode').val("{{Data.FreightForwarderCode|escapejs}}")
+    $('#ClaimantName').val("{{Data.ClaimantPartyCode|escapejs}}")
+    if ("{{Data.ArrivalDate|date:'Y-m-d'}}" == "1900-01-01") {
+        $("#ArrivalDate").val("")
+    }
+    else {
+        $("#ArrivalDate").val("{{Data.ArrivalDate|date:'d/m/Y'}}")
+    }
+
+    var dateStringExhibitionSDate = "{{Data.ExhibitionSDate}}";
+    if ("{{Data.ExhibitionSDate}}" == "1900-01-01") {
+        $("#ExhibitionSDate").val("")
+    }
+    else {
+        var dateParts = dateStringExhibitionSDate.split("/");
+        var year = dateParts[0];
+        var month = dateParts[1];
+        var day = dateParts[2];
+        var formattedDate = day + '/' + month + '/' + year;
+        $("#ExhibitionSDate").val(formattedDate);
+        
+    }
+    var dateStringExhibitionEDate = "{{Data.ExhibitionEDate}}";
+    if ("{{Data.ExhibitionEDate}}" == "1900-01-01") {
+        $("#ExhibitionEDate").val("")
+    }
+    else {
+        var dateParts = dateStringExhibitionEDate.split("/");
+        var year = dateParts[0];
+        var month = dateParts[1];
+        var day = dateParts[2];
+        var formattedDate = day + '/' + month + '/' + year;
+        $("#ExhibitionEDate").val(formattedDate);
+        
     }
     $('#InNonLoadingPortInput').val("{{Data.LoadingPortCode|escapejs}}")
     $('#VoyageNumber').val("{{Data.VoyageNumber|escapejs}}")
@@ -3288,96 +3709,20 @@
     $('#SummaryTIME').val("{{Data.MRTime|time:'h:i A'}}")
     CargoInHawbOut();
     CargoOutHawbOut();
+    CpcHideShow();
 
-    "{% endfor %}"
+   
 
-    function TotalOutUom() {
-        "{% for Data in InNonHeaderData%}"
-        $('#InNonTotOuterPackDrop').val("{{Data.TotalOuterPackUOM|escapejs}}")
-        $('#InNonVesselTypeDrop').val("{{Data.VesselType|escapejs}}")
-        $('#InNonVesselNationalityDrop').val("{{Data.VesselNationality|escapejs}}")
-        $('#InNonFinalDestinationSelect').val("{{Data.FinalDestinationCountry|escapejs}}")
-        CargoInHawbOut()
-        "{% endfor %}"
-    }
 
-</script>
 
-{% if AmendPages %}
-<script>
-    $("#AmendTab").show();
-    $("#FinalDeclar").hide();
-    $("#FinalSubmitDiv").hide();
-    $("#NextAmendTab11").show();
-    $("#StatusType").val("AME");
-    $("#PermitNumberId").val("{{PermitNumber}}")
-</script>
-{% if AmendEditdata %}
-{% for Am in AmendEditdata %}
-<script>
-    $("#AmendPermitNumber").val("{{Am.Permitno}}")
-    $("#AmendCount").val("{{Am.AmendmentCount}}")
-    $("#AmendUpdateIndicator").val("{{Am.UpdateIndicator}}")
-    $("#AmendPermitNumberReplacement").val("{{Am.ReplacementPermitno}}")
-    $("#AmendDescription").val("{{Am.DescriptionOfReason}}")
-    if ("{{Am.PermitExtension}}" == "True" || "{{Am.PermitExtension}}" == "true") {
-        $("#AmendPermitValidity").val("{{Am.PermitExtension}}")
-        $("#AmendPermitValidity").prop("checked", true)
-    }
-    $("#AmendExtendPeriod").val("{{Am.ExtendImportPeriod}}")
+    
 
-    if ("{{Am.DeclarationIndigator}}" == "True" || "{{Am.DeclarationIndigator}}" == "true") {
-        $("#AmendDeclareIndicator").val("{{Am.DeclarationIndigator}}")
-        $("#AmendDeclareIndicator").prop("checked", true)
-    }
-    $("#AmendType").val("{{Am.AmendType}}")
+
+    
 </script>
 {% endfor %}
+
 {% endif %}
-{% endif %}
 
-{% if CancelPages %}
-<script>
-    $("#CancelTab").show()
-    $("#FinalDeclar").hide();
-    $("#FinalSubmitDiv").hide();
-    $("#NextCancelTab11").show();
-    $("#StatusType").val("CNL");
-    $("#CancelPermitNumber").val("{{PermitNumber}}")
-    $("#PermitNumberId").val("{{PermitNumber}}")
-
-    "{% for reson in ReasonForCancel %}"
-    $("#ResonForCancel").append(`<option>{{reson.Name}}:{{reson.Description}}</option>`)
-    "{% endfor %}"
-
-    "{% for CanData in CancelData%}"
-    $("#CancelPermitNumber").val("{{CanData.Permitno}}")
-    $("#CancelUpdateIndicator").val("{{CanData.UpdateIndicator}}")
-    $("#CancelPermitNumberReplacement").val("{{CanData.ReplacementPermitno}}")
-    $("#ResonForCancel").val("{{CanData.ResonForCancel}}")
-    $("#DescriptionOfReason").val("{{CanData.DescriptionOfReason}}")
-    $("#CancelDeclareIndicator").val("{{CanData.DeclarationIndigator}}")
-    if ('{{CanData.DeclarationIndigator}}' == "True") {
-        $("#CancelDeclareIndicator").prop("checked", true)
-    }
-    $("#CancelationType").val("{{CanData.CancelType}}")
-    "{% endfor %}"
-
-    $(document).ready(function () {
-        $.ajax({
-            url: "/AttachInNon/",
-            data: {
-                Method: "LOAD",
-                PermitId: $("#PermitIDInNon").val(),
-                Type: "CNL",
-            },
-            success: function (response) {
-                console.log("Attach Page Loaded ...!");
-                CancelAttachLoad(response.attachFile);
-            },
-        });
-    });
-</script>
-{% endif %}
 
 {% endblock %}

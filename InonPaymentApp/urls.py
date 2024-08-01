@@ -10,6 +10,7 @@ urlpatterns = [
     path('InNonList/', views.InNonList.as_view()),
     path('InonPayement/', views.InonPayment.as_view()),
     path('InonPayementEdit/', views.InonPaymentEdit.as_view()),
+    path('InonPaymentShow/<id>/', views.InonPaymentShow.as_view()),
     path("InonImporterSearch/", views.ImporterInon), 
     path("InNonExcelDownload/", views.InNonExcelDownload),
     path("InNonPartyLoad/", views.PartyLoad.as_view()),
@@ -37,7 +38,8 @@ urlpatterns = [
     path("DownloadCcpInNon/<Data>/", views.DownloadCcpInNon.as_view()),
     path("InNonDelHblHawb/<PermitId>/", views.InNonDelHblHawb.as_view()),
     path("DownloadDataInNon/<Id>/", views.DownloadDataInNon.as_view()),
-    path("InonSubmit/", views.InNonSubmit),  
+    path("InonSubmit/", views.InNonSubmit), 
+    path("ItemCodeSave/", views.ItemCodeSave.as_view()), 
 ]
 
 router = DefaultRouter()

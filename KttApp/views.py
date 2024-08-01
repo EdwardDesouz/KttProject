@@ -105,6 +105,7 @@ def InpaymentNew(request, arg):
     nowJobId = datetime.now().strftime("%Y-%m-%d")
     Username = request.session["Username"]
     Permit_Id = request.session["Permit_Id"]
+    currentDate = datetime.now().strftime("%d/%m/%Y")
     s = SqlDb()
     context = {}
     if arg == "REFUND":
@@ -157,6 +158,11 @@ def InpaymentNew(request, arg):
                     "Header": InheaderTbl.objects.filter(PermitId=Permit_Id),
                 }
             )
+            print("Header:")
+            for key, value in context["Header"].values()[0].items():
+                print(f"{key}: {value}")
+            
+            
         if arg == "SHOW":
             context.update({"SHOW": True})
 
@@ -230,6 +236,7 @@ def InpaymentNew(request, arg):
             "headname": headData[0][11],
             "headname1": headData[0][12],
             "headdataCode": headData[0][13],
+            "CurrentDate": currentDate ,
             "DeclarationType": CommonMaster.objects.filter(TypeId=1, StatusId=1),
             "InondeclarationTypeValue": CommonMaster.objects.filter(
                 TypeId=13, StatusId=1
@@ -353,16 +360,22 @@ def ItemExcelUpload(request):
     
 
     ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo")
+    print('ItemInfo:', ItemInfo)
+    print('ItemInfo data types:', ItemInfo.dtypes)
 
     casc = False
     contain = False
     if "Casccodes" in pd.ExcelFile(xlsx_file).sheet_names:
         CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
         casc = True
+        print('CascInfo:', CascInfo)
+        print('CascInfo data types:', CascInfo.dtypes)
 
     if "ContainerInfo" in pd.ExcelFile(xlsx_file).sheet_names:
         contain = True
         ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
+        print('ContainerInfo:', ContainerInfo)
+        print('ContainerInfo data types:', ContainerInfo.dtypes)
     
     ItemData = []
     CascData = []
@@ -558,7 +571,7 @@ def ItemExcelUpload(request):
                             InHAWBOBL="",
                             HSUOM=row["HSUOM"],
                             InvoiceNo=row["InvoiceNumber"],
-                            UnitPriceCurrency= "--Select--",
+                            UnitPriceCurrency="--Select--",
                             UnitPrice="0.00",
                             TotalDutiableQty="0.00",
                             TotalDutiableUOM="--Select--",
@@ -680,8 +693,376 @@ def ItemExcelUpload(request):
     
 
     Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
-    ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values() )
-    return JsonResponse({"Item": Item, "ItemCasc": ItemCasc, "Result": "Deleted"})
+    ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+
+    print("Item Data:")
+    for item in Item:
+        for key, value in item.items():
+            print(f"{key}: {type(value)}")
+
+    print("\nItem Casc Data:")
+    for item_casc in ItemCasc:
+        for key, value in item_casc.items():
+            print(f"{key}: {type(value)}")
+
+    return JsonResponse({"Item": Item, "ItemCasc": ItemCasc,"message": "All Item Inserted Successfully", "Result": "Deleted"})
+
+
+
+# def ItemExcelUpload(request):
+
+#     xlsx_file = request.FILES["file"]
+
+#     PermitId = request.POST.get("PermitId")
+#     MsgType = request.POST.get("MsgType")
+#     userName = request.POST.get("UserName")
+#     TouchTime = request.POST.get("TouchTime")
+    
+#     # Read the Excel file, explicitly specifying the data type of the "HSCode" column as string
+#     ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo", dtype={"HSCode": str})
+#     print('ItemInfo:',ItemInfo)
+#     print('ItemInfo data types:', ItemInfo.dtypes)
+    
+#     casc = False
+#     contain = False
+#     if "Casccodes" in pd.ExcelFile(xlsx_file).sheet_names:
+#         CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
+#         casc = True
+#         print('CascInfo:', CascInfo)
+#         print('CascInfo data types:', CascInfo.dtypes)
+
+#     if "ContainerInfo" in pd.ExcelFile(xlsx_file).sheet_names:
+#         contain = True
+#         ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
+#         print('ContainerInfo:', ContainerInfo)
+#         print('ContainerInfo data types:', ContainerInfo.dtypes)
+#     ItemData = []
+#     CascData = []
+#     ContainerData = []
+
+#     ItemColumns = {
+#         "CountryofOrigin": "",
+#         "HSCode": "",
+#         "HSQty": "0.00",
+#         "TotalLineAmount": "0.00",
+#         "ItemCode": "",
+#         "Description": "",
+#         "DGIndicator": "False",
+#         "Brand": "",
+#         "Model": "",
+#         "InHAWBOBL": "",
+#         "OutHAWBOBL": "",
+#         "HSUOM": "--Select--",
+#         "InvoiceNumber": "",
+#         "ItemCurrency": "--Select--",
+#         "UnitPrice": "0.00",
+#         "TotalDutiableQty": "0.00",
+#         "TotalDutiableUOM": "--Select--",
+#         "DutiableQty": "0.00",
+#         "DutiableUOM": "--Select--",
+#         "OuterPackQty": "0.00",
+#         "OuterPackUOM": "--Select--",
+#         "InPackQty": "0.00",
+#         "InPackUOM": "--Select--",
+#         "InnerPackQty": "0.00",
+#         "InnerPackUOM": "--Select--",
+#         "InmostPackQty": "0.00",
+#         "InmostPackUOM": "--Select--",
+#         "LastSellingPrice": "0.00",
+#         "TarrifPreferentialCode": "--Select--",
+#         "OtherTaxRate": "0.00",
+#         "OtherTaxUOM": "--Select--",
+#         "OtherTaxAmount": "0.00",
+#         "CurrentLot": "",
+#         "PreviousLot": "",
+#         "AlcoholPercentage": "0.00",
+#         "ShippingMarks1": "",
+#         "ShippingMarks2": "",
+#         "ShippingMarks3": "",
+#         "ShippingMarks4": "",
+#     }
+
+#     CascColumn = {
+#         "ItemNo": "",
+#         "ProductCode": "",
+#         "Quantity": "0.00",
+#         "ProductUOM": "--Select--",
+#         "RowNo": "",
+#         "CascCode1": "",
+#         "CascCode2": "",
+#         "CascCode3": "",
+#         "CASCId": "",
+#     }
+
+#     ContainerColumn = {
+#         "SNo": "",
+#         "ContainerNo": "",
+#         "SizeType": "",
+#         "Weight": "",
+#         "SealNo": "",
+#     }
+
+#     ItemInfo.fillna(ItemColumns, inplace=True)
+    
+    
+#     if casc and contain:
+#         for index, row in ItemInfo.iterrows():
+#             ItemLen = len(ItemDtl.objects.filter(PermitId=PermitId)) + (index + 1)
+#             try:
+#                 ItemData.append(
+#                     ItemDtl(
+#                         Contry=row["CountryofOrigin"],
+#                         HSCode=row["HSCode"],
+#                         HSQty=row["HSQty"],
+#                         TotalLineAmount=row["TotalLineAmount"],
+#                         Description=row["Description"],
+#                         DGIndicator=row["DGIndicator"],
+#                         Brand=row["Brand"],
+#                         Model=row["Model"],
+#                         InHAWBOBL=row["InHAWBOBL"],
+#                         HSUOM=row["HSUOM"],
+#                         InvoiceNo=row["InvoiceNumber"],
+#                         UnitPriceCurrency=row["ItemCurrency"],
+#                         UnitPrice=row["UnitPrice"],
+#                         TotalDutiableQty=row["TotalDutiableQty"],
+#                         TotalDutiableUOM=row["TotalDutiableUOM"],
+#                         DutiableQty=row["DutiableQty"],
+#                         DutiableUOM=row["DutiableUOM"],
+#                         OPQty=row["OuterPackQty"],
+#                         OPUOM=row["OuterPackUOM"],
+#                         IPQty=row["InPackQty"],
+#                         IPUOM=row["InPackUOM"],
+#                         InPqty=row["InnerPackQty"],
+#                         InPUOM=row["InnerPackUOM"],
+#                         ImPQty=row["InmostPackQty"],
+#                         ImPUOM=row["InmostPackUOM"],
+#                         LSPValue=row["LastSellingPrice"],
+#                         PreferentialCode=row["TarrifPreferentialCode"],
+#                         OtherTaxRate=row["OtherTaxRate"],
+#                         OtherTaxUOM=row["OtherTaxUOM"],
+#                         OtherTaxAmount=row["OtherTaxAmount"],
+#                         CurrentLot=row["CurrentLot"],
+#                         PreviousLot=row["PreviousLot"],
+#                         AlcoholPer=row["AlcoholPercentage"],
+#                         ShippingMarks1=row["ShippingMarks1"],
+#                         ShippingMarks2=row["ShippingMarks2"],
+#                         ShippingMarks3=row["ShippingMarks3"],
+#                         ShippingMarks4=row["ShippingMarks4"],
+#                         ItemNo=ItemLen,
+#                         PermitId=PermitId,
+#                         MessageType=MsgType,
+#                         TouchUser=userName,
+#                         TouchTime=TouchTime,
+#                         InvoiceQuantity="0.00",
+#                         ChkUnitPrice="0.00",
+#                         ExchangeRate="0.00",
+#                         SumExchangeRate="0.00",
+#                         InvoiceCharges="0.00",
+#                         CIFFOB="0.00",
+#                         GSTRate="0.00",
+#                         GSTUOM="PER",
+#                         GSTAmount="0.00",
+#                         ExciseDutyRate="0.00",
+#                         ExciseDutyUOM="--Select--",
+#                         ExciseDutyAmount="0.00",
+#                         CustomsDutyRate="0.00",
+#                         CustomsDutyUOM="",
+#                         CustomsDutyAmount="0.00",
+#                         Making="--Select--",
+#                         VehicleType="--Select--",
+#                         EngineCapcity="--Select--",
+#                         EngineCapUOM="--Select--",
+#                         orignaldatereg=TouchTime,
+#                         OptionalChrgeUOM="--Select--",
+#                         Optioncahrge="0.00",
+#                         OptionalSumtotal="0.00",
+#                         OptionalSumExchage="0.00",
+#                     )
+#                 )
+#             except Exception as e:
+#                 pass
+        
+#         ItemDtl.objects.bulk_create(ItemData)  
+#     else:
+#         ItemColumns = {
+#             "Description" : "",
+#             "HSCode" : "",
+#             "HSUOM" : "--Select--",
+#             "INV QTY" : "0.00",
+#             "HSQty" : "0.00",
+#             "ProductCode" : "",
+#             "Quantity" : "0.00",
+#             "ProductUOM" : "--Select--",
+#             "CountryofOrigin" : "",
+#             "RowNo" : "",
+#             "CascCode1" : "",
+#             "CascCode2" : "",
+#             "CascCode3" : "",
+#             "CASCId" : "",
+#             "Brand" : "",
+#             "InvoiceNumber" : "",
+#             "Currency" : "0.00",
+#             "Exchangerate" : "0.00",
+#             "Total Line Amount " : "0.00",
+#             "Invoice Amount " : "0.00",
+#             "Other Amount " : "0.00",
+#             "Freight Amount" : "0.00",
+#             "insurance Amount" : "0.00",
+#             "invoice charge " : "0.00",
+#             "CIF value " : "0.00",
+#             "GST Amount " : "0.00",  
+#         }                       
+#         ItemInfo.fillna(ItemColumns, inplace=True)
+        
+#         for index, row in ItemInfo.iterrows():
+#             ItemLen = len(ItemDtl.objects.filter(PermitId=PermitId))+1
+#             if row["HSCode"] != "":
+#                 try: 
+#                     ItemDtl.objects.create(
+#                             Contry=row["CountryofOrigin"],
+#                             HSCode=str(row["HSCode"]),
+#                             HSQty=row["HSQty"],
+#                             TotalLineAmount=row["Total Line Amount"],
+#                             Description=row["Description"],
+#                             DGIndicator="False",
+#                             Brand=row["Brand"],
+#                             Model="",
+#                             InHAWBOBL="",
+#                             HSUOM=row["HSUOM"],
+#                             InvoiceNo=row["InvoiceNumber"],
+#                             UnitPriceCurrency="--Select--",
+#                             UnitPrice="0.00",
+#                             TotalDutiableQty="0.00",
+#                             TotalDutiableUOM="--Select--",
+#                             DutiableQty="0.00",
+#                             DutiableUOM="--Select--",
+#                             OPQty="0.00",
+#                             OPUOM="--Select--",
+#                             IPQty="0.00",
+#                             IPUOM="--Select--",
+#                             InPqty="0.00",
+#                             InPUOM="--Select--",
+#                             ImPQty="0.00",
+#                             ImPUOM="--Select--",
+#                             LSPValue="0.00",
+#                             PreferentialCode="--Select--",
+#                             OtherTaxRate="0.00",
+#                             OtherTaxUOM="--Select--",
+#                             OtherTaxAmount="0.00",
+#                             CurrentLot="",
+#                             PreviousLot="",
+#                             AlcoholPer="0.00",
+#                             ShippingMarks1="",
+#                             ShippingMarks2="",
+#                             ShippingMarks3="",
+#                             ShippingMarks4="",
+#                             ItemNo=ItemLen,
+#                             PermitId=PermitId,
+#                             MessageType=MsgType,
+#                             TouchUser=userName,
+#                             TouchTime=TouchTime,
+#                             InvoiceQuantity="0.00",
+#                             ChkUnitPrice="0.00",
+#                             ExchangeRate="0.00",
+#                             SumExchangeRate="0.00",
+#                             InvoiceCharges="0.00",
+#                             CIFFOB="0.00",
+#                             GSTRate="0.00",
+#                             GSTUOM="PER",
+#                             GSTAmount="0.00",
+#                             ExciseDutyRate="0.00",
+#                             ExciseDutyUOM="--Select--",
+#                             ExciseDutyAmount="0.00",
+#                             CustomsDutyRate="0.00",
+#                             CustomsDutyUOM="",
+#                             CustomsDutyAmount="0.00",
+#                             Making="--Select--",
+#                             VehicleType="--Select--",
+#                             EngineCapcity="--Select--",
+#                             EngineCapUOM="--Select--",
+#                             orignaldatereg="",
+#                             OptionalChrgeUOM="--Select--",
+#                             Optioncahrge="0.00",
+#                             OptionalSumtotal="0.00",
+#                             OptionalSumExchage="0.00",
+#                         )
+#                     if row["ProductCode"] != "":
+#                         Cascdtl.objects.create(
+#                             ItemNo=ItemLen,
+#                             ProductCode=row["ProductCode"],
+#                             Quantity=row["Quantity"],
+#                             ProductUOM=row["ProductUOM"],
+#                             RowNo=str(row["RowNo"]),
+#                             CascCode1=row["CascCode1"],
+#                             CascCode2=row["CascCode2"],
+#                             CascCode3=row["CascCode3"],
+#                             PermitId=PermitId,
+#                             MessageType=MsgType,
+#                             TouchUser=userName,
+#                             TouchTime=TouchTime,
+#                             CascId=row["CASCId"],
+#                         )
+
+#                 except Exception as e:
+#                     print("Error while creating object:", e)
+#             else:
+#                 print("Loop is Breaked")
+#                 break
+    
+
+#     if casc:
+#         CascInfo.fillna(CascColumn, inplace=True)
+#         for index, row in CascInfo.iterrows():
+#             if row["ProductCode"] != "":
+#                 CascData.append(
+#                     Cascdtl(
+#                         ItemNo=row["ItemNo"],
+#                         ProductCode=row["ProductCode"],
+#                         Quantity=row["Quantity"],
+#                         ProductUOM=row["ProductUOM"],
+#                         RowNo=row["RowNo"],
+#                         CascCode1=row["CascCode1"],
+#                         CascCode2=row["CascCode2"],
+#                         CascCode3=row["CascCode3"],
+#                         PermitId=PermitId,
+#                         MessageType=MsgType,
+#                         TouchUser=userName,
+#                         TouchTime=TouchTime,
+#                         CascId=row["CASCId"],
+#                     )
+#                 )
+#         Cascdtl.objects.bulk_create(CascData)
+    
+#     if contain:
+#         ContainerInfo.fillna(ContainerColumn, inplace=True)
+#         for index, row in ContainerInfo.iterrows():
+#             if row["SNo"] != "":
+#                 ContainerData.append(
+#                     PermitId=PermitId,
+#                     RowNo=row["SNo"],
+#                     ContainerNo=row["ContainerNo"],
+#                     size=row["SizeType"],
+#                     weight=row["Weight"],
+#                     SealNo=row["SealNo"],
+#                     MessageType=MsgType,
+#                     TouchUser=userName,
+#                     TouchTime=TouchTime,
+#                 )
+#         ContainerDtl.objects.bulk_create(ContainerData)
+    
+
+#     Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+#     ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+#     print("Item Data:")
+#     for item in Item:
+#         for key, value in item.items():
+#             print(f"{key}: {type(value)}")
+
+#     print("\nItem Casc Data:")
+#     for item_casc in ItemCasc:
+#         for key, value in item_casc.items():
+#             print(f"{key}: {type(value)}")
+#     return JsonResponse({"Item": Item, "ItemCasc": ItemCasc,"message": "All Item Inserted Successfully", "Result": "Deleted"})
 
 
 def AllItemUpdate(request):
@@ -762,12 +1143,8 @@ def AllItemUpdate(request):
             )
             s.cursor.execute(Qry, Val)
         s.conn.commit()
-        Item = list(
-            ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values()
-        )
-        ItemCasc = list(
-            Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values()
-        )
+        Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+        ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
         return JsonResponse(
             {
                 "Item": Item,
@@ -775,13 +1152,10 @@ def AllItemUpdate(request):
                 "message": "All Item Updated Successfully!!!",
             }
         )
-    except:
-        Item = list(
-            ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values()
-        )
-        ItemCasc = list(
-            Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values()
-        )
+    except Exception as e:
+        print(e)
+        Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+        ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
         return JsonResponse(
             {
                 "Item": Item,
@@ -925,20 +1299,46 @@ def LoadingPartyModels(request):
     )
 
 
+# def InpaymentItemDelHblHawb(request):
+#     for item in ItemDtl.objects.filter(PermitId=request.session["Permit_Id"]):
+#         obj = ItemDtl.objects.get(id=item.id)
+#         obj.InHAWBOBL = ""
+#         obj.save()
+#     return JsonResponse(
+#         {
+#             "Item": list(
+#                 ItemDtl.objects.filter(PermitId=request.session["Permit_Id"])
+#                 .order_by("ItemNo")
+#                 .values()
+#             )
+#         }
+#    )
+
 def InpaymentItemDelHblHawb(request):
-    for item in ItemDtl.objects.filter(PermitId=request.session["Permit_Id"]):
+    items = ItemDtl.objects.filter(PermitId=request.session["Permit_Id"])
+
+    for item in items:
         obj = ItemDtl.objects.get(id=item.id)
         obj.InHAWBOBL = ""
         obj.save()
+
+    item_values = list(
+        items.order_by("ItemNo").values()
+    )
+
+    # Print key-value pairs to the terminal
+    print('hello')
+    for item in item_values:
+        for key, value in item.items():
+            print(f"{key}: {value}")
+
     return JsonResponse(
         {
-            "Item": list(
-                ItemDtl.objects.filter(PermitId=request.session["Permit_Id"])
-                .order_by("ItemNo")
-                .values()
-            )
+            "Item": item_values
         }
     )
+
+   
 
 
 class CargoPageSave(View, SqlDb):
@@ -1117,8 +1517,8 @@ class CargoPageSave(View, SqlDb):
                 )
 
         elif DbName == "InhouseItemCodeModel":
-            Qry = "select code from InhouseItemCode where code = %s"
-            Val = (request.POST.get("code"),)
+            Qry = "select InhouseCode from InhouseItemCode where InhouseCode = %s"
+            Val = (request.POST.get("InhouseCode"),)
             self.cursor.execute(Qry, Val)
             if not (self.cursor.fetchall()):
                 Qry = "INSERT INTO InhouseItemCode(InhouseCode,Hscode,Description,Brand,Model,DgIndicator,DeclType,ProductCode,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) "

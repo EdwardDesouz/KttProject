@@ -1,0 +1,74 @@
+{% extends 'Inpayment/InpaymentList.html' %} 
+{% load static %}
+{% block content %}
+
+<section class="InonPayment-list-ShowColumns">
+    <div class="row mt-3">
+        <div class="col-11"></div>
+        
+    </div>
+</section>
+
+<section class="InonPayment-list-ScndButton">
+    <label for="InnonPaymentNoofRows">NO OF ROWS</label>
+    <select id="InnonPaymentNoofRows" class="Dropdown" style="width: 70px;">
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="100">ALL</option>
+    </select>
+    <select id="InnonPaymentTransmitData" class="Dropdown" style="width: 250px;margin-left: 20px;">
+        {% for i in ManageUserMail %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransTransmitDataClick()">DOWNLOAD
+        DATA</button>
+    
+   
+</section>
+
+<section class="InnonPayment-Table">
+    <table id="TranshipmentTable">
+        <thead>
+            <tr>
+                <th><input type="checkbox" onclick="ListAllCheckSubmit()" id="ListAllCheckSubmitId"></th>
+                
+                <th>EDIT</th>
+                <th>VIEW</th>
+                <th>HS CODE</th>
+                <th>DESCRIPTION</th>
+                <th>HS UOM</th>
+                <th>CPRODUCT CODE</th>
+                <th>PRODUCT DESCRIPTION</th>
+                <th>PRODUCT UOM</th>
+                <th>CASC CODE</th>
+                <th>IMPORT CONTROL</th>
+                <th>OUTWARD CONTROL</th>
+                <th>TRASNHIPMENT CONTROL</th>
+            </tr>
+        </thead>
+        <tfoot>
+            <tr>
+                <th></th>
+                
+                <th></th>
+                <th></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle" id="FootStatus"></th>
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+<script src="{% static 'js/hscode/hslist.js' %}"></script>
+
+{% endblock %}

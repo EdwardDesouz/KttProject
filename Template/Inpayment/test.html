@@ -1,0 +1,202 @@
+<script>
+
+function HsOnFocusOut() {
+    // Hiding elements
+    $('#hsControledId').hide();
+    $('#VehicalTypeShow').hide();
+    $('#EngineCapacityShow').hide();
+    $('#OriginalShow').hide();
+    $('#itemDutiableQtyNone').hide();
+    $('#itemAlchoholNone').hide();
+    $('#OptimalCharges').hide();
+
+    // Resetting input values
+    $("#itmeDescription").val("");
+    $('#itemDutiableQtyNone input').val("0.00");
+    $('#itemDutiableQtyNone select').val("--Select--");
+    $('#itemAlchoholNone input').val("0.00");
+    $('#itemAlchoholNone select').val("--Select--");
+    $('#itemExciseDutyInput1').val("0.00");
+    $('#itemCustomsDutyInput1').val("0.00");
+    $('#itemExciseDutyInput2').val("0.00");
+    $('#itemCustomsDutyInput2').val("0.00");
+    $('#VehicalTypeUom').val('--Select--');
+    $('#EngineCapacity').val('0.00');
+    $('#EngineCapacityUom').val('--Select--');
+    $('#OriginalRegistrationDate').val('');
+    $('#OptionalChrgeUOM').val('--Select--');
+    $('#Optioncahrge').val('0.00');
+    $('#OptionalSumtotal').val('0.00');
+    $('#OptionalSumExchage').val('0.00');
+
+    // Splitting code value
+    let code = ($('#ItemHsCode').val()).split(":");
+
+    console.log("hscode:", code);
+
+    if ($('#ItemHsCode').val() != "") {
+        for (var i of ItemHsCodeData) {
+            if (i.HSCode == code[0].trim()) {
+                // Check if inpayment is 1
+                if (Number(i.Inpayment) == 1) {
+                    $('#hsControledId').show();
+                    document.getElementById('itemCascID').checked = true;
+                    ItemCascShowAll('#itemCascID', '.OutItemCascHide');
+                } else {
+                    document.getElementById('itemCascID').checked = false;
+                    ItemCascShowAll('#itemCascID', '.OutItemCascHide');
+                    document.getElementById('packing_details').checked = false;
+                    ItemCascShowAll('#packing_details', '.PackingDetails');
+                }
+
+                // Set item HS code and description
+                $('#ItemHsCode').val(i.HSCode);
+                let chh = true;
+
+                InhouseItemCode.filter((ans) => {
+                    if ((ans.InhouseCode).toUpperCase() == $("#itemItemCode").val().trim().toUpperCase()) {
+                        if (ans.HSCode == i.HSCode) {
+                            $('#itmeDescription').val(ans.Description);
+                            chh = false;
+                        } else {
+                            $('#itemItemCode').val("");
+                        }
+                    }
+                });
+
+                if (chh) {
+                    $('#itmeDescription').val(i.Description);
+                }
+
+                // Setting values based on dutyId and uom
+                $('#itemHsQuantity').val(i.UOM);
+                $('#itemDutyIDDummy').val(i.DUTYTYPID);
+                $('#kgmvisibleDummy').val(i.Kgmvisible);
+                let dutyId = i.DUTYTYPID;
+                let uom = i.UOM;
+                let DutiableUom = i.DuitableUom;
+                let ExUom = i.Excisedutyuom;
+                let ExRate = i.Excisedutyrate;
+                let CustUom = i.Customsdutyuom;
+                let CustRate = i.Customsdutyrate;
+
+                // Conditional logic based on dutyId and uom
+                if (dutyId == 62 || dutyId == 63) {
+                    if (dutyId == 62 && uom == "LTR") {
+                        // Show relevant elements
+                        $('#ItemDutiableUom').val(uom);
+                        $('#itemTotalDuitableUom').val(uom);
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').show();
+
+                        // Set checkbox state and show relevant elements
+                        $('#packing_details').prop('checked', true);
+                        ItemCascShowAll('#packing_details', '.PackingDetails');
+                    } else if (dutyId == 63 && uom == "KGM" || dutyId == 62 && uom != "LTR") {
+                        // Show relevant elements
+                        $('#ItemDutiableUom').val(uom);
+                        $('#itemTotalDuitableUom').val(uom);
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').hide();
+
+                        // Set checkbox state and hide relevant elements
+                        $('#packing_details').prop('checked', false);
+                        ItemCascShowAll('#packing_details', '.PackingDetails');
+                    } else {
+                        // Show relevant elements
+                        $('#ItemDutiableUom').val(uom);
+                        $('#itemTotalDuitableUom').val(uom);
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').show();
+
+                        // Set checkbox state and show relevant elements
+                        $('#packing_details').prop('checked', true);
+                        ItemCascShowAll('#packing_details', '.PackingDetails');
+                    }
+
+                    if (DutiableUom == 'A') {
+                        $('#ItemDutiableUom').val('--Select--');
+                    }
+
+                    HsCustemmCheck(ExUom, '#itemExciseDutyInput2');
+                    HsCustemmCheck(CustUom, '#itemCustomsDutyInput2');
+                    $('#itemExciseDutyInput1').val(ExRate);
+                    $('#itemCustomsDutyInput1').val(CustRate);
+                } else if (dutyId == 64) {
+                    if (uom != 'LTR') {
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').hide();
+                    } else {
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').show();
+
+                        // Set checkbox state and show relevant elements
+                        $('#packing_details').prop('checked', true);
+                        ItemCascShowAll('#packing_details', '.PackingDetails');
+                    }
+
+                    if (DutiableUom == 'A') {
+                        $('#ItemDutiableUom').val('--Select--');
+                    }
+
+                    HsCustemmCheck(ExUom, '#itemExciseDutyInput2');
+                    HsCustemmCheck(CustUom, '#itemCustomsDutyInput2');
+                    $('#itemExciseDutyInput1').val(ExRate);
+                    $('#itemCustomsDutyInput1').val(CustRate);
+                } else if (dutyId == 61) {
+                    if (dutyId == 61 && uom == 'LTR') {
+                        // Show relevant elements
+                        $('#ItemDutiableUom').val(uom);
+                        $('#itemTotalDuitableUom').val(uom);
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').show();
+
+                        // Set checkbox state and show relevant elements
+                        $('#packing_details').prop('checked', true);
+                        ItemCascShowAll('#packing_details', '.PackingDetails');
+
+                        HsCustemmCheck(ExUom, '#itemExciseDutyInput2');
+                        HsCustemmCheck(CustUom, '#itemCustomsDutyInput2');
+                        $('#itemExciseDutyInput1').val(ExRate);
+                        $('#itemCustomsDutyInput1').val(CustRate);
+                    } else if (dutyId == 61 && uom == 'KGM') {
+                        // Show relevant elements
+                        $('#ItemDutiableUom').val(uom);
+                        $('#itemTotalDuitableUom').val(uom);
+                        $('#itemDutiableQtyNone').show();
+                        $('#itemAlchoholNone').hide();
+
+                        HsCustemmCheck(ExUom, '#itemExciseDutyInput2');
+                        HsCustemmCheck(CustUom, '#itemCustomsDutyInput2');
+                        $('#itemExciseDutyInput1').val(ExRate);
+                        $('#itemCustomsDutyInput1').val(CustRate);
+                    } else {
+                        $('#itemDutiableQtyNone').hide();
+                        $('#itemAlchoholNone').hide();
+                    }
+                }
+
+                // Check if code starts with '87' and show relevant elements
+                if (code[0].startsWith('87')) {
+                    for (var i of ChkHsCode) {
+                        if (code[0] == i.HSCode) {
+                            $('#VehicalTypeShow').show();
+                            $('#EngineCapacityShow').show();
+                            $('#OriginalShow').show();
+                            $('#itemDutiableQtyNone').show();
+                            $('#OptimalCharges').show();
+
+                            HsCustemmCheck(ExUom, '#itemExciseDutyInput2');
+                            HsCustemmCheck(CustUom, '#itemCustomsDutyInput2');
+                            $('#itemExciseDutyInput1').val(ExRate);
+                            $('#itemCustomsDutyInput1').val(CustRate);
+                            $('#ItemDutiableUom').val(uom);
+                            $('#itemTotalDuitableUom').val(uom);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+</script>

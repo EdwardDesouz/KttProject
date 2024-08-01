@@ -1,0 +1,2134 @@
+{% extends 'Inpayment/InpaymentList.html'  %}
+{% load static %}
+{% block content %}
+<link href="{% static 'fontawesomefree/css/fontawesome.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/brands.css' %}" rel="stylesheet" type="text/css">
+<link href="{% static 'fontawesomefree/css/solid.css' %}" rel="stylesheet" type="text/css">
+
+<script src="{% static 'js/InpaymentJs/InpaymentJs.js'%}"></script>
+<script src="{% static 'js/COO/CooNewJs.js'%}"></script>
+<div id="InNonImporterSerchId"></div>
+<div class="row mt-3">
+    <div class="col-10"></div>
+    <div class="col-1">
+        <a href="/coolist/" class="ExitButton">ExitForm</a>
+    </div>
+</div>
+
+<div class="Container">
+    <link rel="stylesheet" href="https://unpkg.com/@trevoreyre/autocomplete-js/dist/style.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.css">
+
+    <section style="background-color: #fff;">
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="HeaderTab">HEADER</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="PartyTab">PARTY</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="CargoTab">CARGO</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="ItemTab">ITEM</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="SummaryTab">SUMMARY</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="AmendTab"
+            style="display: none;">AMEND</button>
+        <button type="button" class="NewBtns" onclick="TabHead(this.id)" id="CancelTab"
+            style="display: none;">CANCEL</button>
+    </section>
+    <div class="FinalClassPopup" id="Loading">
+        <div class="LoadImg"></div>
+    </div>
+    <form method="POST" style="padding: 10px;">
+        {% csrf_token %}
+      
+      
+       <!---------------------------------------------------Header--------------------------------------------------->
+   
+       <div id="Header">
+            <div class="row">
+                <div class="col-6">
+                    <div class="row mt-4">
+                        <div class="col-4">MESSAGE TYPE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="MsgType" value="COODEC">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">APPLICATION TYPE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" disabled id="ApplicationType" value="COO">
+
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">PREVIOUS PERMIT NO</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="PreviousPermitNo" tabindex="2" onfocusout=CooPreviousPermit() tabindex="1">
+                        </div>
+                    </div>
+
+
+                    <div class="row mt-3" id="OutwardVisible">
+                        <div class="col-4">OUTWARD TRANSPORT MODE</div>
+                        <div class="col-8">
+                            <select class="Dropdown HighLight" id="OutwardTranseportMode" onchange="OutwardChange()" onfocusout="CooTransportMode()" tabindex="2">
+                            
+                                <option selected>--Select--</option>
+                                {% for i in OutwardTransportMode %}
+                                <option>{{i.Name}}</option>
+
+                                {% endfor %}
+                            </select>
+                            <span1 class="ErrColor" class="ErrorColor" id="OutwardTranseportModeSpan">PLEASE CHOOSE
+                                OUTWARD
+                            </span1>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARING FOR</div>
+                        <div class="col-8">
+                            <select class="Dropdown HighLight" id="DeclaringFor" tabindex="3">
+                                <option selected>--Select--</option>
+                                {% for i in DeclaringFor %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                            <span1 class="ErrorColor" id="DeclaringForSpan">PLEASE CHOOSE DECLARING FOR</span1>
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="OverRideExchangeRate">OVERRIDE EXCHANGE RATE</label></div>
+                        <div class="col-8"><input type="checkbox" id="OverRideExchangeRate" value="False" tabindex="4">
+                        </div>
+                    </div>
+
+                    <div class="row mt-3">
+                        <div class="col-4"><label for="ReferenceDocuments">REFERENCE DOCUMENT</label></div>
+                        <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False" tabindex="5" onclick="CooReferenceDocument()"></>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;" >
+                        <div class="col-4">PERMIT ID</div>
+                        <div class="col-8"><input type="text" id="PermitIDInNon" value="{{PermitId}}"
+                                class="inputStyle" disabled></div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">USER NAME</div>
+                        <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
+                                disabled></div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">MSG ID</div>
+                        <div class="col-8"><input type="text" id="MSGID" value="{{MsgId}}" class="inputStyle" disabled>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">JOB ID</div>
+                        <div class="col-8"><input type="text" id="JOBID" value="{{JobId}}" class="inputStyle" disabled>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">REF ID</div>
+                        <div class="col-8"><input type="text" id="REFID" value="{{RefId}}" class="inputStyle" disabled>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">PERMIT NUMBER</div>
+                        <div class="col-8"><input type="text" id="PermitNumberId" value="" class="inputStyle" disabled>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">ACCOUNT ID</div>
+                        <div class="col-8"><input type="text" id="AccountId" value="{{AccountId}}" class="inputStyle"
+                                disabled>
+                        </div>
+                    </div>
+                    <div class="row mt-3" style="display: none;">
+                        <div class="col-4">STATUS TYPE</div>
+                        <div class="col-8"><input type="text" id="StatusType" value="NEW" class="inputStyle" disabled>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+                <div class="col-5">
+                    <div class="row mt-4">
+                        <div class="col-4">MAILBOX ID</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" disabled id="MailBoxId"
+                                value="{{MailBoxId}}">
+                                <span class="ErrColor" class="ErrorColor" id="OutwardMailSpan">ENTER YOUR MAIL
+                                </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT NAME</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantName"
+                                value="{{DeclarantName}}">
+                                <span class="ErrColor" class="ErrorColor" id="OutwardNameSpan">ENTER YOUR NAME
+                                </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT CODE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantCode"
+                                value="{{DeclarantCode}}">
+                                <span class="ErrColor" class="ErrorColor" id="OutwardCodeSpan">ENTER YOUR DECLARANT CODE
+                                </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">DECLARANT TELEPHONE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" disabled id="DeclarantTelePhone"
+                                value="{{DeclarantTel}}">
+                                <span class="ErrColor" class="ErrorColor" id="OutwardTelephoneSpan">ENTER YOUR DECLARANT TELEPHONE
+                                </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">CR UEI NO</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle HighLight" disabled id="CrueiNo" value="{{CRUEI}}">
+                            <span class="ErrColor" class="ErrorColor" id="OutwardCRUEISpan">ENTER YOUR CR UEI NO
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">ADDITIONAL RECIPIENTS</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 1</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient1" tabindex="6">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 2</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient2" tabindex="7">
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-4">RECIPIENTS 3</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle" id="Recipient3" tabindex="8">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display: none;" id="ReferenceShow">
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">LICENCE</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-6">
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" class="inputStyle" id="License1" tabindex="11">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" class="inputStyle" id="License2" tabindex="12">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" class="inputStyle" id="License3" tabindex="13">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" class="inputStyle" id="License4" tabindex="14">
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col">
+                                    <input type="text" class="inputStyle" id="License5" tabindex="15">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="row mt-3">
+                        <div class="col-12">
+                            <h1 class="Borderdiv">ATTACHMENT DOCUMENT</h1>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-5">DOCUMENT TYPE</div>
+                        <div class="col-5">ATTACHMENT</div>
+                        <div class="col-2"></div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-5">
+                            <select class="Dropdown" id="HeaddocumentType" tabindex="16">
+                                <option selected>--Select--</option>
+                                {% for i in DocumentAttachmentType %}
+                                <option>{{i.Name}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="col-4">
+                            <input type="file" class="inputChooseFile" id="HeadAttach" tabindex="17"
+                                accept=".pdf,.xlsx,.DOC,.DOCX,.XLS,.XLSX,.PDF,.JPG,.JPEG,.PNG,.BMP,.GIF,.TIF,.TIFF">
+                        </div>
+                        <div class="col-2"><button type="button" class="ButtonClick" tabindex="18"
+                                onclick="HeaderDocumentAttch()">ATTACH</button></div>
+                    </div>
+                    <div class="row mt-3" style="font-size: 9px;color: red;">
+                        TOTAL SIZE SHOULD NOT EXCEED 20000 (KB)
+                    </div>
+                    <div class="row" style="font-size: 9px;color: red;">
+                        FILE FORMAT : DOC,DOCX,XLS,XLSX,PDF,JPG,JPEG,PNG,BMP,GIF,TIF,TIFF
+                    </div>
+                    <div class="row mt-3" style="display: none;" id="HeaderDocumentTableshow">
+                        <div class="col-12">
+                            <table style="width: 100%;font-size: 10px;" id="HeaderAttachTable">
+                                <thead>
+                                    <td>Delete</td>
+                                    <td>Document Type</td>
+                                    <td>NAME</td>
+                                    <td>SIZE</td>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id='CooShowHide'>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <h1 class="Borderdiv">CERTIFICATE OF ORIGIN</h1>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="row mt-3" id="InwardVisible">
+                    <div class="col-3">CO TYPE</div> 
+                    <div class="col-3"></div> 
+                    <div class="col-2"> ADDITIONAL CERTIFICATE DETAILS</div>  
+                    <div class="col-2">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT DETAILS</div> 
+                </div>
+                
+                <div class="col-4 mt-3">
+                    <select class="Dropdown HighLight" id="cotypeTranseportMode" onchange="CooTypeChage()" onfocusout= "COOCoType()" tabindex="9">
+                        <option selected>--Select--</option>
+                        {% for i in cotypeMode %}
+                        <option>{{i.Name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span1 class="ErrColor" class="ErrorColor" id="inwardTranseportModeSpan">PLEASE SELECT CO TYPE
+                    </span1>
+                </div>
+                
+                <div class="col-2">
+               </div>
+                <div class="col-2 mt-3">
+                    <input type="text" class="inputStyle" id="AdditionalCer1">
+                </div>
+                <div class="col-2 mt-3">
+                    <input type="text" class="inputStyle" id="TransportDtl1">
+                </div>
+            </div>
+            <div class="row ">
+                <div class="row mt-4" id="Certificate1Visible">
+                    <div class="col-4">CERTIFICATE TYPE 1</div>
+                    <div class="col-2">&nbsp;&nbsp;&nbsp;&nbsp; COPIES</div>
+                </div>
+                <div class="col-4">
+                     <select class="Dropdown HighLight" id="Certificate1TranseportMode" onchange="CERTTUFCATE1Change()" onfocusout="CooCerti1()" tabindex="10"> 
+                        <option selected>--Select--</option>
+                        {% for i in CertificateMode1 %}
+                        <option>{{i.Name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span1 class="ErrColor" class="ErrorColor" id="Certificate1TranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span1>
+                </div>
+                
+                <div class="col-1">
+                    <input type="text" class="inputStyle" id="CooCopies1">
+                    
+                </div>
+                <div class="col-1">
+                    <div class="col-2"> </div>
+                    <div class="col-8">
+
+                    </div>
+
+
+
+                </div>
+                <div class="col-2">
+                    
+                    <input type="text" class="inputStyle" id="AdditionalCer2" >
+
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="TransportDtl2" >
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="row mt-4" id="Certificate2Visible">
+                    <div class="col-4">CERTIFICATE TYPE 2</div>
+                    <div class="col-2">&nbsp;&nbsp;&nbsp;&nbsp; COPIES</div>
+
+                </div>
+                <div class="col-4">
+                    <select class="Dropdown " id="Certificate2TranseportMode" tabindex="">
+                        <option selected>--Select--</option>
+                        {% for i in CertificateMode2 %}
+                        <option>{{i.Name}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="ErrColor" class="ErrorColor" id="Certificate2TranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span>
+                </div>
+
+                <div class="col-1 mt-1">
+                    <input type="text" class="inputStyle" id="CooCopies2" >
+                    
+                    
+
+                </div>
+                <div class="col-1">
+                    <div class="col-8">
+
+                    </div>
+
+
+
+                </div>
+
+                <div class="col-2">
+                    
+                    <input type="text" class="inputStyle" id="AdditionalCer3" >
+
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="TransportDtl3" >
+
+                </div>
+            </div>
+            <div class="row mt-1" id="CooCommonHealth" style="display: none;">
+                <div class="row mt-2" id="CurrencyVisible">
+                    <div class="col-4">PERCENTAGE OF COMMONWEALTH PREFERENCE CONTENT</div>
+
+                </div>
+                <div class="col-4">
+                  <input type="text" class="inputStyle" id="CooCommonPerinput">
+                    <span class="ErrColor" class="ErrorColor" id="CurrencyTranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span>
+                </div>
+                <div class="col-2">
+
+
+                </div>
+                
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="AdditionalCer3" >
+
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="TransportDtl3" >
+
+                </div>
+            </div>
+
+            <div class="row mt-1">
+                <div class="row mt-4" id="CurrencyVisible">
+                    <div class="col-4">CURRENCY CODE</div>
+
+                </div>
+                <div class="col-4">
+                    <!--here we need to write the query for type id -->
+                    <select class="Dropdown " id="CurrencyTranseportMode"  onfocusout="CooCurrencyCode()"
+                        tabindex="">
+                        <option selected>--Select--</option>
+                        {% for i in Currency %}
+                        <option>{{i.Currency}} : {{i.CurrencyCountry}}</option>
+                        {% endfor %}
+                    </select>
+                    <span class="ErrColor" class="ErrorColor" id="CurrencyTranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span>
+                </div>
+                <div class="col-2">
+
+
+                </div>
+                
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="AdditionalCer4" >
+
+                </div>
+                <div class="col-2">
+                    <input type="text" class="inputStyle" id="TransportDtl4" >
+
+                </div>
+            </div>
+
+            <div class="row mt-4" id="CooEntryYear" style="display: none;">
+                <div class="row mt-2" id="YearVisible">
+                    <div class="col-4">ENTRY YEAR
+
+                    </div>
+
+                </div>
+                <div class="col-4">
+                  <input type="text" class="inputStyle" id="CooEntryInput">
+                    <span class="ErrColor" class="ErrorColor" id="CurrencyTranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span>
+                </div>
+                <div class="col-2">
+
+
+                </div>
+                
+                
+            </div>
+            <div class="row mt-1" id="CooGPS" style="display: none;" >
+                <div class="row mt-2" id="CurrencyVisible">
+                    <div class="col-4">GSP DONOR COUNTRY</div>
+
+                </div>
+                <div class="col-4">
+                    <select class="Dropdown " id="GSPCurrencyUOM" onchange="CurrencyChange()" onfocusout="CooCurrencyCode()"
+                    tabindex="">
+                    <option selected>--Select--</option>
+                    {% for i in Country %}
+                    <option>{{i.CountryCode}} : {{i.Description}}</option>
+                    {% endfor %}
+                    </select>
+                    <span class="ErrColor" class="ErrorColor" id="CurrencyTranseportModeSpan">PLEASE CHOOSE INWARD
+                    </span>
+                    </div>
+                 <div class="col-2">
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div  id="CooShow" style=display:none;>
+
+            <div class="row mt-5" >
+                <div class="col-12">
+                    <h1 class="Borderdiv">PERMIT CONDITIONS</h1>
+                </div>
+            </div>
+
+            <div class="container-fluid mt-5"  >
+                <div class="row">
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">CERTIFICATE NO : </div>
+                            <div class="col-6" id="ShowCertificate"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3">JOB ID : </div>
+                            <div class="col-6" id="ShowJobId"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3">CREATE BY : </div>
+                            <div class="col-6" id="ShowCreate"></div>
+                        </div>
+    
+                    </div>
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-3">MSG ID :  </div>
+                            <div class="col-6" id="ShowMsgId"> </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3">STATUS : </div>
+                            <div class="col-6" id="ShowStatus"></div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">TRANSMIT USER : </div>
+                            <div class="col-6" id=""></div>
+                        </div>
+                       
+    
+                    </div>
+                    <div class="col-4">
+                        <div class="row">
+                            <div class="col-6">CERTIFICATE APPROVED DATE :  </div>
+                            <div class="col-6" id="ShowCertificateApproved"> </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-3">DEC DATE : </div>
+                            <div class="col-6" id="ShowDate"></div>
+                        </div>                                             
+                    </div>
+                </div>
+            </div> 
+
+            <div class="row mt-5" >
+                <div class="col-12">
+                    <table style="width: 100%;" id="">
+                        <thead>
+                            
+                            <th style="padding: 2px;">S.NO</th>
+                            <th style="padding: 2px;">HS CODE</th>
+                            <th>GOODS DESCRIPTION</th>
+                
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan=14 style='text-align:center'>No Record</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+
+            <div class="row mt-5">
+                <div class="col-4"></div>
+                <div class="col-2" id="Headerreset"><button class="MoveOnButtons" type="button"  onclick="CooHeaderReset()">RESET</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" tabindex="19" id="ShowNext"
+                        onclick="TabHead('PartyTab')">NEXT</button></div>
+                <div class="col-4"></div>
+            </div>
+            <br>
+    </div>
+        <!---------------------------------------------------Party--------------------------------------------------->
+        <div id="Party" style="display:none">
+            <div class="row">
+                <div class="row mt-3">
+                    <div class="col-2 mt-2"><label>DECLARANT COMPANY</label> </div>
+                    <div class="col-1"></div>
+                    <div class="col-1">
+                        <input type="text" id="declarationCompanyCode" class="inputStyle " placeholder="CODE"
+                        onfocus="DeclarantFocusIn()" onfocusout="DeclarantFocusOut()" value="{{Code}}" tabindex="1" disabled>
+                        <span id="DeclarantCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" id="declarationCompanycruei" class="inputStyle HighLight" placeholder="CRUEI"
+                            disabled style="width: 80%;" value="{{CRUEI}}" >
+                    </div>
+                    <div class="col-3">
+                        <input type="text" id="declarationCompanyName" class="inputStyle HighLight " placeholder="NAME"
+                            disabled style="width: 80%;" value="{{name}}" tabindex="3">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" id="declarationCompanyName1" class="inputStyle " placeholder="NAME1"
+                            disabled style="width: 80%;" value="{{name1}}" tabindex="4">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row mt-4 ImporterEmpty">
+                    <div class="col-2"><label for="ExporterCode">EXPORTER</label> </div>
+                    <div class="col-1">
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="EXPORTERSearch()">
+                        <button type="button" class="btn" style="font-weight: bold;"onclick="ExporterSave()">+</button>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" class="inputStyle  " placeholder="CODE" id="ExporterCode" tabindex="1"
+                        onfocus="ExportFocusIn()" onfocusout="ExportFocusOut()">
+                        <span id="ExportCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="inputStyle HighLight " placeholder="CRUEI" id="ExporterCruei"
+                        tabindex="2" style="width: 80%;" onfocus="TrimKeyUp()">
+                        <span1 class=" ErrColor" style="display: none;" id="ExporterCrueiError">
+                            <br>FILL CRUEI</span1>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle HighLight" placeholder="NAME" tabindex="3" id="ExporterName"
+                            style="width: 80%;">
+                        <span1 class=" ErrColor" style="display: none;" id="ExporterNameError">
+                            FILL Exporter NAME</span1>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="NAME1" id="ExporterName1" style="width: 80%;"
+                            onfocus="TrimKeyUp('ExporterName1')" tabindex="4">
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="row mt-2 ImporterEmpty">
+
+                    <div class="col-1">
+
+                        <span id="ExportCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-3">
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS1" id="ExporterAddress1"
+                            style="width: 80%;" onfocus="TrimKeyUp('ExporterName1')" tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS2" id="ExporterAddress2"
+                            style="width: 80%;" onfocus="TrimKeyUp('ExporterName1')" tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS3" id="ExporterAddress3"
+                            style="width: 80%;" onfocus="TrimKeyUp('ExporterName1')" tabindex="4">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="row mt-3 InwardEmpty">
+                    <div class="col-2"><label>OUTWARD CARRIER AGENT</label></div>
+                    <div class="col-1">
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="OUTWARDSearch()">
+                        <button type="button" class="btn" style="font-weight: bold;"
+                            onclick="OutwardCarrierSave()">+</button>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" class="inputStyle" placeholder="CODE" id="OutwardCarrierAgentCode"
+                            onfocus="OutwardFocusIN()" onfocusout="OutwardFocusOut()" tabindex="5">
+                        <span id="OutwardCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="inputStyle HighLight" placeholder="CRUEI" id="OutwardCarrierAgentCruei"
+                            onfocus="TrimKeyUp('OutwardCarrierAgentCruei')" style="width: 80%;" tabindex="6">
+                        <span1 class="ErrColor" style="display: none;" id="OutwardCarrierAgentCrueiError"> OUTWARD CARRIER AGENT CRUEI</span1>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle HighLight" placeholder="NAME" id="OutwardCarrierAgentName"
+                            onfocus="TrimKeyUp('OutwardCarrierAgentName')" style="width: 80%;" tabindex="7">
+                        <span1 class="ErrColor" style="display: none;" id="OutwardCarrierAgentNameError">OUTWARD CARRIER AGENT NAME</span1>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="NAME1" id="OutwardCarrierAgentName1"
+                            onfocus="TrimKeyUp('OutwardCarrierAgentName1')" style="width: 80%;" tabindex="8">
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row">
+                <div class="row mt-3 FrieghtEmpty">
+                    <div class="col-2"><label>FREIGHT FORWARDER</label></div>
+                    <div class="col-1">
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="FREIGHTSearch()">
+                        <button type="button" class="btn" style="font-weight: bold;" onclick="FrightSave()">+</button>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" class="inputStyle" placeholder="CODE" id="FreightForwarderCode"
+                            onfocus="FrightFrwdFocusIN()" onfocusout="FrightFocusOut()" tabindex="9">
+                        <span id="FrightCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="inputStyle" id="FreightForwarderCruei" placeholder="CRUEI"
+                            style="width: 80%;" tabindex="10">
+                        <span class=" ErrColor" style="display: none;">PLEASE FILL FREIGHT FORWARDER CRUEI</span>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" id="FreightForwarderName" placeholder="NAME"
+                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName')" tabindex="11">
+                        <span class=" ErrColor" style="display: none;">PLEASE FILL FREIGHT FORWARDER NAME</span>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" id="FreightForwarderName1" placeholder="NAME1"
+                            style="width: 80%;" onfocus="TrimKeyUp('FreightForwarderName1')" tabindex="12">
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="row" id="ConsigneVisible">
+                <div class="row mt-4 ImporterEmpty">
+                    <div class="col-2"><label for="ConsigneeCode">CONSIGNEE</label> </div>
+                    <div class="col-1">
+                        <img src="{% static 'IMG/search.png' %}" width="24px"onclick="CONSIGNEESearch(Cons,'ConsigneeCode','ConsigneeName','ConsigneeName1','ConsigneeCRUEI')">
+                        <button type="button" class="btn" style="font-weight: bold;" onclick="Consignsave()">+</button>
+                    </div>
+                    <div class="col-1">
+                        <input type="text" class="inputStyle  " placeholder="CODE" id="ConsigneeCode" tabindex="1"
+                                onfocus="ConsigneeFocusIN()" onfocusout="ConsigneeFocusOut()">
+                        <span id="ConsigneeCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="inputStyle HighLight " placeholder="CRUEI" id="ConsigneeCruei"
+                            tabindex="" style="width: 80%;" >
+                        <span1 class=" ErrColor" style="display: none;" id="ConsigneeCrueiError"><br>FILL CONSIGNEE
+                            CRUEI</span1>
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle HighLight" placeholder="NAME" tabindex="3" id="ConsigneeName"
+                            style="width: 80%;">
+                        <span1 class=" ErrColor" style="display: none;" id="ConsigneeNameError">FILL CONSIGNEE NAME</span1>
+                    </div>
+
+                    <div class="col-3">
+
+                        <input type="text" class="inputStyle" placeholder="NAME1" id="ConsigneeName1"
+                            style="width: 80%;" tabindex="4">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row">
+                <div class="row mt-2 ConsigneeEmpty">
+
+                    <div class="col-1">
+
+                        <span id="ConsigneeCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-3">
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS" id="ConsigneeAdress"
+                            style="width: 80%;"  tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="ADDRESs1" id="ConsigneeAdress1"
+                            style="width: 80%;"  tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS2" id="ConsigneeAdress2"
+                            style="width: 80%;" tabindex="4">
+                    </div>
+                </div>
+
+                <div class="ml-2">
+                    <div class="row">
+                        <div class="row mt-4 ImporterEmpty">
+                            <div class="col-2"><label for="ManfactutrerCode">MANUFACTURER</label> </div>
+
+                            <div class="col-1">
+                                <img src="{% static 'IMG/search.png' %}" width="24px" onclick="MANFACTUTRERSearch(MFact)">
+                                <button type="button" class="btn" style="font-weight: bold;" onclick="ManufactSave()">+</button>
+                            </div>
+
+                            <div class="col-1">
+                                <div class="ml-2">
+                                    <div class="ml-2">
+
+                                        <input type="text" class="inputStyle  " placeholder="CODE" id="ManfactutrerCode"
+                                            tabindex="1" onfocus="ManfactutrerIN()" onfocusout="ManfactutrerOut()">
+                                        <span id="ManfactutrerCodeSpan" style="display: none;" class="ErrColor">FILL THE
+                                            CODE</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-2">
+                                <input type="text" class="inputStyle HighLight " placeholder="CRUEI"
+                                    id="ManfactutrerCruei" tabindex="" onfocus="TrimKeyUp('ManfactutrerCruei')"style="width: 80%;">
+                                <span1 class=" ErrColor" style="display: none;" id="ManfactutrerCrueiError"><br>FILL MANFACTUTRER CRUEI</span1>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="inputStyle HighLight" placeholder="NAME" tabindex="3"
+                                    id="ManfactutrerName"  onfocus="TrimKeyUp('ManfactutrerName')"style="width: 80%;">
+                                <span1 class=" ErrColor" style="display: none;" id="ManfactutrerNameError">FIL MANFACTUTRER NAME</span1>
+                            </div>
+                            <div class="col-3">
+                                <input type="text" class="inputStyle" placeholder="NAME1" id="ManfactutrerName1"
+                                onfocus="TrimKeyUp('ManfactutrerName1')"style="width: 80%;"  tabindex="4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="row mt-2 ImporterEmpty">
+
+                    <div class="col-1">
+
+                        <span id="ManfactutrerCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-3">
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <input type="text" class="inputStyle" placeholder="ADDRESS" id="ManfactutrerAddress"
+                        onfocus="TrimKeyUp('ManfactutrerAddress')"style="width: 80%;"  tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="ADDRESs1" id="ManfactutrerAddress1"
+                        onfocus="TrimKeyUp('ManfactutrerAddress1')"ManfactutrerAddress style="width: 80%;"  tabindex="4">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle" placeholder="CITY" id="ManfactutrerCity"
+                        onfocus="TrimKeyUp('ManfactutrerCity')" style="width: 80%;"  tabindex="4">
+                    </div>
+
+                </div>
+
+
+
+
+
+                <div class="row">
+                    <div class="mt-2"></div>
+                    <div class="ml-2">
+                        <div class="ml-2">
+                            <div class="row mt-2 ImporterEmpty">
+
+                                <div class="col-1">
+
+                                    <span id="ManfactutrerCodeSpan" style="display: none;" class="ErrColor">FILL THE
+                                        CODE</span>
+                                </div>
+                                <div class="col-3">
+                                    <div class="col-3">
+
+                                    </div>
+                                </div>
+
+                                <div class="col-2">
+                                    <input type="text" class="inputStyle" placeholder="SUB CODE" id="ManfactutrerSubcode"
+                                        style="width: 80%;" onfocus="TrimKeyUp('ManfactutrerSubcode')" tabindex="4">
+                                </div>
+                                <div class="col-3">
+                                    <input type="text" class="inputStyle" placeholder="SUB DIVISION" id="ManfactutrerSubDivision"
+                                        style="width: 80%;" onfocus="TrimKeyUp('ManfactutrerSubDivision')" tabindex="4">
+                                </div>
+                                <div class="col-3">
+
+                                    <input type="text" class="inputStyle" placeholder="COUNTRY" id="ManfactutrerCountry"
+                                        style="width: 80%;" onfocus="TrimKeyUp('ManfactutrerCountry')" tabindex="4">
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="mt-2"></div>
+
+                <div class="row mt-2 ImporterEmpty">
+
+                    <div class="col-1">
+
+                        <span id="ManfactutrerCodeSpan" style="display: none;" class="ErrColor">FILL THE CODE</span>
+                    </div>
+                    <div class="col-3">
+                        <div class="col-3">
+
+                        </div>
+                    </div>
+
+                    <div class="col-2">
+                        <input type="text" class="inputStyle" placeholder="POSTAL CODE" id="ManfactutrerPostalcode"
+                            style="width: 80%;" onfocus="TrimKeyUp('ManfactutrerPostalcode')" tabindex="4">
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('HeaderTab')">PREVIOUS</button></div>
+                <div class="col-2" id="PartyRest"><button class="MoveOnButtons" type="button"   onclick="CooPartyReset()">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CargoTab')">NEXT</button>
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </div>
+        <!---------------------------------------------------Cargo--------------------------------------------------->
+        <div id="Cargo" style="display:none">
+            <div class="row mt-4">
+                <div class="col-6" >
+                    <div class="row" id="OutwardVisibile" style="display: block;">
+                        <div class="container-fluid mt-3">                          
+                              <h1 class="Borderdiv">OUTWARD DETAILS</h1>
+                        </div>
+                        <div class="mt-2">
+                            <div class="container mt-3" style="display: block;" id="OutWardModeVisible">
+                                <div class="row">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;MODE</div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle" id="InNonOutMode" disabled>
+                                        <span1 class="ErrColor" id="InNonOutModeSpan">FILL DEPARTURE DATE</span1>
+                                    </div>
+                                </div>
+                                <div class="container-fluid">
+                                </div>
+                                <div class="container mt-3" style="display: block;" id="DepartureDateDiv">
+                                    <div class="row">
+                                        <div class="col-4">DEPARTURE DATE
+                                        </div>
+                                        <div class="col-6">
+                                            <input type="text" class="inputStyle HighLight" id="DepartureDate"
+                                                onfocusout="CooDateFunction('DepartureDate')"><br>
+                                            <span1 class="ErrColor" id="DepartureDateSpan">FILL DEPARTURE DATE</span1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="container mt-3" style="display: block;" id="OutwardDischargePort">
+                                    <div class="row">
+                                        <div class="col-3">DISCHARGE PORT</div>
+                                        <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="30px" 
+                                                onclick="ItemLoadingSearchImg()">
+                                                
+                                        </div>
+                                        <div class="col-2"><input type="text" class="inputStyle HighLight"
+                                                id="CargoDisachargeInput" onfocus="InNonDisachargePortFocusIn()"
+                                                onfocusout="InNonDisachargePortFocusOut(this.value)">
+                                                <span1 class="ErrColor" id="CooCargoDPSpan">FILL DISCHARGE PORT</span1>
+                                        </div>
+                                                
+                                        <div class="col-4"><input type="text" class="inputStyle" disabled
+                                                id="CargoDisachargeText"></div>
+                                    </div>
+                                </div>
+                                <div class="container mt-3" style="display: block;" id="FinalDestinationCountryVisible">
+                                    <div class="row">
+                                        <div class="col-4">FINAL DESTINATION COUNTRY</div>
+                                        <div class="col-6">
+                                            <select id="FinalDestinationSelect" class="Dropdown HighLight">
+                                                <option selected>--Select--</option>
+                                                {% for i in Country %}
+                                                <option>{{i.CountryCode}} : {{i.Description}}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <span1 class="ErrColor" class="ErrorColor" id="FinalDestinationCountryModeSpan">PLEASE CHOOSE THE COUNTRY
+                                            </span1>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-4 " id="VoyageNumberID" style="display: none;">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;VOYAGE NUMBER
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="VoyageNumberValue"><br>
+                                        <span class="ErrColor" id="DepartureDateSpan">FILL DEPARTURE DATE</span>
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="veseeleid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;VESSEL NAME
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="veseeleValue"><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="conveyancerailid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;CONVEYANCE REF.NO
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="conveyancevalue"
+                                            ><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="transportrailid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT ID
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="transportValue"
+                                            ><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;"id="conveyanceroadid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;CONVEYANCE REF.NO
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="DepartureDate"
+                                            ><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;"id="transportroadid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT ID
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="DepartureDate"
+                                            ><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="flightnoid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;FLIGHT NUMBER
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="FlightNoValueId"><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="aircraftregnoid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;AIRCRAFT REGISTER NUMBER
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="aircraftregnoValue"
+                                          ><br>
+                                       
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="conveyancemailid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;CONVEYANCE REF.NO
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle" id="cooconveyancemailid"><br>                          
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" id="transportmailid">
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT ID
+
+                                    </div>
+                                    <div class="col-6" id="cootransportmailid">
+                                        <input type="text" class="inputStyle "><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" >
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;CONVEYANCE REF.NO
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle" id="conveyancemmodelid" ><br>                          
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" >
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT ID
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle "id="transportmmodelid"><br>
+                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" >
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;CONVEYANCE REF.NO
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="conveyancepipeid"><br>                          
+                                    </div>
+                                </div>
+                                <div class="row mt-4" style="display: none;" >
+                                    <div class="col-4">&nbsp;&nbsp;&nbsp;&nbsp;TRANSPORT ID
+
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" class="inputStyle " id="transportpipeid"><br>
+                                        
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('PartyTab')">PREVIOUS</button></div>
+                <div class="col-2" id="CargoRest"><button class="MoveOnButtons" type="button" onclick="CargoResetCoo()">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('ItemTab')">NEXT</button>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <br><br>
+        </div>
+        <!---------------------------------------------------Item--------------------------------------------------->
+
+        <div id="Item" style="display:none">
+            <div class="row">
+                <div class="col-7"></div>
+                <div class="col-5">
+                    <button type="button" style="width:24%;" class="ButtonClick"  id="ShowAddItem" onclick="CootItemSave()">ADD
+                        ITEM</button>
+                    <button type="button" style="width:24%;" id="showprevious" class="ButtonClick" onclick="PreviousItem()">PREVIOUS</button>
+                    <input type="text" style="display: inline;width:20%;" class="inputStyle"  id="ItemNextItemID">
+                    <button type="button" style="width:24%;" id="shownext" class="ButtonClick" onclick="NextItem()">NEXT</button>
+                </div>
+            </div>
+
+             
+
+
+
+            <div class="row mt-4">
+                <div class="col-6 " >
+
+
+                    <h1 class="Borderdiv">ITEM DETAILS
+                    </h1>
+                    <div class="row" style="display: none;">
+                        <div class="row mt-1">
+                            <div class="col-4">ITEM NUMBER</div>
+                            <div class="col-8">
+                                
+                                <input type="text" class="inputStyle " id="ItemNumbereCoo" value="1" disabled>
+                                
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" >
+                        <div class="row mt-3">
+                            <div class="col-4">ITEM CODE</div>
+                            <div class="col-7">
+                                
+                                <input type="text" class="inputStyle " id="ItemCodeCoo" tabindex="1"
+                                    onfocus="ItemcodeFocusIn()" onfocusout="ItemcodeFocusOut(this.value)"> 
+                                    <span1 class="ErrColor" id="ItemCodeSpan">FILL CODE</span1>
+                                
+                            </div>
+                            <div class="col-1"><button type="button" class="
+                                btn" style="font-weight: bold;" onclick="ItemCodeSave()">+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3" >
+                        <div class="row mt-2">
+                            <div class="col-4">HS CODE</div>
+                            <div class="col-8">
+                                
+                                <input type="text" class="inputStyle HighLight" id="ItemHsCodeCoo" tabindex="1"
+                                    onfocus="ItemHscodeFocusIn()" onfocusout="ItemHscodeFocusOut()">
+                                <span1 class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span1>
+                                <p style="color: rgb(50, 167, 0)(216, 28, 28);" id="HsCodeLoadingId" style="display:none">PLEASE WAIT A
+                                    MINIUTE</p> 
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4">DESCRIPTION</div>
+                            <div class="col-8">
+                                <textarea class="inputStyle HighLight" id="ItemDescriptioncoo" style="height: 70px;"
+                                    tabindex="2" ></textarea>
+                                <span1 class="ErrColor" id="ItemDescriptionInNonSpan">FILL DESCRIPTION</span1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-2">COO</div>
+                            <div class="col-2 mt-1"><i class="fa-solid fa-magnifying-glass fa-lg"
+                                    onclick="ItemCooSearch()"></i></div>
+                            <div class="col-3">
+                                <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
+                                    onfocusout="ItemCooOut(this.value)" tabindex="3">
+                                <span1 class="ErrColor" id="ItemCooInputSpan">FILL COO</span1>
+                            </div>
+                            <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled tabindex="1 ">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4">INVOICE QUANTITY</div>
+                            <div class="col-8">
+                                <input type="number" class="inputStyle" value="0.00" onfocusout="TxtInvQtyOut()"id="itemInvoiceQuantity"
+                                    tabindex="4" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 "> HS QUANTITY</div>
+                            <div class="col-4">
+                                <input type="number" class="inputStyle HighLight" id="ItemHsQtyInput" value="0.00"
+                                     tabindex="5">
+                                <span1 class="ErrColor" id="ItemHsQtyInputSpan">FILL HS QUANTITY</span1>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="ItemHsQtyUom" tabindex="6">
+                                    <option selected>--Select--</option>
+                                    <!-- need to create type id here in db -->
+                                    {% for i in HsQuantity %}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span1 class="ErrColor" id="ItemHsQtyUomSpan">FILL HS UOM</span1>
+                            </div>
+                        </div>
+                    </div>
+
+                    
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">
+                                <!-- doubt function-->
+                                <label for="itemCheckUnitPrice">CURR (UNIT PRICE <input type="checkbox"
+                                        onclick="itemCheckUnitPriceFunction()" id="itemCheckUnitPrice"
+                                        value="False">AUTO)</label>
+                            </div>
+                            <div class="col-4">
+                                <select class="Dropdown HighLight" id="DRPCurrency" tabindex="7"
+                                    onchange="DRPCurrencyChange(this.value,'ItemInvoiceCurrencyInput')" >
+                                    <option selected>--Select--</option>
+                                    <!-- need to create type id here in db -->
+                                    {% for i in Currency %}
+                                     <option value="{{i.Currency}}">{{i.Currency}}</option>
+                                     {% endfor %}
+                                </select>
+                                <span1 class="ErrColor" id="ItemInvoiceCurrencyDropSpan">CHOOSE CURRENCY </span1>
+                            </div>
+                            <div class="col-4"><input type="number" class="inputStyle " id="TxtExchangeRate"
+                                    value="0.00" ></div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">TOTAL LINE AMOUNT</div>
+                            <div class="col-8">
+                                <input type="number" class="inputStyle HighLight" id="iteminCooTotalLineAmount"
+                                    tabindex="8" value="0.00" onkeyup="CooInvoiceCalculation()"> 
+                                <span1 class="ErrColor" id="itemCooTotalLineAmountSpan">FILL AMOUNT</span1>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 ">CIF/FOB (SGD)</div>
+                            <div class="col-8">
+                                <input type="number" class="inputStyle " id="iteminvoiceCIFFOB" value="0.00" tabindex="9">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4">SHIPPING MARKS</div>
+                            <div class="col-8">
+                                <textarea class="inputStyle " id="shippingmarks" style="height: 70px;"
+                                    tabindex="10" ></textarea>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-6">
+                    <h1 class="Borderdiv">CERTIFICATE OF ORIGIN
+                    </h1>
+                    <div class="row mt-4">
+                        <div class="row">
+                            <div class="col-4 "> CERTIFICATE ITEM QUANTITY</div>&nbsp;&nbsp;
+                            <div class="col-4">
+                                <input type="number" class="inputStyle " id="ItemCertificateHsQtyInput" value="0.00"
+                                    tabindex="11">
+                                <span class="ErrColor" id="ItemHsQtyInputSpan">FILL HS QUANTITY</span>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="ItemCFQtyUom" tabindex="12">
+                                    <option selected>--Select--</option>
+                                    <!-- need to create type id here in db -->
+                                    {% for i in HsQuantity %}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="ErrColor" id="ItemHsQtyUomSpan">FILL HS UOM</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-4">MANUFACTURING COST DATE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="ItemManCostDate" tabindex="13"
+                                 onfocusout="CooDateFunction('ItemManCostDate')">
+                            <span class="ErrColor" id="CooDateCodeSpan">PLEASE FILL THE MANUFACTURING COST DATE</span>
+
+                        </div>
+                    </div>
+                    <div class="row mt-4" id="CooItemCifFobItemValue" style="display:none;">
+                        <div class="col-4">CIF/FOB ITEM VALUE ON CERTIFICATE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="ItemValueOnCertificate" tabindex="14" >
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+                    
+
+                    <div class="row mt-4" id="CooItemTextCate" style="display: none;">
+                        <div class="col-4">TEXTILE CATEGORY</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="CooItemTextInput" tabindex="15">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+
+                    <div class="row mt-4" id="CooItemTextQuta" style="display: none;">
+                        <div class="row">
+                            <div class="col-4 "> TEXTILE QUOTA QUANTITY</div>&nbsp;&nbsp;
+                            <div class="col-4">
+                                <input type="number" class="inputStyle " id="CooTextileQuoQnt" value="0.00"
+                                    tabindex="16">
+                                <span class="ErrColor" id="ItemHsQtyInputSpan">FILL HS QUANTITY</span>
+                            </div>
+                            <div class="col-3">
+                                <select class="Dropdown" id="CooTextileQuoQntUom" tabindex="17">
+                                    <option selected>--Select--</option>
+                                    <!-- need to create type id here in db -->
+                                    {% for i in HsQuantity %}
+                                    <option>{{i.Name}}</option>
+                                    {% endfor %}
+                                </select>
+                                <span class="ErrColor" id="ItemHsQtyUomSpan">FILL HS UOM</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-4" id="CooItemInvoiceno" style=display:none;>
+                        <div class="col-4">INVOICE NUMBER</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="CooItemInvoicenoInput" tabindex="18">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+                   <div id="CooItemOrginCriterion" style="display:none;">
+                    <div class="row mt-4">
+                        <div class="col-4">ORIGIN CRITERION</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="CooOrgin1" tabindex="19">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+                            
+ 
+                        </div>
+                    </div>
+                    <div class="row mt-4 " >
+                        <div class="col-4"></div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="CooOrgin2" tabindex="20">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+                            
+ 
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-4"></div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="CooOrgin3" tabindex="21">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+                            
+ 
+                        </div>
+                    </div>
+                   </div>
+                    <div class="row mt-4">
+                        <div class="col-4">INVOICE DATE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="ItemInVoDate" tabindex="22"
+                                 onfocusout="CooDateFunction('ItemInVoDate')">  
+                            <span class="ErrColor" id="CooDateInvoiceCodeSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-4">HS CODE ON CERTIFICATE</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="ItemHsCodeCertificateCoo" tabindex="23"> 
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-4">PERCENTAGE CONTENT OF ORIGIN CRITERION</div>
+                        <div class="col-8">
+                            <input type="text" class="inputStyle " id="ItemHsCodePerContent" tabindex="24">
+                            <span class="ErrColor" id="ItemHsCodeInNonSpan">FILL HSCODE</span>
+
+                        </div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-4">CERTIFICATE DESCRIPTION</div>
+                        <div class="col-8">
+                            <textarea class="inputStyle " id="ItemDescriptionCoo" style="height: 70px;"
+                                tabindex="25" ></textarea>
+                            <span class="ErrColor" id="ItemDescriptionInNonSpan">FILL DESCRIPTION</span>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-12">
+                    <div class="row">
+                        <div class="col">
+                            <h6 class="Borderdiv">UPLOAD ITEM EXCEL TEMPLATE</h6>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-3">
+                            <a class="btn1" id="downloadTempBtn" href="/CooItemExcelDownload/"
+                                style="text-decoration: none;">DOWNLOAD TEMPLATE</a>
+                        </div>
+                        <div class="col-1"></div>
+                        <div class="col-4">
+                            <input type="file" class="inputChooseFile" style="width: 100%;" id="InpaymentFile"
+                                name="InpaymentFile" accept=".xlsx">
+                        </div>
+                        <div class="col-2"></div>
+                        <div class="col-2">
+                            <button class="btn1" type="button" id="InpaymentReadBtn" onclick="ItemUploadInNon()">UPLOAD
+                                DATA</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-1"></div>
+               
+            </div>
+            <div class="row mt-4">
+                <div class="col-3"></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"
+                        onclick="TabHead('CargoTab')">PREVIOUS</button></div>
+                <div class="col-2" id="ItemRest"><button class="MoveOnButtons" type="button" onclick="ItemResetCoo()">RESET</button>
+                </div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('SummaryTab')">NEXT</button>
+                </div>
+                <div class="col-3"></div>
+            </div>
+            <div class="row mt-4">
+                <div class="col-2"><button class="MoveOnButtons showDisable" type="button"
+                        onclick="ItemDeleteInNon()">DELETE ITEM</button></div>
+                <div class="col-2"><button class="MoveOnButtons showDisable" type="button" onclick="ItemEditAllCoo()"
+                        id="EditAllItemBtn">EDIT ALL ITEM</button></div>
+                
+                <div class="col-2"><input type="text" class="inputStyle" placeholder="SEARCH BY ITEM NO..."></div>
+            </div>
+            <div class="row mt-5">
+                <div class="col-12">
+                    <table style="width: 100%;" id="ItemTable">
+                        <thead>
+                            <th><input type="checkbox" onclick="ItemDelAllCheckBox()" id="ItemHeadCheck"></th>
+                            <th>EDIT</th>
+                            <th>S.NO</th>
+                            <th>HS CODE</th>
+                            <th>GOODS DESCRIPTION</th>
+                            <th>COO</th>
+                            <th>CUR</th>
+                            <th>CIF/FOB (S$)</th>
+                            <th>HS QTY</th>
+                            <th>HS UOM</th>
+                            <th>ITEM LINE AMOUNT</th>
+                            <th>CERT ITEM QTY</th>
+                            <th>CERT ITEM UOM</th>
+                            <th>CERT ITEM VALUE</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan=14 style='text-align:center'>No Record</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <!---------------------------------------------------Summary----------------------------------------------->
+
+        <div id="Summary" style="display:none">
+            <div class="container-fluid mt-3" id="summarycoo">
+                <div class="row">
+                    <div class="col-3">
+                        <div class="row mt-3">
+                            <div class="col-6">
+                                NO OF ITEMS
+                            </div>
+                                <div class="col-6"><input type="text" class="inputStyle" value="0.00" disabled
+                                        id="summaryNoOfItems">
+                                </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-8">CERTIFICATE ADDITIONAL INFORMATION
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="row mt-3">
+                            <div class="col-6">SUM OF ITEM VALUE</div>
+                            <div class="col-6"><input type="text" class="inputStyle" value="0.00" disabled
+                                    id="summaryNoOfItemValue"></div>
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <div class="row mt-3">
+                            <div class="col-6">ITEM VALUE ON CERTIFICATE
+                            </div>
+                            <div class="col-6"><input type="text" class="inputStyle" disabled value="0.00"
+                                    id="summaryTotalInvoiceCIFValue">
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-6">CROSS REFERENCE</div>
+                            <div class="col-6"><input type="text" class="inputStyle"  id="SummaryCrossReference">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+                <div class="row mt-3">
+                    <div class="col-11"> <textarea class="inputStyle" style="height: 80px;width: 100%;"
+                            id="summaryTradeRemarks"></textarea></div>
+                </div>
+                <div class="row mt-4">
+                    <div class="col-7">INTERNAL REMARKS</div>
+                    <div class="col-3">MRD</div>
+                    <div class="col-2">TIME</div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-7">
+                        <input type="text" class="inputStyle " style="width: 90%;" id="summaryInternalRemarks">
+                    </div>
+                    <div class="col-3">
+                        <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="DATE" id="SummaryMRD"
+                            onfocusout="CooDateFunction('SummaryMRD')" value="{{CurrentDate}}"><br>
+                        <span1 class="ErrorColor" id="SummaryMRDSpan">FILL DATE</span1>
+                    </div>
+                    <div class="col-2">
+                        <input type="text" class="inputStyle HighLight" id="SummaryTIME" placeholder="TIME"
+                            onfocusout="MrtTimeOut()"><br>
+                        <span1 class="ErrorColor" id="SummaryTIMESpan">FILL TIME</span1>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5">
+                </div>
+                <div class="container-fluid mt-3">
+                    <div class="row">
+                        <h1 class="Borderdiv">DECLARATION SUMMARY</h1>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5">
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-3">EXPORTER</div>
+                                <div class="col-6" id="SummaryExporter"></div>
+                            </div>
+                            <div class="row mt-2">
+                                <div class="col-3">CERTIFICATE TYPE</div>
+                                <div class="col-6" id="SummaryCertificateType"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">CURRENCY CODE</div>
+                                <div class="col-6" id="SummaryCurrencyCode"></div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-3">ITEM AMOUNT</div>
+                                <div class="col-6" id="SummaryItemAmount"></div>
+                            </div>
+        
+                        </div>
+                        <div class="col-6">
+                            <div class="row">
+                                <div class="col-6"> </div>
+                                <div class="col-6"> </div>
+                            </div>
+                            <div class="row mt-3"></div>
+                            <div class="row mt-4">
+                                <div class="col-3">CO TYPE</div>
+                                <div  class="col-6" id="SummaryCoType"> </div>
+                                
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-3">PREVIOUS PERMIT NO</div>
+                                <div class="col-6" id="SummaryPrevioursPermit"></div>
+                            </div>
+                            <div class="row mt-4">
+                                <div class="col-3">TRANSPORT MODE</div>
+                                <div class="col-6" id="SummaryTransportMode"></div>
+                            </div>
+        
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid mt-5">
+                    <div class="row FinalCheckBoxStyle">
+                        <div class="col-12">
+                            <div class="checkbox-container">
+                                <input type="checkbox" id="DeclareIndicator" value="False" onclick="CheckFunction('DeclareIndicator')">
+                                <label for="DeclareIndicator">(1) I/WE DECLARE THAT ALL PARTICULARS IN THIS APPLICATION ARE TRUE AND CORRECT.</label>
+                            </div>
+                            <div class="checkbox-container">
+                                <label for="DeclareIndicator"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(2) I/WE DECLARE THAT ALL THE PRODUCT(S) TO BE EXPORTED IN THIS APPLICATION HAS/HAVE BEEN REGISTERED WITH THE TTSB OF SINGAPORE CUSTOMS AND QUALIFY(S) FOR THE RESPECTIVE CERTIFICATE APPLIED FOR.</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>     
+                <div class="container-fluid">
+                    <div class="row mt-5">
+                <div class="col-4"></div>
+                    <div class="col-2 ">
+                        <button class="MoveOnButtons" type="button"
+                            onclick="TabHead('ItemTab')">PREVIOUS</button>
+                    </div>
+                        <div class="col-2 " id="FinalSubmitDiv">
+                            <button class="MoveOnButtons" type="button" onclick="CooSavePermit()">SAVE PERMIT</button>
+                        </div>
+                    </div>
+                </div>   
+        </div>
+        <!---------------------------------------------------END--------------------------------------------------->
+{% comment %} coo item CURR (UNIT PRICE AUTO) {% endcomment %}
+
+<script>
+
+    function DRPCurrencyChange(){
+        "{% for cur in Currency %}"
+        if("{{cur.Currency}}" == $('#DRPCurrency').val()){
+            $('#TxtExchangeRate').val("{{cur.CurrencyRate}}")
+
+        }
+        "{% endfor %}"
+    }
+
+
+</script>
+
+
+
+    </form>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+<script src="https://unpkg.com/@trevoreyre/autocomplete-js"></script>
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.js"></script>
+
+
+
+{% if Show %}
+<script>
+    $('input').prop('disabled', true);
+    $('select').prop('disabled', true);
+    $('table').prop('disabled', true);
+    $('textarea').prop('disabled', true);
+    $('.ButtonClick').prop('disabled', true);
+    $('#AddInvoiceBtn').prop('disabled', true);
+    $('.showDisable').prop('disabled', true);
+    $('i').prop('disabled', false);
+    $('#FinalSubmitDiv').html(`
+    <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
+    `);
+</script>
+{% endif %}
+
+
+
+
+
+
+
+
+
+{% if CooData %}
+
+{% for coo in CooData%}
+
+
+
+
+<script>
+    $('#PreviousPermitNo').val("{{coo.PreviousPermitNo}}")
+    console.log($('#PreviousPermitNo').val())
+
+
+
+    $('#OutwardTranseportMode').val("{{coo.OutwardTransportMode}}")
+    OutwardChange();CooTransportMode()
+    console.log("OutwardTranseportMode:",$('#OutwardTranseportMode').val())
+
+    
+    $('#DeclaringFor').val("{{coo.DeclarningFor}}")
+
+  
+
+    if("{{coo.ReferenceDocuments}}" =="True"){
+        $('#ReferenceDocuments').prop('checked', true)
+        CooReferenceDocument()
+    }
+
+    $('#Certificate1TranseportMode').val("{{coo.CerDtlType1}}")
+    CooCerti1()
+
+    $('#Certificate2TranseportMode').val("{{coo.CerDtlType2}}")
+
+     $('#Certificate2TranseportMode').val("{{coo.CerDtlType2}}")
+   
+
+    $('#cotypeTranseportMode').val("{{coo.COType}}")
+    COOCoType()
+
+    
+
+    $('#ItemHsQtyInput').val("{{coo.ItemHsQtyInput}}")
+
+    $('#CurrencyTranseportMode').val("{{coo.CurrencyCode}}")
+    CooCurrencyCode()
+
+
+    $('#ExporterCode').val("{{coo.ExporterCompanyCode}}")
+    
+    $('#OutwardCarrierAgentCode').val("{{coo.OutwardCarrierAgentCode}}")
+
+    $('#FreightForwarderCode').val("{{coo.FreightForwarderCode}}")
+
+    $('#ConsigneeCode').val("{{coo.CONSIGNEECode}}")
+    
+
+    $('#ManfactutrerCode').val("{{coo.Manufacturer}}")
+
+    $('#CooEntryInput').val("{{coo.EntryYear}}")
+
+    
+    
+
+    if ('01/01/1900' != "{{coo.DepartureDate|date:'d/m/Y' }}") {
+        $('#DepartureDate').val("{{coo.DepartureDate|date:'d/m/Y' }}")
+    }
+    $('#DepartureTime').val("{{coo.DepartureTime}}")
+
+    $('#CargoDisachargeInput').val("{{coo.DischargePort}}")
+
+
+    $('#FinalDestinationSelect').val("{{coo.FinalDestinationCountry}}")
+
+    $('#VoyageNumberValue').val("{{coo.OutVoyageNumber}}")
+
+    $('#veseeleValue').val("{{coo.OutVesselName}}")
+
+    $('#conveyancevalue').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportValue').val("{{coo.OutTransportId}}")
+
+    $('#conveyanceroadid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportroadid').val("{{coo.OutTransportId}}")
+
+    $('#FlightNoValueId').val("{{coo.OutFlightNO}}")
+
+    $('#cooconveyancemailid').val("{{coo.OutConveyanceRefNo}}")
+    
+    $('#aircraftregnoValue').val("{{coo.OutAircraftRegNo}}")
+
+    $('#cootransportmailid').val("{{coo.OutTransportId}}")
+
+    $('#conveyancemmodelid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportmmodelid').val("{{coo.OutTransportId}}")
+
+    $('#conveyancepipeid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportpipeid').val("{{coo.OutTransportId}}")
+
+    $('#summaryNoOfItems').val("{{coo.NumberOfItems}}")
+    
+    $('#summaryNoOfItemValue').val("{{coo.NumberOfItems}}")
+
+    $('#summaryInternalRemarks').val("{{coo.InternalRemarks}}")
+    
+    $('#SummaryMRD').val("{{coo.MRDate|date:'d/m/Y'}}")
+
+    $('#SummaryTIME').val("{{coo.MRTime|date:'h:i A'}}")
+
+    $('#SummaryCrossReference').val("{{coo.GrossReference}}")
+
+
+
+    $('#DeclareIndicator').val("{{coo.DeclareIndicator|escapejs}}")
+    if ($("#DeclareIndicator").val() == "True" || $("#DeclareIndicator").val() == "true") {
+        $("#DeclareIndicator").prop("checked", true);
+    }
+    else {
+        $("#DeclareIndicator").prop("checked", false);
+    }
+
+
+
+    let Additionalrecieptant = ("{{coo.Additionalrecieptant|escapejs}}").split('-')
+    $('#Recipient1').val(Additionalrecieptant[0])
+    $('#Recipient2').val(Additionalrecieptant[1])
+    $('#Recipient3').val(Additionalrecieptant[2])
+    
+
+   
+
+
+    let AdditionalCertificate = ("{{coo.AdditionalCer|escapejs}}").split('-')
+    $('#AdditionalCer1').val(AdditionalCertificate[0])
+    $('#AdditionalCer2').val(AdditionalCertificate[1])
+    $('#AdditionalCer3').val(AdditionalCertificate[2])
+    $('#AdditionalCer4').val(AdditionalCertificate[3])
+
+    let TransportDeatail = ("{{coo.TransportDtl|escapejs}}").split('-')
+    $('#TransportDtl1').val(TransportDeatail[0])
+    $('#TransportDtl2').val(TransportDeatail[1])
+    $('#TransportDtl3').val(TransportDeatail[2])
+    $('#TransportDtl4').val(TransportDeatail[3])
+
+
+    $('#CooCopies1').val("{{coo.CerDtlCopy1}}")
+
+    $('#CooCopies2').val("{{coo.CerDtlCopy2}}")
+
+
+
+    $('#summaryTradeRemarks').val("{{coo.TradeRemarks}}")
+
+    $('#PreviousPermitNo').val("{{coo.PreviousPermitNo}}")
+
+    CooPreviousPermit()
+
+   
+
+    CERTTUFCATE1Change();
+    CooTypeChage();
+    
+
+   
+
+
+</script>
+{% endfor %}
+
+{% endif %}
+
+
+
+
+
+
+
+{% if Show %}
+
+{% for coo in Show%}
+
+
+
+
+<script>
+    
+    $('#PreviousPermitNo').val("{{coo.PreviousPermitNo}}")
+    console.log($('#PreviousPermitNo').val())
+
+
+    $('#OutwardTranseportMode').val("{{coo.OutwardTransportMode}}")
+    OutwardChange();CooTransportMode()
+    console.log("OutwardTranseportMode:",$('#OutwardTranseportMode').val())
+
+    
+    $('#DeclaringFor').val("{{coo.DeclarningFor}}")
+
+
+    if("{{coo.ReferenceDocuments}}" =="True"){
+        $('#ReferenceDocuments').prop('checked', true)
+        CooReferenceDocument()
+    }
+
+    $('#Certificate1TranseportMode').val("{{coo.CerDtlType1}}")
+    CooCerti1()
+
+    $('#Certificate2TranseportMode').val("{{coo.CerDtlType2}}")
+
+     $('#Certificate2TranseportMode').val("{{coo.CerDtlType2}}")
+   
+
+    $('#cotypeTranseportMode').val("{{coo.COType}}")
+    COOCoType()
+
+    
+
+    $('#ItemHsQtyInput').val("{{coo.ItemHsQtyInput}}")
+
+    $('#CurrencyTranseportMode').val("{{coo.CurrencyCode}}")
+    CooCurrencyCode()
+
+    $('#ExporterCode').val("{{coo.ExporterCompanyCode}}")
+    
+    $('#OutwardCarrierAgentCode').val("{{coo.OutwardCarrierAgentCode}}")
+
+    $('#FreightForwarderCode').val("{{coo.FreightForwarderCode}}")
+
+    $('#ConsigneeCode').val("{{coo.CONSIGNEECode}}")
+
+    $('#ManfactutrerCode').val("{{coo.Manufacturer}}")
+
+    $('#CooEntryInput').val("{{coo.EntryYear}}")
+
+    
+    
+
+    if ('01/01/1900' != "{{coo.DepartureDate|date:'d/m/Y' }}") {
+        $('#DepartureDate').val("{{coo.DepartureDate|date:'d/m/Y' }}")
+    }
+    $('#DepartureTime').val("{{coo.DepartureTime}}")
+
+    $('#CargoDisachargeInput').val("{{coo.DischargePort}}")
+
+
+    $('#FinalDestinationSelect').val("{{coo.FinalDestinationCountry}}")
+
+    $('#VoyageNumberValue').val("{{coo.OutVoyageNumber}}")
+
+    $('#veseeleValue').val("{{coo.OutVesselName}}")
+
+    $('#conveyancevalue').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportValue').val("{{coo.OutTransportId}}")
+
+    $('#conveyanceroadid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportroadid').val("{{coo.OutTransportId}}")
+
+    $('#FlightNoValueId').val("{{coo.OutFlightNO}}")
+
+    $('#cooconveyancemailid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#cootransportmailid').val("{{coo.OutTransportId}}")
+
+    $('#conveyancemmodelid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportmmodelid').val("{{coo.OutTransportId}}")
+
+    $('#conveyancepipeid').val("{{coo.OutConveyanceRefNo}}")
+
+    $('#transportpipeid').val("{{coo.OutTransportId}}")
+
+    $('#summaryNoOfItems').val("{{coo.NumberOfItems}}")
+    
+    $('#summaryNoOfItemValue').val("{{coo.NumberOfItems}}")
+
+    $('#summaryInternalRemarks').val("{{coo.InternalRemarks}}")
+    
+    $('#SummaryMRD').val("{{coo.MRDate|date:'d/m/Y'}}")
+
+    $('#SummaryTIME').val("{{coo.MRTime|date:'h:i A'}}")
+
+    $('#SummaryCrossReference').val("{{coo.GrossReference}}")
+
+  
+   
+    $('#DeclareIndicator').val("{{coo.DeclareIndicator|escapejs}}")
+    if ($("#DeclareIndicator").val() == "True" || $("#DeclareIndicator").val() == "true") {
+        $("#DeclareIndicator").prop("checked", true);
+    }
+    else {
+        $("#DeclareIndicator").prop("checked", false);
+    }
+
+    let Additionalrecieptant = ("{{coo.Additionalrecieptant|escapejs}}").split('-')
+    $('#Recipient1').val(Additionalrecieptant[0])
+    $('#Recipient2').val(Additionalrecieptant[1])
+    $('#Recipient3').val(Additionalrecieptant[2])
+    
+
+   
+
+
+    let AdditionalCertificate = ("{{coo.AdditionalCer|escapejs}}").split('-')
+    $('#AdditionalCer1').val(AdditionalCertificate[0])
+    $('#AdditionalCer2').val(AdditionalCertificate[1])
+    $('#AdditionalCer3').val(AdditionalCertificate[2])
+    $('#AdditionalCer4').val(AdditionalCertificate[3])
+
+    let TransportDeatail = ("{{coo.TransportDtl|escapejs}}").split('-')
+    $('#TransportDtl1').val(TransportDeatail[0])
+    $('#TransportDtl2').val(TransportDeatail[1])
+    $('#TransportDtl3').val(TransportDeatail[2])
+    $('#TransportDtl4').val(TransportDeatail[3])
+
+
+    $('#CooCopies1').val("{{coo.CerDtlCopy1}}")
+
+    $('#CooCopies2').val("{{coo.CerDtlCopy2}}")
+
+
+
+    $('#summaryTradeRemarks').val("{{coo.TradeRemarks}}")
+
+    $('#PreviousPermitNo').val("{{coo.PreviousPermitNo}}")
+
+    CooPreviousPermit()
+
+  
+
+    
+    $('#shownext').prop('disabled', false);
+    $('#showprevious').prop('disabled', false);
+    CootItemSave()
+  
+
+   
+
+    CERTTUFCATE1Change();
+    CooTypeChage();
+   
+    
+
+
+
+   
+
+    $('#CooShow').show()
+   
+    $('#Headerreset').hide()
+    $('#PartyRest').hide()
+    $('#CargoRest').hide()
+    $('#ItemRest').hide()
+    $('#ShowAddItem').hide()
+    $('#Item span1').hide()
+
+    
+
+   document.getElementById('ShowCreate').innerText = "{{ coo.TouchUser }}"; 
+   document.getElementById('ShowJobId').innerText = "{{ coo.JobId }}"; 
+   document.getElementById('ShowMsgId').innerText = "{{ coo.MSGId }}";
+   document.getElementById('ShowStatus').innerText = "{{ coo.Status }}";  
+   document.getElementById('ShowDate').innerText = "{{ coo.MRDate|date:'d/m/Y' }} {{ coo.MRTime|date:'h:i A' }}"; 
+   {% comment %} document.getElementById('ShowCertificate').innerText = "{{ }}"; 
+   document.getElementById('ShowCertificateApproved').innerText = "{{  }}";  {% endcomment %}
+    
+
+
+
+
+   
+
+
+</script>
+{% endfor %}
+
+{% endif %}
+
+
+
+{% endblock %}

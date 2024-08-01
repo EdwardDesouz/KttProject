@@ -457,9 +457,91 @@
                     </div>
                 </div>
             </div> -->
+            <div  id="InNonShow" style=display:none;>
+
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <h1 class="Borderdiv">PERMIT CONDITIONS</h1>
+                    </div>
+                </div>
+    
+                <div class="container-fluid mt-5"  >
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-4">PERMIT NO : </div>
+                                <div class="col-6" id="SowPermitNo"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">JOB ID : </div>
+                                <div class="col-6" id="ShowJobId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">CREATE BY : </div>
+                                <div class="col-6" id="ShowCreate"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">TRANSMIT USER : </div>
+                                <div class="col-3" id="ShowTransmituser"></div>
+                            </div>
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-4">VALIDITY PERIOD :  </div>
+                                <div class="col-6" id="ShowValidityPeriod"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">MSG ID : </div>
+                                <div class="col-6" id="ShowMsgId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">STATUS : </div>
+                                <div class="col-6" id="ShowStatus"></div>
+                            </div>
+                           
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-5">PERMIT APPROVED DATE :  </div>
+                                <div class="col-6" id="ShowCertificateApproved"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-5">DEC DATE : </div>
+                                <div class="col-6" id="ShowDate"></div>
+                            </div>   
+                            <div class="row mt-3">
+                                <div class="col-5">CERTIFICATE NO :</div>
+                                <div class="col-6" id="ShowCertifcateNo"></div>
+                            </div>                                          
+                        </div>
+                    </div>
+                </div> 
+    
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <table style="width: 100%;" id="">
+                            <thead>
+                                
+                                <th style="padding: 2px;">S.NO</th>
+                                <th style="padding: 2px;">CODE</th>
+                                <th>DESCRIPTION</th>
+                    
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan=14 style='text-align:center'>No Record</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+            </div>
             <div class="row mt-3">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowHeaderReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('PartyTab')">NEXT</button></div>
                 <div class="col-4"></div>
@@ -580,7 +662,7 @@
                 </div>
             </div>
 
-            <div class="row mt-5 " style="display: none;" id="handlingAgentshow">
+            <div class="row mt-5 "  style="display:none;" id="handlingAgentshow">
                 <div class="col-2 mt-2">HANDLING AGENT</div>
                 <div class="col-1">
                     <img src="{% static 'IMG/search.png' %}" width="24px"
@@ -589,7 +671,7 @@
                 </div>
                 <div class="col-1">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="CODE" id="handlingCode"
-                        onfocus="ImportFocusIn()" onfocusout="ImportFocusOut()">
+                        onfocus="HandlingFocusIn()" onfocusout="HandlingFocusOut()">
                 </div>
                 <div class="col-2">
                     <input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI" id="handlingCruei">
@@ -614,13 +696,13 @@
                         onfocus="InwardFocusIn()" onfocusout="InwardFocusOut()">
                 </div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="CRUEI"
                         id="InwardCruei">
                     <br>
                     <span1 id="InwardCrueiSpan">FILL THE CRUEI</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
+                    <input type="text" class="inputStyle" style="width: 80%;" placeholder="NAME"
                         id="InwardName">
                     <br>
                     <span1 id="InwardNameSpan">FILL THE NAME</span1>
@@ -642,13 +724,13 @@
                         onfocus="OutwardFocusIn()" onfocusout="OutwardFocusOut()">
                 </div>
                 <div class="col-2">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="CRUEI"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="CRUEI"
                         id="OutwardCruei">
                     <br>
                     <span1 id="OutwardCrueiSpan">FILL CRUEI</span1>
                 </div>
                 <div class="col-3">
-                    <input type="text" class="inputStyle HighLight" style="width: 80%;" placeholder="NAME"
+                    <input type="text" class="inputStyle " style="width: 80%;" placeholder="NAME"
                         id="OutwardName">
                     <br>
                     <span1 id="OutwardNameSpan">FILL NAME</span1>
@@ -757,22 +839,22 @@
                     <input type="checkbox" id="EndUserID" onclick="EndUserClick()">
                     <label for="EndUserID">ENDUSER</label>
                 </div>
-                <div class="col-1 EndUserHide">
+                <div class="col-1 EndUserHide" style="display: none;">
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-1 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="CODE" id="EndConsigneCode" onfocus="EndConsigneFocusIn()"
                         onfocusout='EndConsigneFocusOut()'></div>
-                <div class="col-2 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-2 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="CRUEI" id="EndConsigneCruei"></div>
-                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-3 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="USER NAME" id="EndConsigneUserName">
                 </div>
-                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-3 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="NAME1" id="EndConsigneName1"></div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"><button type="button" class="btn1" onclick="CopyConsigne()">COPY OF CONSIGNE</button>
                 </div>
                 <div class="col-1"></div>
@@ -786,7 +868,7 @@
                 <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
                         id="EndConsigneCity"></div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
@@ -800,7 +882,7 @@
                         id="EndConsigneCountry">
                 </div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
@@ -809,67 +891,11 @@
                 <div class="col-3"></div>
                 <div class="col-3"></div>
             </div>
-
-            <!-- <div class="row mt-3 PartyManufacturer" style="display: none;">
-                <div class="col-2 mt-2">MANUFACTURER</div>
-                <div class="col-1">
-                    <img src="{% static 'IMG/search.png' %}" width="24px">
-                    <button type="button" class="btn" style="font-weight: bold;">+</button>
-                </div>
-                <div class="col-1"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="CODE" id="ManuFactureCode" onfocus="ManFactureFocusIn()"
-                        onfocusout="ManFactureFocusOut()"></div>
-                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="CRUEI" id="ManuFactureCruei"></div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="NAME" id="ManuFactureName">
-                </div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="NAME1" id="ManuFactureName1"></div>
-            </div>
-            <div class="row mt-3 PartyManufacturer" style="display: none;">
-                <div class="col-2"></div>
-                <div class="col-1"></div>
-                <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="ADDRESS" id="ManuFactureAddress">
-                </div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="ADDRESS1" id="ManuFactureAddress1">
-                </div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="CITY" id="ManuFactureCity"></div>
-            </div>
-            <div class="row mt-3 PartyManufacturer" style="display: none;">
-                <div class="col-2"></div>
-                <div class="col-1"></div>
-                <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="SUB CODE" id="ManuFactureSubCode">
-                </div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="SUB DIVISION" id="ManuFactureSubDivision">
-                </div>
-                <div class="col-3"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="COUNTRY" id="ManuFactureCountry">
-                </div>
-            </div>
-            <div class="row mt-3 PartyManufacturer" style="display: none;">
-                <div class="col-2"></div>
-                <div class="col-1"></div>
-                <div class="col-1"></div>
-                <div class="col-2"><input type="text" class="inputStyle CoTypeEmpty" style="width: 80%;"
-                        placeholder="POSTAL" id="ManuFacturePostal"></div>
-                <div class="col-3"></div>
-                <div class="col-3"></div>
-            </div> -->
-
-
             <div class="row mt-3">
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('HeaderTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowPartyReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('CargoTab')">NEXT</button></div>
                 <div class="col-3"></div>
@@ -888,7 +914,7 @@
                         <div class="row mt-3">
                             <div class="col-4">TOTAL OUTER PACK</div>
                             <div class="col-3">
-                                <input type="number" class="inputStyle HighLight" id="TotalOuterPack"><br>
+                                <input type="number" class="inputStyle HighLight" id="TotalOuterPack" onfocusout=totalpack()><br>
                                 <span1 id="TotalOuterPackSpan">FILL TOTAL OUTER PACK</span1>
                             </div>
                             <div class="col-3">
@@ -1019,7 +1045,7 @@
                         <div class="row mt-3">
                             <div class="col-3">LOADING PORT</div>
                             <div class="col-1">
-                                <img src="{% static 'IMG/search.png' %}" width="24px" onclick="alert('Welcome ')">
+                                <img src="{% static 'IMG/search.png' %}" width="24px" onclick="Loadingporttrans('LOADING PORT', LoadingPort, 'LoadingPortCode', 'LoadingPortCodeText')">
                             </div>
                             <div class="col-2">
                                 <input type="text" class="inputStyle HighLight" id="LoadingPortCode"
@@ -1130,7 +1156,7 @@
                             <div class="row mt-3">
                                 <div class="col-3">DISCHARGE PORT</div>
                                 <div class="col-1">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="Loadingporttrans('DISCHARGE PORT', LoadingPort, 'DischargePort', 'DischargePortText')">
                                 </div>
                                 <div class="col-2">
                                     <input type="text" class="inputStyle HighLight" id="DischargePort"
@@ -1194,7 +1220,7 @@
                                     <label for="OutOceanBillofLadingNo">OBL</label>
                                 </div>
                                 <div class="col-7">
-                                    <input type="text" id="OutOceanBillofLadingNo" class="inputStyle HighLight">
+                                    <input type="text" id="OutOceanBillofLadingNo" class="inputStyle HighLight" onfocusout=OutOblVal()>
                                     <br>
                                     <span1 id="OutOceanBillofLadingNoSpan">FILL OBL</span1>
                                 </div>
@@ -1294,7 +1320,7 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label>HAWB</label></div>
-                                <div class="col-7"><input type="text" name="HAWB" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" name="HAWB" id="OutOutwardHawb" class="inputStyle"></div>
                             </div>
                         </div>
                     </div>
@@ -1321,7 +1347,7 @@
                             <div class="row mt-3">
                                 <div class="col-4"><label for="OutMasterAirwayBill">MAWB</label></div>
                                 <div class="col-7">
-                                    <input type="text" id="OutMasterAirwayBill" class="inputStyle HighLight">
+                                    <input type="text" id="OutMasterAirwayBill" class="inputStyle HighLight" onfocusout="mawbOutFunction()">
                                     <span1 id="OutMasterAirwayBillSpan">FILL MAWB</span1>
                                 </div>
                             </div>
@@ -1432,7 +1458,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('PartyTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowCargoReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('ItemTab')">NEXT</button></div>
                 <div class="col-3"></div>
@@ -2094,7 +2120,7 @@
                                 <div class="col-2">END USER DESCRIPTION</div>
                                 <div class="col-1" style="width: 150px;">PRODUCT CODE 1 </div>
                                 <div class="col-2 mb-5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode1','','product1CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode1">
                                 </div>
                                 <div class="col-2">
@@ -2153,7 +2179,7 @@
                                 <div class="col-2">END USER DESCRIPTION</div>
                                 <div class="col-1" style="width: 150px;">PRODUCT CODE 2 </div>
                                 <div class="col-2 mb-5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode2','','product2CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode2">
                                 </div>
                                 <div class="col-2">
@@ -2217,7 +2243,7 @@
                                     <label for="ProductCode3">PRODUCT CODE 3</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc3">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode3','','product3CodeCopyUom')">
                                     <input type="text" class="inputStyle" id="itemProductCode3" style="width: 80%;">
                                 </div>
                                 <div class="col-2 OutCasc3">
@@ -2281,7 +2307,7 @@
                                     <label for="ProductCode4">PRODUCT CODE 4</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc4">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode4','','product4CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode4">
                                 </div>
                                 <div class="col-2 OutCasc4">
@@ -2345,7 +2371,7 @@
                                     <label for="ProductCode5">PRODUCT CODE 5</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode5','','product5CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode5">
                                 </div>
                                 <div class="col-2 OutCasc5">
@@ -2582,7 +2608,7 @@
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('CargoTab')">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
+                <div class="col-2" id="OutShowItemReset"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
                 </div>
@@ -2624,7 +2650,7 @@
             </table>
             <br><br>
             <div class="row mt-4">
-                <div class="col-2"><button class="MoveOnButtons" type="button">DEL HBL / HAWB</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button"  onclick="ItemOutDelHblHawb()">DEL HBL / HAWB</button></div>
             </div>
             <br>
             <br>
@@ -2765,48 +2791,7 @@
                     </div>
                 </div>
             </div>
-            <!---------------------------------------------------STS & CWC--------------------------------------------------->
-            <!-- <div class="row mt-5">
-                <div class="col-2">
-                    <input type="checkbox" id="OutStsCwc"
-                        onclick="OutCpcHideShow('#OutStsCwc','.OutStsCwcClass','OutStsName')">
-                    <label for="OutStsCwc">STS & CWC</label>
-                </div>
-                <div class="col-8 OutStsCwcClass">
-                    <div class="row">
-                        <button class="ButtonClick" type="button" style="width: 14%;"
-                            onclick="OutCpcADD('#OutStsCwcTable','OutStsCwcName','.OutStsCwcMaximum')">ADD
-                            ROW</button>
-                        <p class="ErrorColor OutStsCwcMaximum">EXCEED THE MAXIMUM NUMBERS (5) FOR STS & CWC.</p>
-                    </div>
-                    <div class="row mt-3">
-                        <table id="OutStsCwcTable">
-                            <thead>
-                                <th>PROCESSING CODE 1</th>
-                                <th>PROCESSING CODE 2</th>
-                                <th>PROCESSING CODE 3</th>
-                                <th></th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
-                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
-                                    <td><input type="text" class="inputStyle" name="OutStsCwcName"></td>
-                                    <td><i class="fa-regular fa-trash-can" style="color: #ff0000;"
-                                            onclick="DeleteCasc(this)"></i></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div> -->
-            <!---------------------------------------------------DEFERRED PRINTING OF CO--------------------------------------------------->
-            <!-- <div class="row mt-5">
-                <div class="col-2">
-                    <input type="checkbox" id="Defrentprinting" value="False" onclick="DefrentprintingClick()">
-                    <label for="Defrentprinting">DEFERRED PRINTING OF CO</label>
-                </div>
-            </div> -->
+
             <!---------------------------------------------------CNB--------------------------------------------------->
             <div class="row mt-5">
                 <div class="col-2">
@@ -2961,7 +2946,7 @@
                 <div class="col-6"><input type="text" class="inputStyle" id="InternalRemarks"></div>
                 <div class="col-4">
                     <input type="text" class="inputStyle HighLight" id="MRDate" placeholder="DATE"
-                        onfocusout="InvoiceDateFunction('MRDate')">
+                        onfocusout="InvoiceDateFunction('MRDate')" value="{{currentDate}}">
                     <span1 id="MRDateSpan">FILL MRD</span1>
                 </div>
                 <div class="col-2">
@@ -2976,41 +2961,48 @@
             <div class="row mt-3">
                 <div class="col-6">
                     <div class="row mt-4">
-                        <div class="col-6">EXPORTER</div>
-                        <div class="col-6"></div>
+                        <div class="col-6">IMPORTER</div>
+                        <div class="col-6" id="SummaryImporter"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">HANDLING AGENT</div>
+                        <div class="col-6" id="SummaryHandling"></div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-6">IN MAWB/OBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-6" id="SummaryInObl"></div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-6">OUT MAWB/OBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-6" id="SummaryOutObl"></div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-6">NO OF PACKING</div>
-                        <div class="col-6"></div>
+                        <div class="col-6" id="SummaryPacking"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">INVOICE AMOUNT</div>
-                        <div class="col-6"></div>
+                        <div class="col-6">ITEM AMOUNT</div>
+                        <div class="col-6" id="SummaryItemamount"></div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="row mt-4"></div>
                     <div class="row mt-4">
-                        <div class="col-6">IN HAWB/HBL</div>
                         <div class="col-6"></div>
+                        <div class="col-6"></div>
+                    </div>
+                    <div class="row mt-4">
+                        <div class="col-6">IN HAWB/HBL</div>
+                        <div class="col-6" id="SummaryInHawbHbl"></div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-6">OUT HAWB/HBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-6" id="SummaryOutHawbHbl"></div>
                     </div>
                     <div class="row mt-4">
                         <div class="col-6">GROSS WEIGHT</div>
-                        <div class="col-6"></div>
+                        <div class="col-6" id="SummaryGrossWeight"></div>
                     </div>
-                    <div class="row mt-4"></div>
                 </div>
             </div>
             <div class="row mt-5">
@@ -3025,7 +3017,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('CpcTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="AllDataSave()">SAVE</button>
+                <div class="col-2" id="FinalSubmitDiv"><button class="MoveOnButtons" type="button" onclick="AllDataSave()">SAVE</button>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -3379,6 +3371,29 @@
     }
 </script>
 
+{% if Show %}
+<script>
+    $('#InNonShow').show()
+    $('#OutShowHeaderReset').hide();
+    $('#OutShowPartyReset').hide();
+    $('#OutShowCargoReset').hide();
+    $('#OutShowInvoiceReset').hide();
+    $('#OutShowItemReset').hide();
+    $('#OutShowInvoiceiv').hide();
+    $('input').prop('disabled', true);
+    $('select').prop('disabled', true);
+    $('table').prop('disabled', true);
+    $('textarea').prop('disabled', true);
+    $('.ButtonClick').prop('disabled', true);
+    $('#AddInvoiceBtn').prop('disabled', true);
+    $('.showDisable').prop('disabled', true);
+    $('i').prop('disabled', false);
+    $('#FinalSubmitDiv').html(`
+    <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
+    `);
+</script>
+{% endif %}
+
 
 {% if OutData %}
 
@@ -3461,9 +3476,214 @@
 
     $('#FrieghtCode').val("{{out.FreightForwarderCode}}")
     $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
+    $('#handlingCode').val("{{out.HandlingAgentCode}}")
+    $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
+    $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
+    if ("{{out.EndUserCode}}" != ""){
+        $("#EndUserID").prop('checked',true)
+        if($('#EndUserID').prop('checked')){
+                EndUserClick()
+            }
+        }
+    $('#EndConsigneCode').val("{{out.EndUserCode}}")
+    $('#ManuFactureCode').val("{{out.Manufacturer}}")
+
+    if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
+        $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
+    }
+    $('#ArrivalTime').val("{{out.ArrivalTime}}")
+
+    $('#LoadingPortCode').val("{{out.LoadingPortCode}}")
+    $('#VoyageNumber').val("{{out.VoyageNumber}}")
+    $('#VesselName').val("{{out.VesselName}}")
+    $('#OceanBillofLadingNo').val("{{out.OceanBillofLadingNo}}")
+    $('#ConveyanceRefNo').val("{{out.ConveyanceRefNo}}")
+    $('#TransportId').val("{{out.TransportId}}")
+    $('#FlightNO').val("{{out.FlightNO}}")
+    $('#AircraftRegNo').val("{{out.AircraftRegNo}}")
+    // $('#OutMasterAirwayBill').val("{{out.MasterAirwayBill}}")
+    // mawbOutFunction()
+
+    $('#ReleaseLocaName').val("{{out.ReleaseLocation}}")
+    $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
+    $('#StorageCode').val("{{out.StorageLocation}}")
+
+
+
+    if ('01/01/1900' != "{{out.DepartureDate|date:'d/m/Y' }}") {
+        $('#DepartureDate').val("{{out.DepartureDate|date:'d/m/Y' }}")
+    }
+
+    $('#DepartureTime').val("{{out.DepartureTime}}")
+
+    $('#DischargePort').val("{{out.DischargePort}}")
+
+    $('#OutVoyageNumber').val("{{out.OutVoyageNumber}}")
+    $('#OutVesselName').val("{{out.OutVesselName}}")
+    $('#OutOceanBillofLadingNo').val("{{out.OutOceanBillofLadingNo}}")
+    $('#VesselType').val("{{out.VesselType}}")
+    $('#VesselNetRegTon').val("{{out.VesselNetRegTon}}")
+
+    $('#TowingVesselID').val("{{out.TowingVesselID}}")
+    $('#TowingVesselName').val("{{out.TowingVesselName}}")
+    $('#NextPort').val("{{out.NextPort}}")
+    $('#LastPort').val("{{out.LastPort}}")
+    $('#OutConveyanceRefNo').val("{{out.OutConveyanceRefNo}}")
+    $('#OutTransportId').val("{{out.OutTransportId}}")
+    $('#OutFlightNO').val("{{out.OutFlightNO}}")
+    $('#OutAircraftRegNo').val("{{out.OutAircraftRegNo}}")
+    // $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+    // mawbOutFunction()
+    $('#TotalOuterPack').val("{{out.TotalOuterPack}}")
+    $('#TotalOuterPackUOM').val("{{out.TotalOuterPackUOM}}")
+    $('#PermitGrossWeight').val("{{out.TotalGrossWeight}}")
+    $('#TotalGrossWeightUOM').val("{{out.TotalGrossWeightUOM}}")
+    $('#GrossReference').val("{{out.GrossReference}}")
+    $('#summaryTradeRemarks').val(`{{out.TradeRemarks}}`)
+    $('#InternalRemarks').val("{{out.InternalRemarks}}")
+    CargoGrossEdit()
+
+    if ("{{out.DeclareIndicator}}" == "true" || "{{out.DeclareIndicator}}" == 'True') {
+        $('#DeclareIndicator').prop('checked', true)
+        $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
+    }
+
+
+    // NumberOfItems: ItemData.length,
+    $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
+    // TotalGSTTaxAmt: "0.00",
+    // TotalExDutyAmt: "0.00",
+    // TotalCusDutyAmt: "0.00",
+    // TotalODutyAmt: "0.00",
+    // TotalAmtPay: "0.00",
+    // Status: "NEW",
+    // PermitNumber: "PermitNumber",
+    // prmtStatus: "prmtStatus",
+    $('#ReleaseLocText').val("{{out.ResLoaName}}")
+    $('#RecepitLocName').val("{{out.RepLocName}}")
+    $('#RecepitLocName').val("{{out.RecepitLocName}}")
+    $('#OutCargoHblValue').val("{{out.INHAWB}}")
+    $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+    mawbOutFunction()
+    $('#Hbl').val("{{out.outHAWB}}")
+    $('#Hawb').val("{{out.outHAWB}}")
+    hawbOutFunction()
+    // CertificateNumber: "",
+    $('#Defrentprinting').val("{{out.Defrentprinting}}")
+    if ("{{out.Cnb}}" == "true" || "{{out.Cnb}}" == 'True') {
+        $('#OutCnb').prop('checked', true)
+        $('#OutCnb').val("{{out.Cnb}}")
+    }
+
+    $('#DeclaringFor').val("{{out.DeclarningFor}}")
+    $('#MRDate').val("{{out.MRDate|date:'d/m/Y'}}")
+    $('#MRTime').val("{{out.MRTime|date:'h:i A' }}")
+
+    CargoGross()
+    OutWardCargoHblValueOut()
+    // mawbOutFunction()
+    OutCargoHblValueOut()
+    totalpack()
+    OutOblVal()
+    InOblVal()
+
+  
+
+    
+ 
+   
+</script>
+{% endfor %}
+
+{% endif %}
+
+
+
+{% if Show %}
+
+{% for out in Show%}
+
+<script>
+    $('#DeclarationType').val("{{out.DeclarationType}}")
+    OutDeclarationChange()
+
+    $('#PreviousPermitNo').val("{{out.PreviousPermit}}")
+
+    $('#CargoPackType').val("{{out.CargoPackType}}")
+    OutCargoPackTypeChange()
+
+    $('#OutInwardTransportMode').val("{{out.InwardTransportMode}}")
+    OutInwardTrasnPortModeChange()
+
+    $('#OutOutwardTransportMode').val("{{out.OutwardTransportMode}}")
+    OutOutwardTrasnPortModeChange()
+
+    $('#BgIndicator').val("{{out.BGIndicator}}")
+
+    if ("{{out.SupplyIndicator}}" == "True") {
+        $('#SupplyIndicator').prop('checked', true)
+    }
+
+    if ("{{out.ReferenceDocuments}}" == "True") {
+        $('#ReferenceDocuments').prop('checked', true)
+        OutReferenceDocument()
+    }
+
+    const LicenceData = "{{out.License}}".split('-')
+
+    $('#licence1').val(LicenceData[0])
+    $('#licence2').val(LicenceData[1])
+    $('#licence3').val(LicenceData[2])
+    $('#licence4').val(LicenceData[3])
+    $('#licence5').val(LicenceData[4])
+
+    $('#CoType').val("{{out.COType}}")
+    // Entryyear: "",//$('#Entryyear').val(),//dont save
+    // GSPDonorCountry: "--Select--",//$('#GSPDonorCountry').val(),//dont save
+
+    $('#CertificateType1').val("{{out.CerDetailtype1}}")
+    $('#CerDetailCopies1').val("{{out.CerDetailCopies1}}")
+    $('#CertificateType2').val("{{out.CerDetailtype2}}")
+    $('#CerDetailCopies2').val("{{out.CerDetailCopies2}}")
+
+    // PerCommon: "",//$('#PerCommon').val(),//dont save
+
+    $('#CurrencyCode').val("{{out.CurrencyCode}}")
+
+    const AddCerDtl = "{{out.AddCerDtl}}".split('-')
+    $('#AddCerDtl1').val(AddCerDtl[0])
+    $('#AddCerDtl2').val(AddCerDtl[1])
+    $('#AddCerDtl3').val(AddCerDtl[2])
+    $('#AddCerDtl4').val(AddCerDtl[3])
+    $('#AddCerDtl5').val(AddCerDtl[4])
+
+    const TransDtl = "{{out.TransDtl}}".split('-')
+    $('#TransDtl1').val(TransDtl[0])
+    $('#TransDtl2').val(TransDtl[1])
+    $('#TransDtl3').val(TransDtl[2])
+    $('#TransDtl4').val(TransDtl[3])
+    $('#TransDtl5').val(TransDtl[4])
+
+    const Recipient = "{{out.Recipient}}".split('-')
+    $('#Recipient1').val(Recipient[0])
+    $('#Recipient2').val(Recipient[1])
+    $('#Recipient3').val(Recipient[2])
+
+    $('#DeclarantCompanyCode').val("{{out.DeclarantCompanyCode}}")
+
+    $('#ExporterCode').val("{{out.ExporterCompanyCode}}")
+
+
+    $('#InwardCode').val("{{out.Inwardcarriercode}}")
+
+    $('#OutwardCode').val("{{out.OutwardCarrierAgentCode}}")
+
+    $('#FrieghtCode').val("{{out.FreightForwarderCode}}")
+    $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
     $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
     $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
     $('#EndConsigneCode').val("{{out.EndUserCode}}")
+    $('#ManuFactureCode').val("{{out.Manufacturer}}")
 
     if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
         $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
@@ -3483,9 +3703,7 @@
     $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
     $('#StorageCode').val("{{out.StorageLocation}}")
 
-    // if ('01/01/1900' != "{{out.BlanketStartDate|date:'d/m/Y' }}") {
-    //     $('#BlanketStartDate').val("{{out.BlanketStartDate|date:'d/m/Y' }}")
-    // }
+
 
     if ('01/01/1900' != "{{out.DepartureDate|date:'d/m/Y' }}") {
         $('#DepartureDate').val("{{out.DepartureDate|date:'d/m/Y' }}")
@@ -3524,8 +3742,17 @@
         $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
     }
 
-    $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
 
+    // NumberOfItems: ItemData.length,
+    $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
+    // TotalGSTTaxAmt: "0.00",
+    // TotalExDutyAmt: "0.00",
+    // TotalCusDutyAmt: "0.00",
+    // TotalODutyAmt: "0.00",
+    // TotalAmtPay: "0.00",
+    // Status: "NEW",
+    // PermitNumber: "PermitNumber",
+    // prmtStatus: "prmtStatus",
     $('#ReleaseLocText').val("{{out.ResLoaName}}")
     $('#RecepitLocName').val("{{out.RepLocName}}")
     $('#RecepitLocName').val("{{out.RecepitLocName}}")
@@ -3534,10 +3761,36 @@
     hawbOutFunction()
     // CertificateNumber: "",
     $('#Defrentprinting').val("{{out.Defrentprinting}}")
-    // Cnb: $('#OutCnb').val(),
+    if ("{{out.Cnb}}" == "true" || "{{out.Cnb}}" == 'True') {
+        $('#OutCnb').prop('checked', true)
+        $('#OutCnb').val("{{out.Cnb}}")
+    }
     $('#DeclaringFor').val("{{out.DeclarningFor}}")
     $('#MRDate').val("{{out.MRDate|date:'d/m/Y'}}")
     $('#MRTime').val("{{out.MRTime|date:'h:i A' }}")
+
+    CargoGross()
+    OutWardCargoHblValueOut()
+    mawbOutFunction()
+    OutCargoHblValueOut()
+    totalpack()
+    OutOblVal()
+    InOblVal()
+
+   document.getElementById('ShowCreate').innerText = "{{ out.TouchUser }}"; 
+   document.getElementById('ShowJobId').innerText = "{{ out.JobId }}"; 
+   document.getElementById('ShowMsgId').innerText = "{{ out.MSGId }}";
+   document.getElementById('ShowStatus').innerText = "{{ out.Status }}"; 
+   document.getElementById('ShowTransmituser').innerText = "{{ out.Status }}";  
+   document.getElementById('ShowDate').innerText = "{{ out.MRDate|date:'d/m/Y' }} {{ out.MRTime|date:'h:i A' }}"; 
+   document.getElementById('SowPermitNo').innerText = "{{out.Status}}"; 
+   document.getElementById('ShowValidityPeriod').innerText = "{{ out.Status }}";
+   document.getElementById('ShowCertificateApproved').innerText = "{{ out.Status }}";
+   document.getElementById('ShowCertifcateNo').innerText = "{{ out.Status }}";
+
+    
+ 
+   
 </script>
 {% endfor %}
 

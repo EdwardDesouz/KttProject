@@ -23,9 +23,7 @@
         <div class="col-1">
             <div class="dropdown">
                 <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"
-                    id="ShowColumns">
-                    ShowColumns
-                </button>
+                    id="ShowColumns">ShowColumns</button>
                 <ul class="dropdown-menu dropdown-menu-light">
                     {% for Custom in CustomiseReport %}
                     {% if Custom.FiledValue == "True" %}
@@ -57,7 +55,7 @@
         <option value="{{i}}">{{i}}</option>
         {% endfor %}
     </select>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="">TRANSMIT DATA</button>
+    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="OutTransmitDataClick()">TRANSMIT DATA</button>
     <label style="margin-left: 20px;">SEARCH</label>
     <input type="text" class="inputStyle" style="width: 180px;margin-left: 20px;" id="InonPaymentTableSearch">
     <input type="checkbox" style="margin-left: 20px;" id="InonInpayCheckBox">

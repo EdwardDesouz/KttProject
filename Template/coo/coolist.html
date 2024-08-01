@@ -1,0 +1,236 @@
+{% extends 'Inpayment/InpaymentList.html' %}
+{% load static %}
+{% block content %}
+<script src="{% static 'js/COO/CooListJs.js'%}"></script>
+
+
+<div class="InpaymentBtns">
+    <button type="button" id="NewBtns" onclick="NewButton()" >NEW</button>
+    <button type="button" id="SubmitBtn" style="background-color: indianred;" onclick="InNonSubmit()">TRANSMIT</button>
+    <button type="button" id="CopyBtn" onclick="InNonCopy()">COPY</button>
+    <button type="button" id="DownloadDataBtn" onclick="DownloadDataInNon()">DOWNLOAD DATA</button>
+    <button type="button" id="MergeBtn">MERGE</button>
+    <button type="button" id="UnMergeBtn">UN MERGE</button>
+</div>
+ 
+
+
+
+<section class="InonPayment-list-ShowColumns">
+    <div class="row mt-3">
+        <div class="col-11">
+            <div class="col-1">
+            </div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false"z
+            id="ShowColumn">ShowColumns</button>
+               <ul class="dropdown-menu dropdown-menu-light">
+                    {% for Custom in CustomiseReport %}
+                    {% if Custom.FiledValue == "True" %}
+                    <li><input type="checkbox" id="{{Custom.FiledName}}" checked value="{{Custom.FiledName}}"
+                            onclick="HtaHide('{{Custom.Sno}}','{{Custom.FiledName}}')">&nbsp;<label
+                            for="{{Custom.FiledName}}">{{Custom.FiledName}}</label></li>
+                    {% else %}
+                    <li><input type="checkbox" id="{{Custom.FiledName}}" value="{{Custom.FiledName}}"
+                            onclick="HtaHide('{{Custom.Sno}}','{{Custom.FiledName}}')">&nbsp;<label
+                            for="{{Custom.FiledName}}">{{Custom.FiledName}}</label></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+        </div>  
+    </div>
+</section> 
+
+<section class="InonPayment-list-ScndButton">        
+    <label for="CooRowLength">NO OF ROWS</label>
+    <select   class="Dropdowns" style="width: 70px;">
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="100">ALL</option>
+    </select>
+
+    <select id="InnonPaymentTransmitData" class="Dropdown" style="width: 250px;margin-left: 20px;">
+        {% for i in ManageUserMail %}
+        <option value="{{i}}">{{i}}</option>
+        {% endfor %}
+    </select>
+    <button class= "ButtonClick" style="margin-left: 20px;" onclick="TransmitDataClick()">TRANSMIT DATA</button>    
+    <label style="margin-left: 20px;">SEARCH</label>
+    <input type="text" class="inputstyle" style="width: 180px;margin-left: 20px;" id="CooTableSearch">
+    <div>
+        <label for="filterPermitsId">FILTER PERMITS</label>
+        <select  class="Dropdowns" onchange="filterPermits()" id="filterPermitsId"style="width: 150px;margin-left: 20px;">
+            <option value="">all</option>
+            <option value="NEW">new</option>
+            <option value="DRF">draft</option>
+            <option value="APR">approved</option>
+            <option value="AME">Amend</option>
+            <option value="CNL">Cancel</option>
+            <option value="QRY">query</option>
+            <option value="PEN">pending</option>
+            <option value="REJ">reject</option>
+            <option value="ERR">error</option>
+            <option value="DEL">delete</option>
+        </select>
+    </div>
+  
+
+</section>
+<section class="InnonPayment-Table">
+    <table id="CooListTable">
+        <thead>
+            <tr>
+                <th style="padding: 10px;"><input type="checkbox" onclick="ListAllCheckSubmit()"
+                     id="ListAllCheckSubmitId"></th>
+                <th style="padding: 2px;">DELETE</th>
+                <th style="padding: 5px;">EDIT</th>
+                <th style="padding: 5px;">VIEW</th>
+                <th>PERMIT ID</th>
+                <th>MSG ID</th>
+                <th>DEC DATE</th>
+                <th>DEC TYPE</th>
+                <th>CREATE</th>
+                <th>DEC ID</th>
+                <th style="padding: 0px 20px !important;">ETD</th>
+                <th>PERMIT NO</th>
+                <th style="padding:0px 50px;">EXPORTER</th>
+                <th>POD</th>
+                <th>CO TYPE</th>
+                <th>CERT TYPE</th>
+                <th>CERT NO</th>
+                <th>MSG TYPE</th>
+                <th>TPT</th>
+                <th>PRE PMT</th>
+                <th>X REF</th>
+                <th>INT REM</th>
+                <th>STATUS</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            <td class="dataTables_empty"></td>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
+                <th style="padding: 2px;"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle" id="statusFilterInput"></th>
+               
+            </tr>
+        </tfoot>
+    </table>
+</section>
+
+<style>
+   
+
+    .InpaymentBtns {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 10px;
+        margin-top: 20px;
+        margin-left: 30px;
+    }
+
+    #ShowColumn {
+        background-color: rgb(25, 135, 84);
+        color: white;
+    }
+
+    .InonPayment-list-ShowColumns {
+        padding: 20px 20px;
+        display: flex;
+        justify-content: flex-end;
+    }
+
+
+    .Dropdowns {
+        border-radius: 15px 50px 30px;
+        background: white;
+        padding: 2px;
+        text-transform: uppercase;
+        font-family: Cambria;
+        width: 100%;
+        font-weight: bold;
+        font-size: 13px;
+        height: 28px;
+        border: none;
+        border-bottom: 3px solid rgb(25, 135, 84);
+    
+    }
+
+    .ButtonClick {
+        border: none;
+        background-color: rgb(25, 135, 84);
+        color: white;
+        padding: 6px 26px;
+        border-radius: 5px;
+        font-weight: 500;
+    }
+
+    .inputstyle {
+        border: none;
+        border-bottom: 3px solid rgb(25, 135, 84);
+        border-radius: 15px 50px 30px;
+        background: white;
+        padding: 2px;
+        text-transform: uppercase;
+        font-family: Cambria;
+        width: 100%;
+        font-weight: bold;
+        font-size: 12px;
+        height: 28px;
+    }
+   
+    .InnonPayment-Table {
+        padding: 20px 20px;
+    }
+
+    .dataTables_empty{
+        text-align: center;
+    }
+</style>
+
+{% endblock %}     
+<style>
+
+    .ShowColumn{
+        width:100%;
+        margin-top:40px;
+        margin-left:40px;
+        margin-right:40px;
+        background-color: rgb(25, 135, 84);
+        margin: 20px;
+        color: white;
+        }
+        </style> 
+
+        <script>
+
+            console.log($('#statusFilterInput').val())
+        </script>
+
+
+
+

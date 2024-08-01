@@ -64,11 +64,11 @@
                     <li class="nav-item HeadBtn" id="TRANSHIPMENT">
                         <a class="nav-link" href="/Transhipment/" style="color: white;">TRANSHIPMENT</a>
                     </li>
-                    <li class="nav-item HeadBtn">
-                        <a class="nav-link" href="/OutList/" style="color: white;">COO</a>
+                    <li class="nav-item HeadBtn" id="COOLIST">
+                        <a class="nav-link" href="/coolist/" style="color: white;">COO</a>
                     </li>
-                    <li class="nav-item HeadBtn">
-                        <a class="nav-link" href="#" style="color: white;">HS CODE FINDER</a>
+                    <li class="nav-item HeadBtn" id="HSCODEFINDER">
+                        <a class="nav-link" href="/hscodelist/"  style="color: white;">HS CODE FINDER</a>
                     </li>
                     <li class="nav-item HeadBtn">
                         <a class="nav-link" href="#" style="color: white;">APR HS CODE FINDER</a>
@@ -300,7 +300,7 @@
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>
                 <th><input type="text" class="inputStyle"></th>
-                <th><input type="text" class="inputStyle"></th>
+                <th><input type="text" class="inputStyle" id="statusFilterInput"></th>
             </tr>
         </tfoot>
     </table>
@@ -317,6 +317,14 @@
                 },
                 "initComplete": function (data) {
                     listBoxData = data.json;
+                    // console.log(listBoxData);
+                    table.rows().every(function () {
+                        var data = this.data();
+                       if(data.STATUS==='DEL'){
+                            $(this.node()).addClass('hidden-row');
+                        }
+                        
+                    });
                 },
                 "dom": 'rtip',
                 "columns": [{
@@ -477,6 +485,54 @@
                 var selectedValue = $(this).val();
                 $('#inpaymentTable').DataTable().page.len(selectedValue).draw();
             });
+
+
+            $('#statusFilterInput').on('keyup change', function() {
+                var filterValue = $(this).val().toUpperCase(); 
+            
+                if (filterValue === '') {
+                    table.rows().every(function ()  {
+                        if (this.data().STATUS.toUpperCase() !== 'DEL') {
+                            $(this.node()).removeClass('hidden-row');
+                        } else {
+                            $(this.node()).addClass('hidden-row');
+                        }
+                    });
+                } else {
+                    table.rows().every(function ()  {
+                        var data = this.data();
+                        var status = data.STATUS.toUpperCase();
+                        if (filterValue === 'DEL') {
+                            if (status === 'DEL') {
+                                $(this.node()).removeClass('hidden-row');
+                            } else {
+                                $(this.node()).addClass('hidden-row');
+                            }
+                        } else {
+                            if (status.includes(filterValue)) {
+                                $(this.node()).removeClass('hidden-row');
+                            } else {
+                                $(this.node()).addClass('hidden-row');  
+                            }
+                        }
+                    });
+                }
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             $("#inpaymentTable tfoot tr input").on('keyup change', function () {
                 table
                     .column($(this).parent().index() + ':visible')
@@ -873,6 +929,7 @@
         }
 
         function TransmitDataFunction(val) {
+            console.log("heloo")
             var checkAr = [];
             if (val == "Inpayment") {
                 var mailId = $("#MailBoxCopyId").val();
@@ -899,10 +956,13 @@
                         csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
                     },
                     success: function () {
-                        $('#Loading').hide();
+                        $("#Loading").hide();
+                        console.log("Hello")
+                        window.location.href = "/InpaymentList/";
                     },
                     error: function () {
                         $('#Loading').hide();
+                        alert("PLEASE SELECT THE TRANSMIT DATA VALUE")
                     },
                 });
             }

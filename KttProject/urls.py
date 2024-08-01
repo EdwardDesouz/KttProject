@@ -29,6 +29,8 @@ urlpatterns = [
     path('',include('OutApp.urls')),
     path('',include('InonPaymentApp.urls')),
     path('',include('Transhipment.urls')),
+    path('',include('cooapp.urls')),
+    path('',include('Hscodefinder.urls')),
 ]
 
 urlpatterns += static(settings.STATIC_URL,document_root = settings.STATIC_ROOT)

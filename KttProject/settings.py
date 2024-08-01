@@ -53,6 +53,10 @@ INSTALLED_APPS = [
     'django_filters',
     'fontawesomefree',
     'corsheaders',
+    'cooapp',
+    'Hscodefinder',
+
+    
 ]
 REST_FRAMEWORK = {
     # Use Django's standard `django.contrib.auth` permissions,
@@ -111,20 +115,42 @@ DATABASES = {
     #         'driver': 'ODBC Driver 17 for SQL Server',
     #     },
     # }, 
-    "default": {
+    # "default": {
+    #     "ENGINE": "mssql",
+    #     "NAME": "KaizenPortal",#TestPortal#KaizenPortal
+    #     "USER": "", 
+    #     "PASSWORD": "",
+    #     "HOST" : "YOSUVA-AROCKIAS",
+    #     'PORT': '',
+    #     'OPTIONS': {
+    #         'driver': 'ODBC Driver 17 for SQL Server',
+    #     },
+    # },
+    # "SecondDb": {
+    #     "ENGINE": "mssql",
+    #     "NAME": "KaizenPortal",#TestPortal#KaizenPortal
+    #     "USER": "KTTUSER", 
+    #     "PASSWORD": "Ktt@2021",
+    #     "HOST": "ec2-54-179-0-97.ap-southeast-1.compute.amazonaws.com",
+    #     'PORT': '',
+    #     'OPTIONS': {
+    #         'driver': 'ODBC Driver 17 for SQL Server',
+    #     },
+    # },
+        "default": {
         "ENGINE": "mssql",
-        "NAME": "KaizenPortal",#TestPortal#KaizenPortal
-        "USER": "", 
-        "PASSWORD": "",
-        "HOST" : "YOSUVA-AROCKIAS",
+        "NAME": "htssoftwares_com_Ktt",#TestPortal#KaizenPortal
+        "USER": "Kttuser", 
+        "PASSWORD": "!Ktt@2024!",
+        "HOST": "103.235.104.220",
         'PORT': '',
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
     },
-    "SecondDb": {
+        "SecondDb": {
         "ENGINE": "mssql",
-        "NAME": "KaizenPortal",#TestPortal#KaizenPortal
+        "NAME": "TestPortal",#TestPortal#KaizenPortal
         "USER": "KTTUSER", 
         "PASSWORD": "Ktt@2021",
         "HOST": "ec2-54-179-0-97.ap-southeast-1.compute.amazonaws.com",

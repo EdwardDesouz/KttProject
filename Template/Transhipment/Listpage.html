@@ -54,13 +54,13 @@
         <option value="{{i}}">{{i}}</option>
         {% endfor %}
     </select>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT
+    <button type="button" class="ButtonClick" style="margin-left: 20px;" onclick="TransTransmitDataClick()">TRANSMIT
         DATA</button>
     <label style="margin-left: 20px;">SEARCH</label>
     <input type="text" class="inputStyle" style="width: 180px;margin-left: 20px;" id="InonPaymentTableSearch">
-    <input type="checkbox" style="margin-left: 20px;" id="InonInpayCheckBox">
+    {% comment %} <input type="checkbox" style="margin-left: 20px;" id="InonInpayCheckBox" >
     <label style="margin-top: 6px;" for="InonInpayCheckBox">INPAYMENT</label>
-    <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT OUTWARD</button>
+    <button type="button" class="ButtonClick" style="margin-left: 20px;">TRANSMIT OUTWARD</button> {% endcomment %}
     <div>
         <label for="InonPaymentFilter">FILTER PERMITS</label>
         <select id="InonPaymentFilter" class="Dropdown" style="width: 150px;margin-left: 20px;"

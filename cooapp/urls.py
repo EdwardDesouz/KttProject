@@ -1,0 +1,37 @@
+from django.urls import path
+from . import views
+urlpatterns = [
+    path('coolist/',views.coolist),
+    path('CooTransmit/',views.CooTransmit),
+    path("coolistTable/",views.coolistTable.as_view()),
+    path('coonew/',views.coolistnew.as_view()),
+    path("exporterurl/", views.ExporterUrl.as_view()),
+    # path("Declaranturl/", views.TransportDeclarantUrl.as_view()),
+    path("Outwardurl/", views.TransportOCAgentUrl.as_view()),
+    path("Fforwarderurl/", views.TransportFforwarderUrl.as_view()),
+    path("Consigneeurl/", views.TransportConsigneUrl.as_view()),
+    path("Manfact/", views.TransportMFacturarUrl.as_view()),
+    path("CooItemCodeSave/", views.ItemCodeSave.as_view()),
+    path("ItemHscode/", views.ItemHSCODEUrl.as_view()),
+    path("ItemCooCode/", views.ItemCOOUrl.as_view()),
+    path("Cargodcportcode/", views.CargoDiscargeportUrl.as_view()),
+    path("cooitemsave/", views.ItemSave.as_view()),
+    path("Cooedit/<id>/", views.CooEdit.as_view()),
+    path("SHOW/<id>/", views.CooShow.as_view()),
+    path("CooListDelete/<id>/", views.CooListDelete.as_view()),
+    path("cooitemsave/<Permit>/", views.ItemSave.as_view()),
+    path("CooHsCodeUrl/", views.CooHscode.as_view()),
+    path("cooitemdelete/", views.CooItemDelete.as_view()),
+    path("CooSavePermit/", views.SavePermit.as_view()),
+    # path("AttachCoo/", views.AttachDocument.as_view()),
+    path("CooItemExcelDownload/", views.CooItemExcelDownload),
+    path("CooPartySave/",views.PartyLoad.as_view()),
+    path("AllItemUpdateCoo/",views.AllItemUpdateCoo),
+    path("CooItemCode/",views.CooItemCode.as_view()),
+    path("CopyCoo/",views.CopyCoo.as_view()),
+    path("DownloadDataCoo/<Id>/",views.CooDownloadData.as_view()),
+    path("CooTransmitData/",views.CooTransmitData.as_view()),
+    path("ItemCooExcelUpload/",views.ItemCooExcelUpload.as_view()),
+    
+    
+]

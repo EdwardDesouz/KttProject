@@ -39,6 +39,7 @@ class InonPayment(View,SqlDb):
 
         refDate = datetime.now().strftime("%Y%m%d")
         jobDate = datetime.now().strftime("%Y-%m-%d")
+        currentDate = datetime.now().strftime("%d/%m/%Y")
 
         self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
        
@@ -86,6 +87,7 @@ class InonPayment(View,SqlDb):
             'BgIndicator': CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by('Name'),
             'DocumentAttachmentType': CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by('Name'),
             'ContainerSizeDrop': CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by('Name'),
+            "currentDate": currentDate 
         }
         return render(request, 'InonPayment/InonPaymentNew.html',context)
 
@@ -96,6 +98,7 @@ class InonPaymentEdit(View,SqlDb):
     def get(self,request):
         if not request.GET.get('InNonId'):
             InNonId = request.session['InNonId']
+            print("innonid:",InNonId)
 
             self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(request.session['Username'] ))
             AccountId = self.cursor.fetchone()[0]
@@ -144,6 +147,7 @@ class InonPaymentEdit(View,SqlDb):
                 'ContainerSizeDrop': CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by('Name'),
                 'InNonHeaderData' : (pd.DataFrame(list(InNonHeaderData), columns=['Refid','JobId','MSGId','PermitId','TradeNetMailboxID','MessageType','DeclarationType','PreviousPermit','CargoPackType','InwardTransportMode','OutwardTransportMode','BGIndicator','SupplyIndicator','ReferenceDocuments','License','Recipient','DeclarantCompanyCode','ImporterCompanyCode','ExporterCompanyCode','InwardCarrierAgentCode','OutwardCarrierAgentCode','ConsigneeCode','FreightForwarderCode','ClaimantPartyCode','ArrivalDate','LoadingPortCode','VoyageNumber','VesselName','OceanBillofLadingNo','ConveyanceRefNo','TransportId','FlightNO','AircraftRegNo','MasterAirwayBill','ReleaseLocation','RecepitLocation','RecepilocaName','StorageLocation','ExhibitionSDate','ExhibitionEDate','BlanketStartDate','TradeRemarks','InternalRemarks','CustomerRemarks','DepartureDate','DischargePort','FinalDestinationCountry','OutVoyageNumber','OutVesselName','OutOceanBillofLadingNo','VesselType','VesselNetRegTon','VesselNationality','TowingVesselID','TowingVesselName','NextPort','LastPort','OutConveyanceRefNo','OutTransportId','OutFlightNO','OutAircraftRegNo','OutMasterAirwayBill','TotalOuterPack','TotalOuterPackUOM','TotalGrossWeight','TotalGrossWeightUOM','GrossReference','DeclareIndicator','NumberOfItems','TotalCIFFOBValue','TotalGSTTaxAmt','TotalExDutyAmt','TotalCusDutyAmt','TotalODutyAmt','TotalAmtPay','Status','TouchUser','TouchTime','PermitNumber','prmtStatus','ReleaseLocaName','Inhabl','outhbl','seastore','Cnb','DeclarningFor','MRDate','MRTime'])).to_dict('records'),
             }
+            print("InNonHeaderData:",InNonHeaderData)
 
             if prmtStatus == "AME":
                 self.cursor.execute(f"select Count(PermitNumber) from InNonHeaderTbl where Id='" + str(InNonId) + "' and (Status='APR' or Status='AME') and prmtStatus='AME'")
@@ -176,6 +180,94 @@ class InonPaymentEdit(View,SqlDb):
         else:
             request.session['InNonId'] = request.GET.get('InNonId')
             return JsonResponse({"url" : '/InonPayementEdit/'}) 
+        
+
+
+class InonPaymentShow(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+       
+    def get(self,request,id):
+        Username = request.session["Username"]
+        self.cursor.execute(f"SELECT * FROM InNonHeaderTbl WHERE id = {id}")
+        headers = [i[0] for i in self.cursor.description]
+        outAll = list(self.cursor.fetchall())
+        self.cursor.execute(f"SELECT * FROM InNonHeaderTbl WHERE id = {id}")
+        result = self.cursor.fetchone()
+
+        if result:
+            fetched_id = result[0] 
+            print("Fetched permit's ID:", fetched_id)
+        else:
+            print("No records found for the given ID.") 
+
+        self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
+        AccountId = self.cursor.fetchone()[0]
+        
+
+        self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"+ Username+ "'")
+        InNonHeadData = self.cursor.fetchone()
+    #     if not request.GET.get('InNonId'):
+    #         Id = request.session['InNonId']
+
+        self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(request.session['Username'] ))
+        AccountId = self.cursor.fetchone()[0]
+
+        self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='" + request.session['Username'] + "'")
+        InNonHeadData = self.cursor.fetchone()
+
+        self.cursor.execute("SELECT Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,Recipient,DeclarantCompanyCode,ImporterCompanyCode,ExporterCompanyCode,InwardCarrierAgentCode,OutwardCarrierAgentCode,ConsigneeCode,FreightForwarderCode,ClaimantPartyCode,ArrivalDate,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,RecepilocaName,StorageLocation,ExhibitionSDate,ExhibitionEDate,BlanketStartDate,TradeRemarks,InternalRemarks,CustomerRemarks,DepartureDate,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ReleaseLocaName,Inhabl,outhbl,seastore,Cnb,DeclarningFor,MRDate,MRTime FROM InNonHeaderTbl WHERE Id = '{}' ".format(id))
+
+        InNonHeaderData = self.cursor.fetchall()
+
+
+        self.RefId = InNonHeaderData[0][0]
+        self.JobId = InNonHeaderData[0][1]
+        self.MsgId = InNonHeaderData[0][2]
+        self.PermitIdInNon = InNonHeaderData[0][3]
+     
+
+        context = { 
+                "UserName" : Username,
+                "PermitIdInNon":self.PermitIdInNon,
+                "JobId" : self.JobId,
+                "RefId" : self.RefId,
+                "MsgId" : self.MsgId,
+                "AccountId" : AccountId,
+                "LoginStatus" : InNonHeadData[0],
+                "DateLastUpdated" : InNonHeadData[1],
+                "MailBoxId" : InNonHeadData[2],
+                "SeqPool" : InNonHeadData[3],
+                "StartSequence" : InNonHeadData[4],
+                "TradeNetMailboxID" : InNonHeadData[5],
+                "DeclarantName" : InNonHeadData[6],
+                "DeclarantCode" : InNonHeadData[7],
+                "DeclarantTel" : InNonHeadData[8],
+                "CRUEI" : InNonHeadData[9],
+                "Code" : InNonHeadData[10],
+                "name" : InNonHeadData[11],
+                "name1" : InNonHeadData[12],
+                'DeclarationType':CommonMaster.objects.filter(TypeId=13, StatusId=1).order_by("Name"),
+                'CargoType': CommonMaster.objects.filter(TypeId=2, StatusId=1),
+                'InwardTransportMode': CommonMaster.objects.filter(TypeId=3, StatusId=1).order_by('Name'),
+                'DeclaringFor': CommonMaster.objects.filter(TypeId=80, StatusId=1).order_by('Name'),
+                'BgIndicator': CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by('Name'),
+                'DocumentAttachmentType': CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by('Name'),
+                'ContainerSizeDrop': CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by('Name'),
+                'InNonHeaderData' : (pd.DataFrame(list(InNonHeaderData), columns=['Refid','JobId','MSGId','PermitId','TradeNetMailboxID','MessageType','DeclarationType','PreviousPermit','CargoPackType','InwardTransportMode','OutwardTransportMode','BGIndicator','SupplyIndicator','ReferenceDocuments','License','Recipient','DeclarantCompanyCode','ImporterCompanyCode','ExporterCompanyCode','InwardCarrierAgentCode','OutwardCarrierAgentCode','ConsigneeCode','FreightForwarderCode','ClaimantPartyCode','ArrivalDate','LoadingPortCode','VoyageNumber','VesselName','OceanBillofLadingNo','ConveyanceRefNo','TransportId','FlightNO','AircraftRegNo','MasterAirwayBill','ReleaseLocation','RecepitLocation','RecepilocaName','StorageLocation','ExhibitionSDate','ExhibitionEDate','BlanketStartDate','TradeRemarks','InternalRemarks','CustomerRemarks','DepartureDate','DischargePort','FinalDestinationCountry','OutVoyageNumber','OutVesselName','OutOceanBillofLadingNo','VesselType','VesselNetRegTon','VesselNationality','TowingVesselID','TowingVesselName','NextPort','LastPort','OutConveyanceRefNo','OutTransportId','OutFlightNO','OutAircraftRegNo','OutMasterAirwayBill','TotalOuterPack','TotalOuterPackUOM','TotalGrossWeight','TotalGrossWeightUOM','GrossReference','DeclareIndicator','NumberOfItems','TotalCIFFOBValue','TotalGSTTaxAmt','TotalExDutyAmt','TotalCusDutyAmt','TotalODutyAmt','TotalAmtPay','Status','TouchUser','TouchTime','PermitNumber','prmtStatus','ReleaseLocaName','Inhabl','outhbl','seastore','Cnb','DeclarningFor','MRDate','MRTime'])).to_dict('records'),
+            }
+
+
+        context.update({
+            "Show" : (pd.DataFrame(outAll, columns=headers)).to_dict("records"),
+ 
+        }) 
+        for item in context["Show"]:
+            print("Row:")
+            for key, value in item.items():
+                print(f"  {key}: {value}")
+        return render(request,"InonPayment/InonPaymentNew.html", context)
+           
 
 class InNonList(View,SqlDb):
     def __init__(self): 
@@ -188,9 +280,9 @@ class InNonList(View,SqlDb):
         AccountId = self.cursor.fetchone()[0]
 
         nowdata = datetime.now()-timedelta(days=60)
-        self.cursor.execute("SELECT   t1.Id as 'ID', t1.JobId as 'JOB ID', t1.MSGId as 'MSG ID', CONVERT(varchar, t1.TouchTime, 105) AS 'DEC DATE',SUBSTRING(t1.DeclarationType , 1, CHARINDEX(':', t1.DeclarationType) - 1) AS 'DEC TYPE',t1.TouchUser AS 'CREATE', t2.TradeNetMailboxID AS 'DEC ID', CONVERT(varchar, t1.ArrivalDate, 105) AS ETA, t1.PermitNumber AS 'PERMIT NO', t3.Name +' '+t3.Name1 AS 'IMPORTER',  t1.Inhabl as 'HAWB', CASE  WHEN  t1.InwardTransportMode = '4 : Air' THEN t1.MasterAirwayBill  WHEN t1.InwardTransportMode = '1 : Sea' THEN t1.OceanBillofLadingNo   ELSE '' END AS 'MAWB/OBL',t1.LoadingPortCode as POL, t1.MessageType as 'MSG TYPE', t1.InwardTransportMode as TPT, t1.PreviousPermit as 'PRE PMT',t1.GrossReference as 'X REF', t1.InternalRemarks as 'INT REM',  SUM(t1.TotalGSTTaxAmt) AS 'GST AMT', t1.Status as 'STATUS',case  when  t1.Status='APR' then (case when (select top 1 ConditionCode from InnonPMT where ConditionCode='Z02' and t1.PermitNumber=InnonPMT.PermitNumber)='Z02' or (select top 1 ConditionCode from InnonPMT where ConditionCode='Z18' and t1.PermitNumber=InnonPMT.PermitNumber)='Z18' or (select top 1 ConditionCode from InnonPMT where ConditionCode='Z06' and t1.PermitNumber=InnonPMT.PermitNumber)='Z06' then 'RED' when (select top 1 ConditionCode from InnonPMT where ConditionCode='D6' and t1.PermitNumber=InnonPMT.PermitNumber)='D6' or (select top 1 ConditionCode from InnonPMT where ConditionCode='D3' and t1.PermitNumber=InnonPMT.PermitNumber)='D3' then 'Maroon' else 'Default'  end)  else 'default' end as 'COLOR'  FROM  InNonHeaderTbl AS t1 left JOIN   DeclarantCompany AS t2 ON t1.DeclarantCompanyCode = t2.Code left JOIN InNonImporter AS t3 ON t1.ImporterCompanyCode = t3.Code  left JOIN ManageUser AS t6 ON t6.UserId=t1.TouchUser  where  t1.Status != 'DEL' and t6.AccountId='" + AccountId + "' and convert(varchar,t1.TouchTime,111)>='"+ nowdata.strftime("%Y/%m/%d")+ "'  GROUP BY t1.Id, t1.JobId, t1.MSGId, t1.TouchTime, t1.TouchUser,t1.DeclarationType,t1.ArrivalDate, t1.PermitId,	t1.PermitNumber, t1.InwardTransportMode,t1.OutwardTransportMode,t1.MasterAirwayBill,t1.OceanBillofLadingNo, t1.LoadingPortCode, t1.MessageType, t1.InwardTransportMode,t1.PreviousPermit,t1.Inhabl, t1.InternalRemarks, t1.Status, t2.TradeNetMailboxID, 	t3.Name,t3.Name1, t6.AccountId,t1.OutMasterAirwayBill, t1.OutOceanBillofLadingNo,t1.outhbl,t1.OutwardTransportMode,t2.DeclarantName,t1.DepartureDate , t1.DischargePort, t1.GrossReference ,t1.License ,t1.ReleaseLocation ,t1.RecepitLocation ,t1.DeclarningFor,t1.ExporterCompanyCode ORDER BY ID DESC")
+        self.cursor.execute("SELECT   t1.Id as 'ID', t1.JobId as 'JOB ID', t1.MSGId as 'MSG ID', CONVERT(varchar, t1.TouchTime, 105) AS 'DEC DATE',SUBSTRING(t1.DeclarationType , 1, CHARINDEX(':', t1.DeclarationType) - 1) AS 'DEC TYPE',t1.TouchUser AS 'CREATE', t2.TradeNetMailboxID AS 'DEC ID', CONVERT(varchar, t1.ArrivalDate, 105) AS ETA, t1.PermitNumber AS 'PERMIT NO', t3.Name +' '+t3.Name1 AS 'IMPORTER',  t1.Inhabl as 'HAWB', CASE  WHEN  t1.InwardTransportMode = '4 : Air' THEN t1.MasterAirwayBill  WHEN t1.InwardTransportMode = '1 : Sea' THEN t1.OceanBillofLadingNo   ELSE '' END AS 'MAWB/OBL',t1.LoadingPortCode as POL, t1.MessageType as 'MSG TYPE', t1.InwardTransportMode as TPT, t1.PreviousPermit as 'PRE PMT',t1.GrossReference as 'X REF', t1.InternalRemarks as 'INT REM',  SUM(t1.TotalGSTTaxAmt) AS 'GST AMT', t1.Status as 'STATUS',case  when  t1.Status='APR' then (case when (select top 1 ConditionCode from InnonPMT where ConditionCode='Z02' and t1.PermitNumber=InnonPMT.PermitNumber)='Z02' or (select top 1 ConditionCode from InnonPMT where ConditionCode='Z18' and t1.PermitNumber=InnonPMT.PermitNumber)='Z18' or (select top 1 ConditionCode from InnonPMT where ConditionCode='Z06' and t1.PermitNumber=InnonPMT.PermitNumber)='Z06' then 'RED' when (select top 1 ConditionCode from InnonPMT where ConditionCode='D6' and t1.PermitNumber=InnonPMT.PermitNumber)='D6' or (select top 1 ConditionCode from InnonPMT where ConditionCode='D3' and t1.PermitNumber=InnonPMT.PermitNumber)='D3' then 'Maroon' else 'Default'  end)  else 'default' end as 'COLOR'  FROM  InNonHeaderTbl AS t1 left JOIN   DeclarantCompany AS t2 ON t1.DeclarantCompanyCode = t2.Code left JOIN InNonImporter AS t3 ON t1.ImporterCompanyCode = t3.Code  left JOIN ManageUser AS t6 ON t6.UserId=t1.TouchUser  where   t6.AccountId='" + AccountId + "' and convert(varchar,t1.TouchTime,111)>='"+ nowdata.strftime("%Y/%m/%d")+ "'  GROUP BY t1.Id, t1.JobId, t1.MSGId, t1.TouchTime, t1.TouchUser,t1.DeclarationType,t1.ArrivalDate, t1.PermitId,	t1.PermitNumber, t1.InwardTransportMode,t1.OutwardTransportMode,t1.MasterAirwayBill,t1.OceanBillofLadingNo, t1.LoadingPortCode, t1.MessageType, t1.InwardTransportMode,t1.PreviousPermit,t1.Inhabl, t1.InternalRemarks, t1.Status, t2.TradeNetMailboxID, 	t3.Name,t3.Name1, t6.AccountId,t1.OutMasterAirwayBill, t1.OutOceanBillofLadingNo,t1.outhbl,t1.OutwardTransportMode,t2.DeclarantName,t1.DepartureDate , t1.DischargePort, t1.GrossReference ,t1.License ,t1.ReleaseLocation ,t1.RecepitLocation ,t1.DeclarningFor,t1.ExporterCompanyCode ORDER BY ID DESC")
     
-        self.HeaderInNon = self.cursor.fetchall()
+        self.HeaderInNon = self.cursor.fetchall()#t1.Status != 'DEL'
 
         result = (pd.DataFrame(list(self.HeaderInNon), columns=["id","JobId","MSGId","DECDATE","DECTYPE","CREATE","DECID","ETA","PERMITNO","IMPORTER","HAWB","MAWBOBL","POL","MSGTYPE","TPT","PREPMT","XREF","INTREM","GSTAMT","STATUS","PermitId"])).to_dict('records')
 
@@ -403,6 +495,45 @@ class PartyLoad(View,SqlDb):
                     "Result" : "THIS CODE SAVED SUCCESSFULLY ...!",
                     "Claimant" : (pd.DataFrame(list(self.claimant), columns=["Name","Name1","Name2","CRUEI","ClaimantName","ClaimantName1"])).to_dict('records'),
                 })
+            
+        
+
+
+            
+        
+
+
+
+class ItemCodeSave(View,SqlDb):
+    def __init__(self):
+        SqlDb.__init__(self)
+
+    def post(self,request):
+        DbName = request.POST.get("ModelName")
+        if DbName == "InNonhouseItemCodeModel":
+            Qry = "select InhouseCode from InNonhouseItemCode where InhouseCode = %s"
+            print("QryItemCode:",Qry)
+            Val = (request.POST.get("InhouseCode"),)
+            self.cursor.execute(Qry, Val)
+            if not (self.cursor.fetchall()):
+                Qry = "INSERT INTO InNonhouseItemCode(InhouseCode,HSCode,Description,Brand,Model,DGIndicator,TouchUser,TouchTime) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) "
+                Val = (
+                    request.POST.get("InhouseCode"),
+                    request.POST.get("Hscode"),
+                    request.POST.get("Description"),
+                    request.POST.get("Brand"),
+                    request.POST.get("Model"),
+                    request.POST.get("DGIndicator"),
+                    request.POST.get("TouchUser"),
+                    request.POST.get("TouchTime"),
+                )
+                self.cursor.execute(Qry, Val)
+                self.conn.commit()
+                return JsonResponse({"Result": "InNonhouseItemCode Saved ...!"})
+            else:
+                return JsonResponse(
+                    {"Result": "InNonhouseItemCode Code Already Exists ...!"}
+                ) 
     
 class InNonCargoLoad(View,SqlDb):
     def __init__(self):
@@ -546,7 +677,7 @@ class InNonItemLoad(View,SqlDb):
     def __init__(self):
         SqlDb.__init__(self)
 
-        self.cursor.execute("SELECT InhouseCode,HSCode,Description,Brand,Model,DGIndicator,DeclType,Productcode FROM InhouseItemCode WHERE DeclType = 'INNONPAYMENT' ")
+        self.cursor.execute("SELECT InhouseCode,HSCode,Description,Brand,Model,DGIndicator FROM InNonhouseItemCode ")
         self.inhouseItemCode = self.cursor.fetchall()
 
         self.cursor.execute("SELECT HSCode,Description,UOM,Typeid,DUTYTYPID,Inpayment,InnonPayment,Out,Co,Transhipment,RPNEXPORT,DuitableUom,Excisedutyuom,Excisedutyrate,Customsdutyuom,Customsdutyrate,Kgmvisible FROM HSCode")#ImpControll,OutControll,TransControll <---This Field Add Only Kaizen Portal 
@@ -557,7 +688,7 @@ class InNonItemLoad(View,SqlDb):
 
     def get(self,request):
         return JsonResponse({
-            "inhouseItemCode" : (pd.DataFrame(list(self.inhouseItemCode), columns=["InhouseCode", "HSCode", "Description","Brand","Model", "DGIndicator", "DeclType","Productcode"])).to_dict('records'),
+            "inhouseItemCode" : (pd.DataFrame(list(self.inhouseItemCode), columns=["InhouseCode", "HSCode", "Description","Brand","Model", "DGIndicator"])).to_dict('records'),
             "hsCode" : (pd.DataFrame(list(self.hsCode), columns=['HSCode','Description','UOM','Typeid','DUTYTYPID','Inpayment','InnonPayment','Out','Co','Transhipment','RPNEXPORT','DuitableUom','Excisedutyuom','Excisedutyrate','Customsdutyuom','Customsdutyrate','Kgmvisible'])).to_dict('records'),#,'ImpControll ,'OutControll','TransControll'<---This Field Add Only Kaizen Portal  '
             "chkHsCode" : (pd.DataFrame(list(self.chkHsCode), columns=["HSCode"])).to_dict('records'),
         })
@@ -1020,11 +1151,13 @@ class CopyInNonPayment(View,SqlDb):
         SqlDb.__init__(self)
 
     def get(self,request):
+        
 
         Username = request.session['Username'] 
 
         refDate = datetime.now().strftime("%Y%m%d")
         jobDate = datetime.now().strftime("%Y-%m-%d")
+        
 
         self.cursor.execute(f"SELECT PermitId FROM InNonHeaderTbl WHERE Id = '{request.GET.get('Id')}' ")
 
@@ -1058,6 +1191,8 @@ class CopyInNonPayment(View,SqlDb):
         
         self.cursor.execute(f"INSERT INTO InnonContainerDtl (PermitId, RowNo,ContainerNo, size, weight,SealNo, MessageType,TouchUser,TouchTime) SELECT '{self.PermitIdInNon}', RowNo,ContainerNo, size, weight,SealNo, MessageType,'{Username}','{NowDate}' FROM InnonContainerDtl WHERE PermitId = '{CopyPermitId}'")
 
+        self.cursor.execute(f"INSERT INTO InNonCPCDtl (PermitId,MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,TouchUser,TouchTime) SELECT '{self.PermitIdInNon}',MessageType,RowNo,CPCType,ProcessingCode1,ProcessingCode2,ProcessingCode3,'{Username}','{NowDate}' FROM InNonCPCDtl Where PermitId = '{CopyPermitId}'")
+
         self.cursor.execute(f"INSERT INTO InNonFile (Sno,Name,ContentType,Data,DocumentType,InPaymentId,TouchUser,TouchTime,Size,PermitId,Type) SELECT Sno,Name,ContentType,Data,DocumentType,InPaymentId,'{Username}','{NowDate}',Size,'{self.PermitIdInNon}',Type FROM InNonFile WHERE PermitId = '{CopyPermitId}' ")
         
         self.conn.commit()
@@ -1067,6 +1202,7 @@ class CopyInNonPayment(View,SqlDb):
         request.session['InNonId'] = self.cursor.fetchone()[0]
         
         return JsonResponse({"SUCCESS" : 'COPY ITEM'})
+   
 
 def CpcDeleteInNon(request,ID):
     s = SqlDb()
@@ -1095,10 +1231,12 @@ class InNonTransmitData(View,SqlDb):
         self.cursor.execute("SELECT AccountId,MailBoxId FROM ManageUser WHERE UserName = '{}' ".format(Username))
         ManageUserVal = self.cursor.fetchone()
         AccountId = ManageUserVal[0]
+        
 
         for Id in json.loads(request.GET.get("my_data")):
             self.cursor.execute(f"SELECT PermitId FROM InNonHeaderTbl WHERE Id = '{Id}' ")
             CopyPermitId = self.cursor.fetchone()[0]
+            print("copypermit:",CopyPermitId)
 
             self.cursor.execute("SELECT COUNT(*) + 1  FROM InNonHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'INPDEC' ".format(refDate))
             self.RefId = ("%03d" % self.cursor.fetchone()[0])
@@ -1109,6 +1247,7 @@ class InNonTransmitData(View,SqlDb):
             self.JobId = f"K{datetime.now().strftime('%y%m%d')}{'%05d' % self.JobIdCount}" 
             self.MsgId = f"{datetime.now().strftime('%Y%m%d')}{'%04d' % self.JobIdCount}"
             self.PermitIdInNon = f"{Username}{refDate}{self.RefId}"
+            print("permit id:",self.PermitIdInNon)
 
 
             NowDate = datetime.now().strftime("%Y-%m-%d %H:%M:%S")

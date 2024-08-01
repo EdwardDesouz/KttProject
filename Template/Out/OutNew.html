@@ -143,47 +143,49 @@
                         <div class="col-8"><input type="checkbox" id="ReferenceDocuments" value="False"
                                 onclick="OutReferenceDocument()"></div>
                     </div>
-                    <div class="row mt-3">
-                        <div class="col-4"><label for="PermitId">PERMIT ID</label></div>
-                        <div class="col-8">
-                            <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
+                    <div >
+                        <div class="row mt-3">
+                            <div class="col-4"><label for="PermitId">PERMIT ID</label></div>
+                            <div class="col-8">
+                                <input type="text" id="PermitId" class="inputStyle" value="{{PermitId}}" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4">USER NAME</div>
-                        <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
-                                disabled></div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4"><label for="Refid">REF ID</label></div>
-                        <div class="col-8">
-                            <input type="text" id="Refid" class="inputStyle" value="{{RefId}}" disabled>
+                        <div class="row mt-3">
+                            <div class="col-4">USER NAME</div>
+                            <div class="col-8"><input type="text" id="INONUSERNAME" value="{{UserName}}" class="inputStyle"
+                                    disabled></div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4"><label for="JobId">JOB ID</label></div>
-                        <div class="col-8">
-                            <input type="text" id="JobId" class="inputStyle" value="{{JobId}}" disabled>
+                        <div class="row mt-3">
+                            <div class="col-4"><label for="Refid">REF ID</label></div>
+                            <div class="col-8">
+                                <input type="text" id="Refid" class="inputStyle" value="{{RefId}}" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4"><label for="MSGId">MSG ID</label></div>
-                        <div class="col-8">
-                            <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}" disabled>
+                        <div class="row mt-3">
+                            <div class="col-4"><label for="JobId">JOB ID</label></div>
+                            <div class="col-8">
+                                <input type="text" id="JobId" class="inputStyle" value="{{JobId}}" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
-                        <div class="col-4"><label for="PermitNumber">PERMIT NUMBER</label></div>
-                        <div class="col-8">
-                            <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}" disabled>
+                        <div class="row mt-3">
+                            <div class="col-4"><label for="MSGId">MSG ID</label></div>
+                            <div class="col-8">
+                                <input type="text" id="MSGId" class="inputStyle" value="{{MsgId}}" disabled>
+                            </div>
                         </div>
-                    </div>
-                    <div class="row mt-3">
+                        <div class="row mt-3">
+                            <div class="col-4"><label for="PermitNumber">PERMIT NUMBER</label></div>
+                            <div class="col-8">
+                                <input type="text" id="PermitNumber" class="inputStyle" value="{{PermitNumber}}" disabled>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
                         <div class="col-4"><label for="prmtStatus">PERMIT STATUS</label></div>
                         <div class="col-8">
                             <input type="text" id="prmtStatus" class="inputStyle" value="{{prmtStatus}}" disabled>
                         </div>
                     </div>
+                </div>
                 </div>
                 <div class="col-1"></div>
                 <div class="col-5">
@@ -444,9 +446,92 @@
                     </div>
                 </div>
             </div>
+
+            <div  id="InNonShow" style=display:none;>
+
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <h1 class="Borderdiv">PERMIT CONDITIONS</h1>
+                    </div>
+                </div>
+    
+                <div class="container-fluid mt-5"  >
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-4">PERMIT NO : </div>
+                                <div class="col-6" id="SowPermitNo"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">JOB ID : </div>
+                                <div class="col-6" id="ShowJobId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">CREATE BY : </div>
+                                <div class="col-6" id="ShowCreate"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">TRANSMIT USER : </div>
+                                <div class="col-3" id="ShowTransmituser"></div>
+                            </div>
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-4">VALIDITY PERIOD :  </div>
+                                <div class="col-6" id="ShowValidityPeriod"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">MSG ID : </div>
+                                <div class="col-6" id="ShowMsgId"></div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-4">STATUS : </div>
+                                <div class="col-6" id="ShowStatus"></div>
+                            </div>
+                           
+        
+                        </div>
+                        <div class="col-4">
+                            <div class="row">
+                                <div class="col-5">PERMIT APPROVED DATE :  </div>
+                                <div class="col-6" id="ShowCertificateApproved"> </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-5">DEC DATE : </div>
+                                <div class="col-6" id="ShowDate"></div>
+                            </div>   
+                            <div class="row mt-3">
+                                <div class="col-5">CERTIFICATE NO :</div>
+                                <div class="col-6" id="ShowCertifcateNo"></div>
+                            </div>                                          
+                        </div>
+                    </div>
+                </div> 
+    
+                <div class="row mt-5" >
+                    <div class="col-12">
+                        <table style="width: 100%;" id="">
+                            <thead>
+                                
+                                <th style="padding: 2px;">S.NO</th>
+                                <th style="padding: 2px;">CODE</th>
+                                <th>DESCRIPTION</th>
+                    
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td colspan=14 style='text-align:center'>No Record</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+    
+            </div>
             <div class="row mt-3">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowHeaderReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('PartyTab')">NEXT</button></div>
                 <div class="col-4"></div>
@@ -701,22 +786,22 @@
                     <input type="checkbox" id="EndUserID" onclick="EndUserClick()">
                     <label for="EndUserID">ENDUSER</label>
                 </div>
-                <div class="col-1 EndUserHide">
+                <div class="col-1 EndUserHide" style="display: none;">
                     <img src="{% static 'IMG/search.png' %}" width="24px">
                     <button type="button" class="btn" style="font-weight: bold;">+</button>
                 </div>
-                <div class="col-1 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-1 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="CODE" id="EndConsigneCode" onfocus="EndConsigneFocusIn()"
                         onfocusout='EndConsigneFocusOut()'></div>
-                <div class="col-2 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-2 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="CRUEI" id="EndConsigneCruei"></div>
-                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-3 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="USER NAME" id="EndConsigneUserName">
                 </div>
-                <div class="col-3 EndUserHide"><input type="text" class="inputStyle" style="width: 80%;"
+                <div class="col-3 EndUserHide" style="display: none;"><input type="text" class="inputStyle" style="width: 80%;"
                         placeholder="NAME1" id="EndConsigneName1"></div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"><button type="button" class="btn1" onclick="CopyConsigne()">COPY OF CONSIGNE</button>
                 </div>
                 <div class="col-1"></div>
@@ -730,7 +815,7 @@
                 <div class="col-3"><input type="text" class="inputStyle" style="width: 80%;" placeholder="CITY"
                         id="EndConsigneCity"></div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
@@ -744,7 +829,7 @@
                         id="EndConsigneCountry">
                 </div>
             </div>
-            <div class="row mt-3 EndUserHide">
+            <div class="row mt-3 EndUserHide" style="display: none;">
                 <div class="col-2"></div>
                 <div class="col-1"></div>
                 <div class="col-1"></div>
@@ -810,7 +895,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('HeaderTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowPartyReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('CargoTab')">NEXT</button></div>
                 <div class="col-3"></div>
@@ -829,11 +914,11 @@
                         <div class="row mt-3">
                             <div class="col-4">TOTAL OUTER PACK</div>
                             <div class="col-3">
-                                <input type="text" class="inputStyle HighLight" id="TotalOuterPack"><br>
+                                <input type="text" class="inputStyle HighLight" id="TotalOuterPack" ><br>
                                 <span1 id="TotalOuterPackSpan">FILL TOTAL OUTER PACK</span1>
                             </div>
                             <div class="col-3">
-                                <select class="Dropdown HighLight" id="TotalOuterPackUOM">
+                                <select class="Dropdown HighLight" id="TotalOuterPackUOM" onfocusout=totalpack()>
                                     <option selected>--Select--</option>
                                     {% for i in TotalOuterPack%}
                                     <option>{{i.Name}}</option>
@@ -1016,9 +1101,9 @@
                     </div>
                     <div class="container-fluid" id="OutCargoOblShow">
                         <div class="row mt-3">
-                            <div class="col-4" id="OceanBillofLadingNo">OBL</div>
+                            <div class="col-4" ><label for="OceanBillofLadingNo">OBL/MAWB</label></div>
                             <div class="col-6">
-                                <input type="text" class="inputStyle HighLight" id="OceanBillofLadingNo"><br>
+                                <input type="text" class="inputStyle HighLight" id="OceanBillofLadingNo" onfocusout="InOblVal()"><br>
                                 <span1 id="OceanBillofLadingNoSpan">FILL OBL</span1>
                             </div>
                         </div>
@@ -1027,12 +1112,14 @@
                         <div class="row mt-3">
                             <div class="col-4" id="OutCargoHbl">HBL</div>
                             <div class="col-6">
-                                <input type="text" class="inputStyle" id="OutCargoHblValue"
-                                    onfocusout="OutCargoHblValueOut()">
+                                <input type="text" class="inputStyle" id="OutCargoHblValue" onfocusout="OutCargoHblValueOut()">
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+<!--Outward details-->
                 <div class="col-6" id="OutOutWardDetailShow" style="display: none;">
                     <div class="row mt-3">
                         <div class="col-12">
@@ -1132,7 +1219,7 @@
                                     <label for="OutOceanBillofLadingNo">OBL</label>
                                 </div>
                                 <div class="col-7">
-                                    <input type="text" id="OutOceanBillofLadingNo" class="inputStyle HighLight">
+                                    <input type="text" id="OutOceanBillofLadingNo" class="inputStyle HighLight" onfocusout=OutOblVal()>
                                     <br>
                                     <span1 id="OutOceanBillofLadingNoSpan">FILL OBL</span1>
                                 </div>
@@ -1232,7 +1319,7 @@
                         <div class="row">
                             <div class="row mt-3">
                                 <div class="col-4"><label>HAWB</label></div>
-                                <div class="col-7"><input type="text" name="HAWB" class="inputStyle"></div>
+                                <div class="col-7"><input type="text" name="HAWB" id="OutOutwardHawb" class="inputStyle"></div>
                             </div>
                         </div>
                     </div>
@@ -1259,7 +1346,7 @@
                             <div class="row mt-3">
                                 <div class="col-4"><label for="OutMasterAirwayBill">MAWB</label></div>
                                 <div class="col-7">
-                                    <input type="text" id="OutMasterAirwayBill" class="inputStyle HighLight">
+                                    <input type="text" id="OutMasterAirwayBill" class="inputStyle HighLight" onfocusout="mawbOutFunction()" >
                                     <span1 id="OutMasterAirwayBillSpan">FILL MAWB</span1>
                                 </div>
                             </div>
@@ -1268,13 +1355,14 @@
                             <div class="row mt-3">
                                 <div class="col-4"><label for="Hawb">HAWB</label></div>
                                 <div class="col-7">
-                                    <input type="text" id="Hawb" class="inputStyle" onfocusout="hawbOutFunction()">
+                                    <input type="text" id="Hawb" class="inputStyle" onfocusout="hawbOutFunction()" onchange="hawbchangeFunction()">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+            <div  class="errorIntimationSummary" id="hawbshow"></div>
             <div class="row" id="InpaymentContainerShow" style="display:none">
                 <div class="row mt-3">
                     <div class="col-12">
@@ -1370,7 +1458,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('PartyTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button">RESET</button></div>
+                <div class="col-2" id="OutShowCargoReset"><button class="MoveOnButtons" type="button">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('InvoiceTab')">NEXT</button></div>
                 <div class="col-3"></div>
@@ -1521,11 +1609,11 @@
                 <div class="col-2">
                     <button class="MoveOnButtons" type="button" onclick="TabHead('CargoTab')">PREVIOUS</button>
                 </div>
-                <div class="col-2">
+                <div class="col-2" id="OutShowInvoiceiv">
                     <button class="MoveOnButtons" type="button" onclick="InvoiceSave()" tabindex="13">
                         ADD INVOICE</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="InvoiceReset()">RESET</button>
+                <div class="col-2" id="OutShowInvoiceReset"><button class="MoveOnButtons" type="button" onclick="InvoiceReset()">RESET</button>
                 </div>
                 <div class="col-2">
                     <button class="MoveOnButtons" type="button" onclick="TabHead('ItemTab')" tabindex="14">NEXT</button>
@@ -1562,9 +1650,9 @@
                 <div class="col-5">
                     <button type="button" style="width:24%;" class="ButtonClick" onclick="OutItemSave()">ADD
                         ITEM</button>
-                    <button type="button" style="width:24%;" class="ButtonClick">PREVIOUS</button>
-                    <input type="text" style="display: inline;width:24%;" class="inputStyle">
-                    <button type="button" style="width:24%;" class="ButtonClick">NEXT</button>
+                    <button type="button" style="width:24%;" class="ButtonClick"  onclick="PreviousItem()">PREVIOUS</button>
+                    <input type="text" style="display: inline;width:24%;" class="inputStyle" id="ItemNextItemID" disabled>
+                    <button type="button" style="width:24%;" class="ButtonClick" onclick="NextItem()">NEXT</button>
                 </div>
             </div>
             <div class="row mt-5">
@@ -1573,17 +1661,13 @@
                         <div class="row">
                             <div class="col-4 " id="InHAWBOBLlbl">IN HAWB/HBL</div>
                             <div class="col-8">
-                                <select id="InHAWBOBL" class="Dropdown">
-                                    <option value=""></option>
-                                </select>
+                                <select id="InHAWBOBL" class="Dropdown"></select>
                             </div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-4 " id="OutHAWBOBLlbl">OUT HAWB/HBL</div>
                             <div class="col-8">
-                                <select id="OutHAWBOBL" class="Dropdown">
-                                    <option value=""></option>
-                                </select>
+                                <select id="OutHAWBOBL" class="Dropdown"></select>
                             </div>
                         </div>
                     </div>
@@ -1601,7 +1685,7 @@
                             <div class="col-6"> <input type="text" class="inputStyle" id="ItemCode"
                                     onfocus="InhouseFocusIn()" onfocusout="InhouseFocusOut()">
                             </div>
-                            <div class="col-1"><button type="button" class="btn" style="font-weight: bold;">+</button>
+                            <div class="col-1"><button type="button" class="btn" onclick="ItemCodeSave()" style="font-weight: bold;">+</button>
                             </div>
                         </div>
                     </div>
@@ -2000,6 +2084,24 @@
                             <button class="btn1" type="button" id="InpaymentReadBtn" onclick="ItemUploadInNon()">UPLOAD
                                 DATA</button>
                         </div>
+                            <div class="row mt-3" style="display:none;">
+                                <h6 class="Borderdiv">UPLOAD ITEM EXCEL TEMPLATE</h6>
+                                <div class="col-4">
+                                    <input type="file" class="inputChooseFile" style="width: 100%;" id="OutPdfUpload"
+                                        name="OutPdfUpload" accept=".pdf">
+                                </div>
+                                <div class="col-4">
+                                    <select class="Dropdown" id="CustomerUom">
+                                        <option selected>--Select Customer--</option>
+                                        {% for item in Customer %}
+                                        <option>{{ item }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="col-2">
+                                    <button class="btn1" type="button" id="PdfDatasuploadOut" onclick="PdfDatasUploadOut()">Extract</button>
+                                </div>
+                            </div>
                     </div>
                 </div>
                 <div class="col-1"></div>
@@ -2032,7 +2134,7 @@
                                 <div class="col-2">END USER DESCRIPTION</div>
                                 <div class="col-1" style="width: 150px;">PRODUCT CODE 1 </div>
                                 <div class="col-2 mb-5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode1','','product1CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode1">
                                 </div>
                                 <div class="col-2">
@@ -2091,7 +2193,7 @@
                                 <div class="col-2">END USER DESCRIPTION</div>
                                 <div class="col-1" style="width: 150px;">PRODUCT CODE 2 </div>
                                 <div class="col-2 mb-5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode2','','product2CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode2">
                                 </div>
                                 <div class="col-2">
@@ -2155,7 +2257,7 @@
                                     <label for="ProductCode3">PRODUCT CODE 3</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc3">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px"  onclick="ItemCascSearch('itemProductCode3','','product3CodeCopyUom')">
                                     <input type="text" class="inputStyle" id="itemProductCode3" style="width: 80%;">
                                 </div>
                                 <div class="col-2 OutCasc3">
@@ -2219,7 +2321,7 @@
                                     <label for="ProductCode4">PRODUCT CODE 4</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc4">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode4','','product4CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode4">
                                 </div>
                                 <div class="col-2 OutCasc4">
@@ -2283,7 +2385,7 @@
                                     <label for="ProductCode5">PRODUCT CODE 5</label>
                                 </div>
                                 <div class="col-2 mb-5 OutCasc5">
-                                    <img src="{% static 'IMG/search.png' %}" width="24px">
+                                    <img src="{% static 'IMG/search.png' %}" width="24px" onclick="ItemCascSearch('itemProductCode5','','product5CodeCopyUom')">
                                     <input type="text" class="inputStyle" style="width: 80%;" id="itemProductCode5">
                                 </div>
                                 <div class="col-2 OutCasc5">
@@ -2520,7 +2622,7 @@
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('InvoiceTab')">PREVIOUS</button>
                 </div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
+                <div class="col-2" id="OutShowItemReset"><button class="MoveOnButtons" type="button" onclick="ItemReset()">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
                 </div>
@@ -2562,7 +2664,7 @@
             </table>
             <br><br>
             <div class="row mt-4">
-                <div class="col-2"><button class="MoveOnButtons" type="button">DEL HBL / HAWB</button></div>
+                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="ItemOutDelHblHawb()">DEL HBL / HAWB</button></div>
             </div>
             <br>
             <br>
@@ -2864,6 +2966,10 @@
             <div class="errorIntimationSummary" id="errorIntimationSummary">
                 <p>THE TOTAL ITEM CIF/FOB VALUE DOES NOT EQUAL WITH TOTAL INVOICE CIF VALUE </p>
             </div>
+
+            <div class="errorIntimationSummary" id="hawbsummaryshow">
+                <p>DUPLICATE HAWB/HBL FOUND. PLEASE VERIFY AND PROCEED </p>
+            </div>
             <!-- <div class="row mt-5">
                 <div class="col-1 mt-2">TRADER REMARKS</div>
                 <div class="col-2">
@@ -2922,7 +3028,7 @@
             <div class="row">
                 <div class="col-6"><input type="text" class="inputStyle" id="InternalRemarks"></div>
                 <div class="col-4">
-                    <input type="text" class="inputStyle HighLight" id="MRDate" placeholder="DATE"
+                    <input type="text" class="inputStyle HighLight" id="MRDate" placeholder="DATE" value="{{currentDate}}"
                         onfocusout="InvoiceDateFunction('MRDate')">
                     <span1 id="MRDateSpan">FILL MRD</span1>
                 </div>
@@ -2938,39 +3044,39 @@
             <div class="row mt-3">
                 <div class="col-6">
                     <div class="row mt-4">
-                        <div class="col-6">EXPORTER</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">EXPORTER</div>
+                        <div class="col-7" id="SummaryExporter"> </div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">IN MAWB/OBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">IN MAWB/OBL</div>
+                        <div class="col-6" id="SummaryInObl"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">OUT MAWB/OBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">OUT MAWB/OBL</div>
+                        <div class="col-6" id="SummaryOutObl"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">NO OF PACKING</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">NO OF PACKING</div>
+                        <div class="col-6" id="SummaryPacking"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">INVOICE AMOUNT</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">INVOICE AMOUNT</div>
+                        <div class="col-6" id="SummaryInvoiceAmount"></div>
                     </div>
                 </div>
                 <div class="col-6">
                     <div class="row mt-4"></div>
                     <div class="row mt-4">
-                        <div class="col-6">IN HAWB/HBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">IN HAWB/HBL</div>
+                        <div class="col-6" id="SummaryInHawbHbl"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">OUT HAWB/HBL</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">OUT HAWB/HBL</div>
+                        <div class="col-6" id="SummaryOutHawbHbl"></div>
                     </div>
                     <div class="row mt-4">
-                        <div class="col-6">GROSS WEIGHT</div>
-                        <div class="col-6"></div>
+                        <div class="col-3">GROSS WEIGHT</div>
+                        <div class="col-6" id="SummaryGrossWeight"></div>
                     </div>
                     <div class="row mt-4"></div>
                 </div>
@@ -2987,7 +3093,7 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('CpcTab')">PREVIOUS</button></div>
-                <div class="col-2"><button class="MoveOnButtons" type="button" onclick="AllDataSave()">SAVE</button>
+                <div class="col-2" id="FinalSubmitDiv"><button class="MoveOnButtons" type="button" onclick="AllDataSave()">SAVE</button>
                 </div>
                 <div class="col-3"></div>
             </div>
@@ -3342,11 +3448,42 @@
 </script>
 
 
+{% if Show %}
+<script>
+    $('#OutShowHeaderReset').hide();
+    $('#OutShowPartyReset').hide();
+    $('#OutShowCargoReset').hide();
+    $('#OutShowInvoiceReset').hide();
+    $('#OutShowItemReset').hide();
+    $('#OutShowInvoiceiv').hide();
+    $('input').prop('disabled', true);
+    $('select').prop('disabled', true);
+    $('table').prop('disabled', true);
+    $('textarea').prop('disabled', true);
+    $('.ButtonClick').prop('disabled', true);
+    $('#AddInvoiceBtn').prop('disabled', true);
+    $('.showDisable').prop('disabled', true);
+    $('i').prop('disabled', false);
+    $('#FinalSubmitDiv').html(`
+    <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
+    `);
+</script>
+{% endif %}
+
+
+
 {% if OutData %}
 
 {% for out in OutData%}
 
+
 <script>
+
+// var message = "{{ message }}";
+//         if (message) {
+           
+//             alert("Message: " + message);
+//         }
     $('#DeclarationType').val("{{out.DeclarationType}}")
     OutDeclarationChange()
 
@@ -3425,7 +3562,14 @@
     $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
     $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
     $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
-    $('#EndConsigneCode').val("{{out.EndUserCode}}")
+    if ("{{out.EndUserCode}}" != ""){
+        $("#EndUserID").prop('checked',true)
+        if($('#EndUserID').prop('checked')){
+                EndUserClick()
+            }
+        } 
+    $('#EndConsigneCode').val("{{out.EndUserCode}}")  
+    
     $('#ManuFactureCode').val("{{out.Manufacturer}}")
 
     if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
@@ -3442,6 +3586,7 @@
     $('#FlightNO').val("{{out.FlightNO}}")
     $('#AircraftRegNo').val("{{out.AircraftRegNo}}")
     $('#OutMasterAirwayBill').val("{{out.MasterAirwayBill}}")
+    
     $('#ReleaseLocaName').val("{{out.ReleaseLocation}}")
     $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
     $('#StorageCode').val("{{out.StorageLocation}}")
@@ -3482,9 +3627,20 @@
     $('#InternalRemarks').val("{{out.InternalRemarks}}")
     CargoGrossEdit()
 
+
     if ("{{out.DeclareIndicator}}" == "true" || "{{out.DeclareIndicator}}" == 'True') {
         $('#DeclareIndicator').prop('checked', true)
         $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
+    }
+
+    if ("{{out.Cnb}}" == "true" || "{{out.Cnb}}" == 'True') {
+        $('#OutCnb').prop('checked', true)
+        $('#OutCnb').val("{{out.Cnb}}")
+    }
+
+    if ("{{out.Defrentprinting}}" == "true" || "{{out.Defrentprinting}}" == 'True') {
+        $('#Defrentprinting').prop('checked', true)
+        $('#Defrentprinting').val("{{out.Defrentprinting}}")
     }
 
     // NumberOfItems: ItemData.length,
@@ -3501,7 +3657,10 @@
     $('#RecepitLocName').val("{{out.RepLocName}}")
     $('#RecepitLocName').val("{{out.RecepitLocName}}")
     $('#Hbl').val("{{out.outHAWB}}")
-    $('#Hawb').val("{{out.INHAWB}}")
+    $('#OutCargoHblValue').val("{{out.INHAWB}}")
+    $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+
+    $('#Hawb').val("{{out.outHAWB}}")
     hawbOutFunction()
     // CertificateNumber: "",
     $('#Defrentprinting').val("{{out.Defrentprinting}}")
@@ -3509,10 +3668,279 @@
     $('#DeclaringFor').val("{{out.DeclarningFor}}")
     $('#MRDate').val("{{out.MRDate|date:'d/m/Y'}}")
     $('#MRTime').val("{{out.MRTime|date:'h:i A' }}")
+
+    CargoGross()
+    OutWardCargoHblValueOut()
+    mawbOutFunction()
+    OutCargoHblValueOut()
+    totalpack()
+    OutOblVal()
+    InOblVal()
+    
+
+    
+</script>
+{% endfor %}
+<script>
+    
+    var message = "{{ message }}";
+    var hawbshowDiv = document.getElementById("hawbshow");
+    var hawbshowDivsumm = document.getElementById("hawbsummaryshow");
+    
+    if (message && message.trim() !== "") {
+        hawbshowDiv.innerHTML = message;
+    } else {
+        hawbshowDivsumm.style.display = 'none';
+    }
+    
+</script>
+
+{% endif %}
+
+
+
+<!--Show-->
+
+
+
+{% if Show %}
+
+{% for out in Show%}
+
+<script>
+
+$('#InNonShow').show()
+    $('input').prop('disabled', true);
+    $('select').prop('disabled', true);
+    $('table').prop('disabled', true);
+    $('textarea').prop('disabled', true);
+    $('.ButtonClick').prop('disabled', true);
+    $('#AddInvoiceBtn').prop('disabled', true);
+    $('.showDisable').prop('disabled', true);
+    $('i').prop('disabled', false); 
+
+ 
+    $('#DeclarationType').val("{{out.DeclarationType}}")
+    OutDeclarationChange()
+
+    $('#PreviousPermitNo').val("{{out.PreviousPermit}}")
+
+    $('#CargoPackType').val("{{out.CargoPackType}}")
+    OutCargoPackTypeChange()
+
+    $('#OutInwardTransportMode').val("{{out.InwardTransportMode}}")
+    OutInwardTrasnPortModeChange()
+
+    $('#OutOutwardTransportMode').val("{{out.OutwardTransportMode}}")
+    OutOutwardTrasnPortModeChange()
+
+    $('#BgIndicator').val("{{out.BGIndicator}}")
+
+    if ("{{out.SupplyIndicator}}" == "True") {
+        $('#SupplyIndicator').prop('checked', true)
+    }
+
+    if ("{{out.ReferenceDocuments}}" == "True") {
+        $('#ReferenceDocuments').prop('checked', true)
+        OutReferenceDocument()
+    }
+
+    const LicenceData = "{{out.License}}".split('-')
+
+    $('#licence1').val(LicenceData[0])
+    $('#licence2').val(LicenceData[1])
+    $('#licence3').val(LicenceData[2])
+    $('#licence4').val(LicenceData[3])
+    $('#licence5').val(LicenceData[4])
+
+    $('#CoType').val("{{out.COType}}")
+    // Entryyear: "",//$('#Entryyear').val(),//dont save
+    // GSPDonorCountry: "--Select--",//$('#GSPDonorCountry').val(),//dont save
+
+    $('#CertificateType1').val("{{out.CerDetailtype1}}")
+    $('#CerDetailCopies1').val("{{out.CerDetailCopies1}}")
+    $('#CertificateType2').val("{{out.CerDetailtype2}}")
+    $('#CerDetailCopies2').val("{{out.CerDetailCopies2}}")
+
+    // PerCommon: "",//$('#PerCommon').val(),//dont save
+
+    $('#CurrencyCode').val("{{out.CurrencyCode}}")
+
+    const AddCerDtl = "{{out.AddCerDtl}}".split('-')
+    $('#AddCerDtl1').val(AddCerDtl[0])
+    $('#AddCerDtl2').val(AddCerDtl[1])
+    $('#AddCerDtl3').val(AddCerDtl[2])
+    $('#AddCerDtl4').val(AddCerDtl[3])
+    $('#AddCerDtl5').val(AddCerDtl[4])
+
+    const TransDtl = "{{out.TransDtl}}".split('-')
+    $('#TransDtl1').val(TransDtl[0])
+    $('#TransDtl2').val(TransDtl[1])
+    $('#TransDtl3').val(TransDtl[2])
+    $('#TransDtl4').val(TransDtl[3])
+    $('#TransDtl5').val(TransDtl[4])
+
+    const Recipient = "{{out.Recipient}}".split('-')
+    $('#Recipient1').val(Recipient[0])
+    $('#Recipient2').val(Recipient[1])
+    $('#Recipient3').val(Recipient[2])
+
+    $('#DeclarantCompanyCode').val("{{out.DeclarantCompanyCode}}")
+
+    $('#ExporterCode').val("{{out.ExporterCompanyCode}}")
+
+
+    $('#InwardCode').val("{{out.Inwardcarriercode}}")
+
+    $('#OutwardCode').val("{{out.OutwardCarrierAgentCode}}")
+
+    $('#FrieghtCode').val("{{out.FreightForwarderCode}}")
+    $('#ImporterCode').val("{{out.ImporterCompanyCode}}")
+    $('#InwardCode').val("{{out.InwardCarrierAgentCode}}")
+    $('#ConsigneCode').val("{{out.CONSIGNEECode}}")
+    if ("{{out.EndUserCode}}" != ""){
+        $("#EndUserID").prop('checked',true)
+        if($('#EndUserID').prop('checked')){
+                EndUserClick()
+            }
+        } 
+    $('#EndConsigneCode').val("{{out.EndUserCode}}")  
+    
+    $('#ManuFactureCode').val("{{out.Manufacturer}}")
+
+    if ('1900/01/01' != "{{out.ArrivalDate|date:'d/m/Y' }}") {
+        $('#ArrivalDate').val("{{out.ArrivalDate|date:'d/m/Y' }}")
+    }
+    $('#ArrivalTime').val("{{out.ArrivalTime}}")
+
+    $('#LoadingPortCode').val("{{out.LoadingPortCode}}")
+    $('#VoyageNumber').val("{{out.VoyageNumber}}")
+    $('#VesselName').val("{{out.VesselName}}")
+    $('#OceanBillofLadingNo').val("{{out.OceanBillofLadingNo}}")
+    $('#ConveyanceRefNo').val("{{out.ConveyanceRefNo}}")
+    $('#TransportId').val("{{out.TransportId}}")
+    $('#FlightNO').val("{{out.FlightNO}}")
+    $('#AircraftRegNo').val("{{out.AircraftRegNo}}")
+    $('#OutMasterAirwayBill').val("{{out.MasterAirwayBill}}")
+    mawbOutFunction()
+    $('#ReleaseLocaName').val("{{out.ReleaseLocation}}")
+    $('#ReciptLocationCode').val("{{out.RecepitLocation}}")
+    $('#StorageCode').val("{{out.StorageLocation}}")
+
+    if ('01/01/1900' != "{{out.BlanketStartDate|date:'d/m/Y' }}") {
+        $('#BlanketStartDate').val("{{out.BlanketStartDate|date:'d/m/Y' }}")
+    }
+
+    if ('01/01/1900' != "{{out.DepartureDate|date:'d/m/Y' }}") {
+        $('#DepartureDate').val("{{out.DepartureDate|date:'d/m/Y' }}")
+    }
+
+    $('#DepartureTime').val("{{out.DepartureTime}}")
+
+    $('#DischargePort').val("{{out.DischargePort}}")
+
+    $('#OutVoyageNumber').val("{{out.OutVoyageNumber}}")
+    $('#OutVesselName').val("{{out.OutVesselName}}")
+    $('#OutOceanBillofLadingNo').val("{{out.OutOceanBillofLadingNo}}")
+    $('#VesselType').val("{{out.VesselType}}")
+    $('#VesselNetRegTon').val("{{out.VesselNetRegTon}}")
+
+    $('#TowingVesselID').val("{{out.TowingVesselID}}")
+    $('#TowingVesselName').val("{{out.TowingVesselName}}")
+    $('#NextPort').val("{{out.NextPort}}")
+    $('#LastPort').val("{{out.LastPort}}")
+    $('#OutConveyanceRefNo').val("{{out.OutConveyanceRefNo}}")
+    $('#OutTransportId').val("{{out.OutTransportId}}")
+    $('#OutFlightNO').val("{{out.OutFlightNO}}")
+    $('#OutAircraftRegNo').val("{{out.OutAircraftRegNo}}")
+    $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+    $('#TotalOuterPack').val("{{out.TotalOuterPack}}")
+    $('#TotalOuterPackUOM').val("{{out.TotalOuterPackUOM}}")
+    $('#PermitGrossWeight').val("{{out.TotalGrossWeight}}")
+    $('#TotalGrossWeightUOM').val("{{out.TotalGrossWeightUOM}}")
+    $('#GrossReference').val("{{out.GrossReference}}")
+    $('#summaryTradeRemarks').val(`{{out.TradeRemarks}}`)
+    $('#InternalRemarks').val("{{out.InternalRemarks}}")
+    CargoGrossEdit()
+
+
+    if ("{{out.DeclareIndicator}}" == "true" || "{{out.DeclareIndicator}}" == 'True') {
+        $('#DeclareIndicator').prop('checked', true)
+        $('#DeclareIndicator').val("{{out.DeclareIndicator}}")
+    }
+
+    if ("{{out.Cnb}}" == "true" || "{{out.Cnb}}" == 'True') {
+        $('#OutCnb').prop('checked', true)
+        $('#OutCnb').val("{{out.Cnb}}")
+    }
+
+    if ("{{out.Defrentprinting}}" == "true" || "{{out.Defrentprinting}}" == 'True') {
+        $('#Defrentprinting').prop('checked', true)
+        $('#Defrentprinting').val("{{out.Defrentprinting}}")
+    }
+
+    // NumberOfItems: ItemData.length,
+    $('#TotalCIFFOBValue').val("{{out.TotalCIFFOBValue}}")
+    // TotalGSTTaxAmt: "0.00",
+    // TotalExDutyAmt: "0.00",
+    // TotalCusDutyAmt: "0.00",
+    // TotalODutyAmt: "0.00",
+    // TotalAmtPay: "0.00",
+    // Status: "NEW",
+    // PermitNumber: "PermitNumber",
+    // prmtStatus: "prmtStatus",
+    $('#ReleaseLocText').val("{{out.ResLoaName}}")
+    $('#RecepitLocName').val("{{out.RepLocName}}")
+    $('#RecepitLocName').val("{{out.RecepitLocName}}")
+    $('#Hbl').val("{{out.outHAWB}}")
+    $('#OutCargoHblValue').val("{{out.INHAWB}}")
+    $('#OutMasterAirwayBill').val("{{out.OutMasterAirwayBill}}")
+    $('#Hawb').val("{{out.outHAWB}}")
+    hawbOutFunction()
+    $(document).ready(function() {
+                // Sample conversion if out.DeclarationType is a list
+                var declarationTypeOptions = "{{ out.DeclarationType }}".split(',');
+                $('#DeclarationType').empty();
+                $.each(declarationTypeOptions, function(index, value) {
+                    $('#DeclarationType').append($('<option>').text(value).val(value));
+                });
+                // Repeat the same for other select elements
+                // ...
+            });
+    // CertificateNumber: "",
+    $('#Defrentprinting').val("{{out.Defrentprinting}}")
+    // Cnb: $('#OutCnb').val(),
+    $('#DeclaringFor').val("{{out.DeclarningFor}}")
+    $('#MRDate').val("{{out.MRDate|date:'d/m/Y'}}")
+    $('#MRTime').val("{{out.MRTime|date:'h:i A' }}")
+
+    CargoGross()
+    OutWardCargoHblValueOut()
+    mawbOutFunction()
+    OutCargoHblValueOut()
+    totalpack()
+    OutOblVal()
+    InOblVal()
+
+    
+
+   document.getElementById('ShowCreate').innerText = "{{ out.TouchUser }}"; 
+   document.getElementById('ShowJobId').innerText = "{{ out.JobId }}"; 
+   document.getElementById('ShowMsgId').innerText = "{{ out.MSGId }}";
+   document.getElementById('ShowStatus').innerText = "{{ out.Status }}"; 
+   document.getElementById('ShowTransmituser').innerText = "{{ out.Status }}";  
+   document.getElementById('ShowDate').innerText = "{{ out.MRDate|date:'d/m/Y' }} {{ out.MRTime|date:'h:i A' }}"; 
+   document.getElementById('SowPermitNo').innerText = "{{out.Status}}"; 
+   document.getElementById('ShowValidityPeriod').innerText = "{{ out.Status }}";
+   document.getElementById('ShowCertificateApproved').innerText = "{{ out.Status }}";
+   document.getElementById('ShowCertifcateNo').innerText = "{{ out.Status }}";
 </script>
 {% endfor %}
 
 {% endif %}
+  
+
+
 
 {% endblock %}
 

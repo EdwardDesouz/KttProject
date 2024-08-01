@@ -625,7 +625,11 @@
                         <div class="row mt-3 NotRequired">
                             <div class="col-3"><label for="CargoHbl" id="CargoHblLabel">HAWB</label></div>
                             <div class="col-7"><input type="text" id="CargoHbl" class="inputStyle"
-                                    onfocusout="CargoHawbOut()"></div>
+                                    onfocusout="CargoHawbOut('#CargoHbl')" > 
+                                    <span  class="ErrColor"  style="display:none;" id="CargoHAWBSpan">FILL THE
+                                        HAWB</span></div>
+                                   
+                                    
                         </div>
                         <div class="row mt-3 NotRequired">
                             <div class="col-3"><label for="CargoArrivalDate">ARRIVAL DATE</label></div>
@@ -1005,7 +1009,7 @@
                             <td>
                                 <input type="number" value="0.00" class="inputStyle" style="width:50%"
                                     id="InsurenceCharges"
-                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; }">
+                                    onfocusout="if(this.value.trim() === '') { this.value = '0.00'; } ; InsurenceChargesFocusOut()">
                             </td>
                             <td>
                                 <select class="Dropdown" style="width:70%" id="InsurenceCurrency" tabindex="21"
@@ -1044,7 +1048,7 @@
                         <tr id="InvoiceGstRow">
                             <td>GST</td>
                             <td>
-                                <input type="number" value="8" class="inputStyle" style="width:50%"
+                                <input type="number" value="9" class="inputStyle" style="width:50%"
                                     id="InvoiceGstCharge" disabled>
                             </td>
                             <td></td>
@@ -2272,7 +2276,7 @@
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" style="width: 80%;" placeholder="DATE" id="SummaryMRD"
-                            onfocusout="InvoiceDateFunction('SummaryMRD')">
+                            onfocusout="InvoiceDateFunction('SummaryMRD')" value="{{CurrentDate}}">
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle" id="SummaryTIME" placeholder="TIME"
@@ -2312,7 +2316,7 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">HAWB/HBL</div>
-                            <div class="col-6" id="SummaryHawbHbl"> </div>
+                            <div class="col-6" id="SummaryHawbHbl"></div>
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">GROSS WEIGHT</div>
@@ -3307,6 +3311,8 @@
 
     /*------------------------------------------INVOICE TABLE FOCUSOUT CURRENCY---------------------------------------*/
     function InvoiceCurrencyFocusOut(val, ExRateId, charges) {
+    
+        console.log("InsurenceAmount:",$('#InsurenceAmount').val());
         $('#InvoiceCurrencySpan').hide();
         if (val == '--Select--') {
             $(ExRateId).val('0.00');
@@ -3428,6 +3434,8 @@
 {% if EDIT %}
 <script>
     "{% for head in Header %}"
+
+    $('#CargoHAWBSpan').hide();
     var Licence = ("{{ head.License|escapejs}}").split(",")
     var Recipt = ("{{ head.Recipient|escapejs}}").split("-")
     $("#licence1").val(Licence[0]);
@@ -3518,6 +3526,7 @@
     $('#PermitNumberId').val('{{head.PermitNumber|escapejs}}')
     CargoHawbOut()
     CargoGross()
+   
 
     /*----------------Refund -----------*/
     "{% if REFUND %}"
@@ -3533,6 +3542,7 @@
     "{% if AMEND %}"
     $('#AmendUpdateIndicator').val('{{head.prmtStatus}}')
     $('#AmendPermitNumber').val('{{head.PermitNumber}}')
+    
     "{% endif %}"
 
     "{% endfor %}"
@@ -3596,9 +3606,11 @@
                     }
                     $('#RefundTABLE tbody').html(retable);
                     "{% if SHOW %}"
+                    console.log('hello')
                     $('input').prop('disabled', true);
                     $('select').prop('disabled', true);
                     $('table').prop('disabled', true);
+                    $('#CargoHAWBSpan').hide();
                     $('#RefundSubmitBtn').html(
                         `
                         <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
@@ -3655,6 +3667,7 @@
                 $('input').prop('disabled', true);
                 $('select').prop('disabled', true);
                 $('table').prop('disabled', true);
+                $('#CargoHAWBSpan').hide();
                 $('#AmendSubmitBtn').html(
                     `
                         <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
@@ -3706,6 +3719,7 @@
                 $('input').prop('disabled', true);
                 $('select').prop('disabled', true);
                 $('table').prop('disabled', true);
+                $('#CargoHAWBSpan').hide();
                 $('#CancelSubmitBtn').html(
                     `
                         <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
@@ -3727,6 +3741,7 @@
     $('#AddInvoiceBtn').prop('disabled', true);
     $('.showDisable').prop('disabled', true);
     $('i').prop('disabled', false);
+    $('#CargoHAWBSpan').hide();
     $('#FinalSubmitDiv').html(`<button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
     `);
 </script>
