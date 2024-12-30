@@ -263,8 +263,6 @@ $(document).ready(function () {
   
 });
 
-
-
 function searchInpaymentTable(arg) {
     $('#CooListTable').DataTable().search(arg).draw();
 }
@@ -276,8 +274,6 @@ function filterPermits() {
     var dataTable = $('#CooListTable').DataTable();
     dataTable.column(22).search(selectedValue).draw();
 }
-
-
 
 function CooListtDelete(Arg) {
     filterPermits();
@@ -292,11 +288,7 @@ function CooListtDelete(Arg) {
 
 }
 
-
-
 // CooList Checkbox
-
-
 
 function ListAllCheckSubmit() {
     let check = document.getElementById("ListAllCheckSubmitId")
@@ -417,8 +409,6 @@ function listChcekBoxFunction() {
     }
 }
 
-
-
 /*------------------------List copy -----------------------------------------*/ 
 function InNonCopy() {
     var ChechValue = document.getElementsByName("InNonPayementCheckBox");
@@ -454,10 +444,6 @@ function openCooEditWindow(url) {
     window.open(url, 'cooapp', 'width=' + width + ', height=' + height + ', left=' + left + ', top=' + top);
 }
 
-
-
-
-
 function HtaHide(val1, ID) {
     let cbox = document.getElementById(ID);
     var table = $('#CooListTable').DataTable();
@@ -467,8 +453,6 @@ function HtaHide(val1, ID) {
         table.column(Number(val1) + 3).visible(false);
     }
 }
-
-
 
 function TransmitDataClick() {
     let ArrayVal = [];
@@ -506,8 +490,6 @@ function TransmitDataClick() {
     }
 }
 
-
-
 function DownloadDataInNon() {
     let ccp = [];
     var ChechValue = document.getElementsByName("InNonPayementCheckBox")
@@ -522,8 +504,6 @@ function DownloadDataInNon() {
         window.location.href = "/DownloadDataCoo/" + ccp.join(",") + "/";
     }
 }
-
-
 
 function InNonSubmit() {
     var checkArr = [];

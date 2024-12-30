@@ -4431,15 +4431,16 @@ function itemPreferntialCodeOut() {
 //   TotalCalculation()
 // })
 
-// document.getElementById('InsurenceAmount').addEventListener('input', function () {
+// the below code is need to check 
+document.getElementById('InsurenceAmount').addEventListener('input', function () {
 
-//   const ExRate = Number($('#InsurenceExRate').val())
-//   const Amount = Number($('#InsurenceAmount').val())
+  const ExRate = Number($('#InsurenceExRate').val())
+  const Amount = Number($('#InsurenceAmount').val())
 
-//   const total = ExRate * Amount
-//   $('#InsurenceSumAmount').val(total.toFixed(2))
-//   TotalCalculation()
-// })
+  const total = ExRate * Amount
+  $('#InsurenceSumAmount').val(total.toFixed(2))
+  TotalCalculation()
+})
 
 
 

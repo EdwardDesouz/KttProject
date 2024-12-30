@@ -332,15 +332,15 @@
                 </div>
             </div>
 
-            <div  id="InNonShow" style=display:none;>
+            <div id="InNonShow" style=display:none;>
 
-                <div class="row mt-5" >
+                <div class="row mt-5">
                     <div class="col-12">
                         <h1 class="Borderdiv">PERMIT CONDITIONS</h1>
                     </div>
                 </div>
-    
-                <div class="container-fluid mt-5"  >
+
+                <div class="container-fluid mt-5">
                     <div class="row">
                         <div class="col-4">
                             <div class="row">
@@ -355,11 +355,11 @@
                                 <div class="col-3">CREATE BY : </div>
                                 <div class="col-6" id="ShowCreate"></div>
                             </div>
-        
+
                         </div>
                         <div class="col-4">
                             <div class="row">
-                                <div class="col-4">VALIDITY PERIOD :  </div>
+                                <div class="col-4">VALIDITY PERIOD : </div>
                                 <div class="col-6" id="ShowValidityPeriod"> </div>
                             </div>
                             <div class="row mt-3">
@@ -370,50 +370,61 @@
                                 <div class="col-4">STATUS : </div>
                                 <div class="col-6" id="ShowStatus"></div>
                             </div>
-                           
-        
+
+
                         </div>
                         <div class="col-4">
                             <div class="row">
-                                <div class="col-6">PERMIT APPROVED DATE :  </div>
+                                <div class="col-6">PERMIT APPROVED DATE : </div>
                                 <div class="col-6" id="ShowCertificateApproved"> </div>
                             </div>
                             <div class="row mt-3">
                                 <div class="col-3">DEC DATE : </div>
                                 <div class="col-6" id="ShowDate"></div>
-                            </div>   
+                            </div>
                             <div class="row mt-3">
                                 <div class="col-3">TRANSMIT USER : </div>
                                 <div class="col-6" id="ShowDate"></div>
-                            </div>                                          
+                            </div>
                         </div>
                     </div>
-                </div> 
-    
-                <div class="row mt-5" >
+                </div>
+
+                <div class="row mt-5">
                     <div class="col-12">
                         <table style="width: 100%;" id="">
                             <thead>
-                                
+
                                 <th style="padding: 2px;">S.NO</th>
                                 <th style="padding: 2px;">CODE</th>
                                 <th>DESCRIPTION</th>
-                    
+
                             </thead>
                             <tbody>
+                                {% if APRData %}
+                                {% for data in APRData %}
                                 <tr>
-                                    <td colspan=14 style='text-align:center'>No Record</td>
+                                    <td>{{ data.SNo }}</td>
+                                    <td>{{ data.Code }}</td>
+                                    <td>{{ data.Description }}</td>
                                 </tr>
+                                {% endfor %}
+                                {% else %}
+                                <tr>
+                                    <td colspan="3" style="text-align:center">No Record</td>
+                                </tr>
+                                {% endif %}
                             </tbody>
                         </table>
                     </div>
                 </div>
-    
+
             </div>
-            
+
             <div class="row mt-3">
                 <div class="col-4"></div>
-                <div class="col-2" id="HeaderResetInNon"><button class="MoveOnButtons" type="button"  onclick="HeaderResetInNon()" tabindex="23">RESET</button></div>
+                <div class="col-2" id="HeaderResetInNon"><button class="MoveOnButtons" type="button"
+                        onclick="HeaderResetInNon()" tabindex="23">RESET</button></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" tabindex="24"
                         onclick="TabHead('PartyTab')">NEXT</button></div>
                 <div class="col-4"></div>
@@ -454,18 +465,18 @@
                             onclick="InNonImporterSave()">+</button>
                     </div>
                     <div class="col-1">
-                        <input type="text" class="inputStyle" placeholder="CODE" id="InNonImporterCode" 
+                        <input type="text" class="inputStyle" placeholder="CODE" id="InNonImporterCode"
                             onfocus="InNonImporterIn()" onblur="InNonImporterOut()" tabindex="1"><br>
                         <span class="ErrColor" id="InNonImporterCodeSpan">FILL CODE</span>
                     </div>
                     <div class="col-2">
                         <input type="text" class="inputStyle HighLight " placeholder="CRUEI" id="InNonImporterCruei"
-                             style="width: 80%;" onfocus="TrimKeyUp('InNonImporterCruei')" tabindex="2"><br>
+                            style="width: 80%;" onfocus="TrimKeyUp('InNonImporterCruei')" tabindex="2"><br>
                         <span class="ErrColor" id="InNonImporterCrueiSpan">FILL CRUEI</span>
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle HighLight" placeholder="NAME" id="InNonImporterName"
-                             style="width: 80%;" onfocus="TrimKeyUp('InNonImporterName')" tabindex="3"><br>
+                            style="width: 80%;" onfocus="TrimKeyUp('InNonImporterName')" tabindex="3"><br>
                         <span class="ErrColor" id="InNonImporterNameSpan">FILL NAME</span>
                     </div>
                     <div class="col-3">
@@ -479,13 +490,13 @@
                     <div class="col-2"><label for="ExporterCode">EXPORTER</label> </div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonExporter,'EXPORTER','ExporterCode','ExporterCruei','ExporterName','ExporterName1')" >
+                            onclick="InNonImporeterSearch(InNonExporter,'EXPORTER','ExporterCode','ExporterCruei','ExporterName','ExporterName1')">
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonExporterSave()" >+</button>
+                            onclick="InNonExporterSave()">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="ExporterCode"
-                            onfocus="InNonExporterIn()" onblur="InNonExporterOut()"tabindex="5" ><br>
+                            onfocus="InNonExporterIn()" onblur="InNonExporterOut()" tabindex="5"><br>
                         <span class="ErrColor" id="ExporterCodeSpan">FILL CODE</span>
                     </div>
                     <div class="col-2">
@@ -509,9 +520,9 @@
                     <div class="col-2"><label>INWARD CARRIER AGENT</label></div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonInward,'INWARD','InwardCode','InwardCruei','InwardName','InwardName1')" >
+                            onclick="InNonImporeterSearch(InNonInward,'INWARD','InwardCode','InwardCruei','InwardName','InwardName1')">
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonInwardSave()" >+</button>
+                            onclick="InNonInwardSave()">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="InwardCode" tabindex="9"
@@ -539,9 +550,9 @@
                     <div class="col-2"><label>OUTWARD CARRIER AGENT</label></div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px"
-                            onclick="InNonImporeterSearch(InNonOutWard,'OUTWARD','OutWardCarreirCode','OutWardCarreirCRUEI','OutWardCarreirName','OutWardCarreirName1')" >
+                            onclick="InNonImporeterSearch(InNonOutWard,'OUTWARD','OutWardCarreirCode','OutWardCarreirCRUEI','OutWardCarreirName','OutWardCarreirName1')">
                         <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonOutwardSave()" >+</button>
+                            onclick="InNonOutwardSave()">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="OutWardCarreirCode" tabindex="13"
@@ -598,8 +609,8 @@
                 <div class="row mt-3 ">
                     <div class="col-2"><label>CONSIGNEE</label></div>
                     <div class="col-1">
-                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonConsigneImg()" >
-                        <button type="button" class="btn" style="font-weight: bold;" onclick="ConsigneSave()" >+</button>
+                        <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonConsigneImg()">
+                        <button type="button" class="btn" style="font-weight: bold;" onclick="ConsigneSave()">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle " placeholder="CODE" id="ConsignCode" tabindex="21"
@@ -663,7 +674,7 @@
                     <div class="col-2">
                         <input type="text" class="inputStyle " id="ConsignCountryCode" placeholder="COUNTRY CODE"
                             tabindex="31" style="width: 80%;" onfocus="TrimKeyUp('ConsignCountryCode')"> <br>
-                        <span class="ErrColor" id="ConsignCountryCodeSpan">FILL COUNTRY CODE</span>
+                        <span class="ErrColor" id="ConsignCountryCodeSpan">FILL REGION CODE</span>
                     </div>
                     <div class="col-3"> </div>
                     <div class="col-3"> </div>
@@ -674,8 +685,8 @@
                     <div class="col-2"><label class="">CLAIMANT PARTY</label></div>
                     <div class="col-1">
                         <img src="{% static 'IMG/search.png' %}" width="24px" onclick="InNonClaimantImg()" tabindex="">
-                        <button type="button" class="btn" style="font-weight: bold;"
-                            onclick="InNonClaimantSave()" tabindex="">+</button>
+                        <button type="button" class="btn" style="font-weight: bold;" onclick="InNonClaimantSave()"
+                            tabindex="">+</button>
                     </div>
                     <div class="col-1">
                         <input type="text" class="inputStyle" placeholder="CODE" id="ClaimantName" tabindex="32"
@@ -707,11 +718,12 @@
 
             <div class="row mt-5">
                 <div class="col-4"></div>
-                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('HeaderTab')"tabindex="38"
+                <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('HeaderTab')" tabindex="38"
                         type="button">PREVIOUS</button>
                 </div>
                 <div class="col-2" id="PartyResetInNon">
-                    <button class="MoveOnButtons" id="PartyResetInNon" onclick="PartyresetInNon()" type="button" tabindex="39">RESET</button>
+                    <button class="MoveOnButtons" id="PartyResetInNon" onclick="PartyresetInNon()" type="button"
+                        tabindex="39">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('CargoTab')" tabindex="40"
                         type="button">NEXT</button> </div>
@@ -774,7 +786,7 @@
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-3"><label for="InNonReleaseInput">RELEASE LOCATION</label> </div> 
+                            <div class="col-3"><label for="InNonReleaseInput">RELEASE LOCATION</label> </div>
                             <div class="col-1"><img src="{% static 'IMG/search.png' %}" width="30px"
                                     onclick="InNonReleaseSearchImg('RELEASE LOCATION',ReleaseLocation,'InNonReleaseInput','InNonReleaseText')">
                             </div>
@@ -992,7 +1004,7 @@
                             </div>
                             <div class="container mt-3" style="display: none;" id="FinalDestinationCountryVisible">
                                 <div class="row">
-                                    <div class="col-4">FINAL DESTINATION COUNTRY</div>
+                                    <div class="col-4">FINAL DESTINATION REGION</div>
                                     <div class="col-6">
                                         <select id="InNonFinalDestinationSelect" class="Dropdown HighLight">
                                             <option selected>--Select--</option>
@@ -1194,16 +1206,17 @@
                                             style="color: #ff0000;"></i></td>
                                     <td><i class="fa-solid fa-trash-can containerDeleteBtn" style="color: #ff0000;"></i>
                                     </td>
-                                    <td><input type="text" value="1" disabled class="inputStyle" id="ContianerInfovlue" style="width: 50px;">
+                                    <td><input type="text" value="1" disabled class="inputStyle" id="ContianerInfovlue"
+                                            style="width: 50px;">
                                     </td>
                                     <td>
-                                        <input type='text' class="inputStyle" >
+                                        <input type='text' class="inputStyle">
                                         <span class="ErrorColor" style="font-size: 9px;display: none;">THE CONTAINER NO.
                                             FORMAT SHOULD BE 4 ALPHABETS <br>AND FOLLOWED BY 7 DIGIT, FOR EX.:
                                             ABCD1234567</span>
                                     </td>
                                     <td>
-                                        <select class="Dropdown" >
+                                        <select class="Dropdown">
                                             <option selected>--Select--</option>
                                             {% for i in ContainerSizeDrop %}
                                             <option value="{{i.Name}}">{{i.Name}}</option>
@@ -1219,7 +1232,7 @@
                                             REQUIRED</span>
                                     </td>
                                     <td>
-                                        <input type="text" class="inputStyle" >
+                                        <input type="text" class="inputStyle">
                                         <span class="ErrorColor" style="font-size: 9px;display: none;">SEAL NO IS
                                             REQUIRED</span>
                                     </td>
@@ -1240,7 +1253,7 @@
                         type="button">PREVIOUS</button>
                 </div>
                 <div class="col-2" id="CargoResetInNon">
-                    <button class="MoveOnButtons"  onclick="CargoResetInNon()" type="button">RESET</button>
+                    <button class="MoveOnButtons" onclick="CargoResetInNon()" type="button">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" onclick="TabHead('InvoiceTab')"
                         type="button">NEXT</button> </div>
@@ -1444,7 +1457,7 @@
                                     <option selected>--Select--</option>
                                 </select>
                             </td>
-                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px" 
+                            <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InsurenceExRateInNon" disabled></td>
                             <td><input type="number" value="0.00" class="inputStyle" style="width:150px"
                                     id="InsurenceAmountInNon" onkeyup="InsurenceAmountInNonCalculation()" tabindex="22">
@@ -1562,7 +1575,8 @@
                                     onfocus="ItemItemCodeInNonIn()" onfocusout="ItemItemCodeInNonOut(this.value)">
                                 <span class="ErrColor" id="ItemItemCodeInNonSpan">FILL THE CODE</span>
                             </div>
-                            <div class="col-1"><button type="button" class="btn" onclick="ItemCodeSave()" style="font-weight: bold;">+</button>
+                            <div class="col-1"><button type="button" class="btn" onclick="ItemCodeSave()"
+                                    style="font-weight: bold;">+</button>
                             </div>
                         </div>
                     </div>
@@ -1592,13 +1606,13 @@
                     </div>
                     <div class="row mt-4">
                         <div class="row">
-                            <div class="col-2">COO</div>
+                            <div class="col-2">ROO</div>
                             <div class="col-2 mt-1"><i class="fa-solid fa-magnifying-glass fa-lg"
                                     onclick="ItemCooSearch()"></i></div>
                             <div class="col-3">
                                 <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
                                     onfocusout="ItemCooOut(this.value)" tabindex="3">
-                                <span class="ErrColor" id="ItemCooInputSpan">FILL COO</span>
+                                <span class="ErrColor" id="ItemCooInputSpan">FILL ROO</span>
                             </div>
                             <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled>
                             </div>
@@ -2038,13 +2052,14 @@
                                 {% comment %} <div class="col-2"><button class="btn1" type="button" tabindex="18"
                                         onclick="CopyHsQuantity('product1CodeCopyInput','product1CodeCopyUom')">COPY OF
                                         HS-QUANTITY</button></div> {% endcomment %}
-                                        <div class="col-2"><button class="btn1" type="button" tabindex="18"
-                                            onclick="CopyHsQuantity('product1CodeCopyInput')">COPY OF
-                                            HS-QUANTITY</button></div>
+                                <div class="col-2"><button class="btn1" type="button" tabindex="18"
+                                        onclick="CopyHsQuantity('product1CodeCopyInput')">COPY OF
+                                        HS-QUANTITY</button></div>
                                 <div class="col-1"><input type="number" class="inputStyle" value="0.00" tabindex="19"
                                         id="product1CodeCopyInput"></div>
                                 <div class="col-2">
-                                    <select id="product1CodeCopyUom" class="inputStyle " tabindex="20" onchange="product1CodeCopyUomChange()">
+                                    <select id="product1CodeCopyUom" class="inputStyle " tabindex="20"
+                                        onchange="product1CodeCopyUomChange()">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -2102,7 +2117,8 @@
                                 <div class="col-1"><input type="number" class="inputStyle" value="0.00"
                                         id="product2CodeCopyInput"></div>
                                 <div class="col-2">
-                                    <select id="product2CodeCopyUom" class="inputStyle"  onchange="product2CodeCopyUomChange()">
+                                    <select id="product2CodeCopyUom" class="inputStyle"
+                                        onchange="product2CodeCopyUomChange()">
                                         <option selected>--Select--</option>
                                     </select>
                                 </div>
@@ -2382,7 +2398,8 @@
                 <div class="col-3"></div>
                 <div class="col-2"><button class="MoveOnButtons" type="button"
                         onclick="TabHead('InvoiceTab')">PREVIOUS</button></div>
-                <div class="col-2" id="ItemResetInNon" ><button class="MoveOnButtons" type="button"  onclick="ItemResetInNon()">RESET</button>
+                <div class="col-2" id="ItemResetInNon"><button class="MoveOnButtons" type="button"
+                        onclick="ItemResetInNon()">RESET</button>
                 </div>
                 <div class="col-2"><button class="MoveOnButtons" type="button" onclick="TabHead('CpcTab')">NEXT</button>
                 </div>
@@ -2406,7 +2423,7 @@
                             <th>S.NO</th>
                             <th>HS CODE</th>
                             <th>GOODS DESCRIPTION</th>
-                            <th>COO</th>
+                            <th>ROO</th>
                             <th>IN HAWB/HBL</th>
                             <th>OUT HAWB/HBL</th>
                             <th>CURRENCY</th>
@@ -2735,7 +2752,7 @@
                     </div>
                     <div class="col-3">
                         <input type="text" class="inputStyle" style="width: 80%;" placeholder="DATE" id="SummaryMRD"
-                            onfocusout="InvoiceDateFunction('SummaryMRD')" value="{{currentDate}}" ><br>
+                            onfocusout="InvoiceDateFunction('SummaryMRD')" value="{{currentDate}}"><br>
                         <span class="ErrorColor" id="SummaryMRDSpan">FILL MRD</span>
                     </div>
                     <div class="col-2">
@@ -3322,7 +3339,7 @@
         var day = dateParts[2];
         var formattedDate = day + '/' + month + '/' + year;
         $("#ExhibitionSDate").val(formattedDate);
-        
+
     }
     var dateStringExhibitionEDate = "{{Data.ExhibitionEDate}}";
     if ("{{Data.ExhibitionEDate}}" == "1900-01-01") {
@@ -3335,7 +3352,7 @@
         var day = dateParts[2];
         var formattedDate = day + '/' + month + '/' + year;
         $("#ExhibitionEDate").val(formattedDate);
-        
+
     }
 
 
@@ -3520,11 +3537,11 @@
     $('#InvoiceResetInNon').hide()
     $('#ShowAddItem').hide()
     $('#Item span1').hide()
-    document.getElementById('ShowCreate').innerText = "{{ Data.TouchUser }}"; 
-   document.getElementById('ShowJobId').innerText = "{{ Data.JobId }}"; 
-   document.getElementById('ShowMsgId').innerText = "{{ Data.MSGId }}";
-   document.getElementById('ShowStatus').innerText = "{{ Data.Status }}";  
-   document.getElementById('ShowDate').innerText = "{{ Data.MRDate|date:'d/m/Y' }} {{ Data.MRTime|date:'h:i A' }}"; 
+    document.getElementById('ShowCreate').innerText = "{{ Data.TouchUser }}";
+    document.getElementById('ShowJobId').innerText = "{{ Data.JobId }}";
+    document.getElementById('ShowMsgId').innerText = "{{ Data.MSGId }}";
+    document.getElementById('ShowStatus').innerText = "{{ Data.Status }}";
+    document.getElementById('ShowDate').innerText = "{{ Data.MRDate|date:'d/m/Y' }} {{ Data.MRTime|date:'h:i A' }}";
     $('#FinalSubmitDiv').html(`
     <button class="MoveOnButtons" type="button" style = "Width:100%" onclick="window.close();">CLOSE</button>
     `);
@@ -3542,8 +3559,8 @@
 <script>
 
     console.log('Hello')
-    
-     $('#declarationType').val("{{Data.DeclarationType|escapejs}}")
+
+    $('#declarationType').val("{{Data.DeclarationType|escapejs}}")
     DeclarationChange()
     $('#PreviousPermitNo').val("{{Data.PreviousPermit|escapejs}}")
     $('#CargoPackType').val("{{Data.CargoPackType|escapejs}}")
@@ -3604,7 +3621,7 @@
         var day = dateParts[2];
         var formattedDate = day + '/' + month + '/' + year;
         $("#ExhibitionSDate").val(formattedDate);
-        
+
     }
     var dateStringExhibitionEDate = "{{Data.ExhibitionEDate}}";
     if ("{{Data.ExhibitionEDate}}" == "1900-01-01") {
@@ -3617,7 +3634,7 @@
         var day = dateParts[2];
         var formattedDate = day + '/' + month + '/' + year;
         $("#ExhibitionEDate").val(formattedDate);
-        
+
     }
     $('#InNonLoadingPortInput').val("{{Data.LoadingPortCode|escapejs}}")
     $('#VoyageNumber').val("{{Data.VoyageNumber|escapejs}}")
@@ -3711,14 +3728,14 @@
     CargoOutHawbOut();
     CpcHideShow();
 
-   
 
 
 
-    
 
 
-    
+
+
+
 </script>
 {% endfor %}
 

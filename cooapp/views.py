@@ -22,19 +22,19 @@ def coolist(request):
         })
 
 
-
 class coolistTable(View,SqlDb):
     def __init__(self):
         SqlDb.__init__(self)
 
     def get(self,request):
         Username=request.session["Username"]
+        print('Username:',Username)
 
         self.cursor.execute(
              "SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username)
         )
         AccountId=self.cursor.fetchone()[0]
-        # print('list AccountId:',AccountId)
+        print('list AccountId:',AccountId)
 
         nowdata = datetime.now() - timedelta(days=60)
         self.cursor.execute(
@@ -88,27 +88,21 @@ class coolistTable(View,SqlDb):
        
 
         return JsonResponse(result, safe=False)
-        
-
-
-
+     
 
 class coolistnew(View,SqlDb):
     def __init__(self):
-        SqlDb.__init__(self)
-
-        
+        SqlDb.__init__(self)   
     def get(self,request):
         Username = request.session["Username"]
         refDate = datetime.now().strftime("%Y%m%d")
         jobDate = datetime.now().strftime("%Y-%m-%d")
+
         currentDate = datetime.now().strftime("%d/%m/%Y")
-    
 
         self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
 
         AccountId = self.cursor.fetchone()[0]
-        
 
         self.cursor.execute( "SELECT COUNT(*) + 1  FROM COHeaderTbl WHERE MSGId LIKE '%{}%' AND MessageType = 'COODEC' ".format(refDate))
         self.RefId = "%03d" % self.cursor.fetchone()[0]
@@ -653,9 +647,7 @@ class ItemSave(View, SqlDb):
             for key, value in item.items():
                 print(f"{key}: {(value)}")
         return JsonResponse(context)
-    
-
-    
+       
 
 class CooItemDelete(View,SqlDb):
     def __init__(self):
@@ -823,8 +815,7 @@ class SavePermit(View,SqlDb):
         )
         context['message'] = message
         return JsonResponse(context)
-      
-         
+        
 
 
 class CooEdit(View,SqlDb):
@@ -1638,7 +1629,6 @@ class CooTransmitData(View,SqlDb):
             self.conn.commit()
 
         return JsonResponse({"SUCCESS" : 'COPY ITEM'})
-    
 
 
 class CooDownloadData(View,SqlDb):
@@ -1861,6 +1851,312 @@ class ItemCooExcelUpload(View,SqlDb):
 
     #CooShow
 
+
+# class ItemCooExcelUpload(View, SqlDb):
+#     def __init__(self):
+#         SqlDb.__init__(self)
+
+#     def post(self, request):
+#         # Extract data from the request
+#         xlsx_file = request.FILES['file']
+#         PermitId = request.POST.get('PermitId')
+#         MsgType = request.POST.get('MsgType')
+#         userName = request.POST.get('UserName')
+#         TouchTime = request.POST.get('TouchTime')
+
+#         # Read sheets from the Excel file
+#         ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo")
+#         casc = False
+#         contain = False
+
+#         # Check if "Casccodes" sheet exists in the Excel file
+#         if "Casccodes" in pd.ExcelFile(xlsx_file).sheet_names:
+#             CascInfo = pd.read_excel(xlsx_file, sheet_name="Casccodes")
+#             casc = True
+
+#         # Check if "ContainerInfo" sheet exists in the Excel file
+#         if "ContainerInfo" in pd.ExcelFile(xlsx_file).sheet_names:
+#             contain = True
+#             ContainerInfo = pd.read_excel(xlsx_file, sheet_name="ContainerInfo")
+
+#         # Define default values for missing columns
+#         ItemColumns = {
+#             'CountryofOrigin': '',
+#             'HSCode': '',
+#             'HSQty': '0.00',
+#             'TotalLineAmount': '0.00',
+#             'ItemCode': '',
+#             'Description': '',
+#             'HAWBOBL': '',
+#             'HSUOM': '--Select--',
+#             'ItemCurrency': '--Select--',
+#             'UnitPrice': '0.00',
+#             'ShippingMarks1': '',
+#             'ShippingMarks2': '',
+#             'ShippingMarks3': '',
+#             'ShippingMarks4': '',
+#             'CerItemQty': '0.00',
+#             'CerItemUOM': '--Select--',
+#             'CIFValOfCer': '0.00',
+#             'ManufactureCostDate': '',
+#             'TexCat': '',
+#             'TexQuotaQty': '0.00',
+#             'TexQuotaUOM': '--Select--',
+#             'CerInvNo': '',
+#             'CerInvDate': '',
+#             'OriginOfCer': '',
+#             'HSCodeCer': '',
+#             'PerContent': '',
+#             'CertificateDescription': '',
+#         }
+
+#         CascColumn = {
+#             'ItemNo': '',
+#             'ProductCode': '',
+#             'Quantity': '0.00',
+#             'ProductUOM': '--Select--',
+#             'RowNo': '',
+#             'CascCode1': '',
+#             'CascCode2': '',
+#             'CascCode3': '',
+#             'CASCId': '',
+#             'EndUserDes': '',
+#         }
+
+#         ContainerColumn = {
+#             'SNo': '',
+#             'ContainerNo': '',
+#             'SizeType': '',
+#             'Weight': '',
+#             'SealNo': '',
+#         }
+
+#         # Replace NaN values with predefined values
+#         ItemInfo.fillna(ItemColumns, inplace=True)
+
+#         # Data containers for the bulk insertions
+#         ItemData = []
+#         CascData = []
+#         ContainerData = []
+
+#         # Process ItemInfo data
+#         for index, row in ItemInfo.iterrows():
+#             ItemLen = len(ItemDtl.objects.filter(PermitId=PermitId)) + (index + 1)
+#             try:
+#                 ItemData.append(
+#                     ItemDtl(
+#                         Contry=row["CountryofOrigin"],
+#                         HSCode=row["HSCode"],
+#                         HSQty=row["HSQty"],
+#                         TotalLineAmount=row["TotalLineAmount"],
+#                         ItemCode=row['ItemCode'],
+#                         Description=row["Description"],
+#                         Hawblno=row["HAWBOBL"],
+#                         HSUOM=row["HSUOM"],
+#                         UnitPriceCurrency=row["ItemCurrency"],
+#                         UnitPrice=row["UnitPrice"],
+#                         ShippingMarks1=row["ShippingMarks1"],
+#                         ShippingMarks2=row["ShippingMarks2"],
+#                         ShippingMarks3=row["ShippingMarks3"],
+#                         ShippingMarks4=row["ShippingMarks4"],
+#                         CerItemQty=row["CerItemQty"],
+#                         CerItemUOM=row["CerItemUOM"],
+#                         CIFFOB=row["CIFValOfCer"],
+#                         ManfCostDate=row["ManufactureCostDate"],
+#                         TextileCat=row["TexCat"],
+#                         TextileQuotaQty=row["TexQuotaQty"],
+#                         TextileQuotaQtyUOM=row["TexQuotaUOM"],
+#                         InvoiceNumber=row["CerInvNo"],
+#                         InvoiceDate=row["CerInvDate"],
+#                         HSOnCer=row["OriginOfCer"],
+#                         OriginCriterion=row["HSCodeCer"],
+#                         PerOrgainCRI=row["PerContent"],
+#                         CertificateDes=row["CertificateDescription"],
+#                         Touch_user=userName,
+#                         TouchTime=TouchTime
+#                     )
+#                 )
+#             except Exception as e:
+#                 print(f"Error while processing Item Info: {e}")
+
+#         # Bulk create ItemDtl records if any data is collected
+#         if ItemData:
+#             ItemDtl.objects.bulk_create(ItemData)
+
+#         # Process CascInfo data if available
+#         if casc:
+#             CascInfo.fillna(CascColumn, inplace=True)
+#             for index, row in CascInfo.iterrows():
+#                 if row["ProductCode"]:  # Ensure ProductCode exists
+#                     CascData.append(
+#                         Cascdtl(
+#                             ItemNo=ItemLen,  # Ensure this is correctly assigned from ItemInfo
+#                             ProductCode=row["ProductCode"],
+#                             Quantity=row["Quantity"],
+#                             ProductUOM=row["ProductUOM"],
+#                             RowNo=row["RowNo"],
+#                             CascCode1=row["CascCode1"],
+#                             CascCode2=row["CascCode2"],
+#                             CascCode3=row["CascCode3"],
+#                             PermitId=PermitId,
+#                             MessageType=MsgType,
+#                             TouchUser=userName,
+#                             TouchTime=TouchTime,
+#                             CascId=row["CASCId"],
+#                         )
+#                     )
+#             if CascData:
+#                 Cascdtl.objects.bulk_create(CascData)
+
+#         # Process ContainerInfo data if available
+#         if contain:
+#             ContainerInfo.fillna(ContainerColumn, inplace=True)
+#             for index, row in ContainerInfo.iterrows():
+#                 if row["SNo"]:  # Ensure SNo exists
+#                     ContainerData.append(
+#                         ContainerDtl(
+#                             PermitId=PermitId,
+#                             RowNo=row["SNo"],
+#                             ContainerNo=row["ContainerNo"],
+#                             SizeType=row["SizeType"],
+#                             Weight=row["Weight"],
+#                             SealNo=row["SealNo"],
+#                             MessageType=MsgType,
+#                             TouchUser=userName,
+#                             TouchTime=TouchTime,
+#                         )
+#                     )
+#             if ContainerData:
+#                 ContainerDtl.objects.bulk_create(ContainerData)
+
+#         # Fetch inserted data for response
+#         Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+#         ItemCasc = list(Cascdtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+
+#         # Debugging: Print inserted data types
+#         print("Item Data:")
+#         for item in Item:
+#             for key, value in item.items():
+#                 print(f"{key}: {type(value)}")
+
+#         print("\nItem Casc Data:")
+#         for item_casc in ItemCasc:
+#             for key, value in item_casc.items():
+#                 print(f"{key}: {type(value)}")
+
+#         # Return a success message with the data
+#         return JsonResponse({"Item": Item, "ItemCasc": ItemCasc, "message": "All Items Inserted Successfully", "Result": "Success"})
+
+
+# class ItemCooExcelUpload(View, SqlDb):
+#     def __init__(self):
+#         SqlDb.__init__(self)
+
+#     def post(self, request):
+#         # Extract data from the request
+#         xlsx_file = request.FILES['file']
+#         PermitId = request.POST.get('PermitId')
+#         MsgType = request.POST.get('MsgType')
+#         userName = request.POST.get('UserName')
+#         TouchTime = request.POST.get('TouchTime')
+
+#         # Read the "ItemInfo" sheet from the Excel file
+#         ItemInfo = pd.read_excel(xlsx_file, sheet_name="ItemInfo")
+
+#         # Define default values for missing columns in ItemInfo
+#         ItemColumns = {
+#             'CountryofOrigin': '',
+#             'HSCode': '',
+#             'HSQty': '0.00',
+#             'TotalLineAmount': '0.00',
+#             'ItemCode': '',
+#             'Description': '',
+#             'HAWBOBL': '',
+#             'HSUOM': '--Select--',
+#             'ItemCurrency': '--Select--',
+#             'UnitPrice': '0.00',
+#             'ShippingMarks1': '',
+#             'ShippingMarks2': '',
+#             'ShippingMarks3': '',
+#             'ShippingMarks4': '',
+#             'CerItemQty': '0.00',
+#             'CerItemUOM': '--Select--',
+#             'CIFValOfCer': '0.00',
+#             'ManufactureCostDate': '',
+#             'TexCat': '',
+#             'TexQuotaQty': '0.00',
+#             'TexQuotaUOM': '--Select--',
+#             'CerInvNo': '',
+#             'CerInvDate': '',
+#             'OriginOfCer': '',
+#             'HSCodeCer': '',
+#             'PerContent': '',
+#             'CertificateDescription': '',
+#         }
+
+#         # Replace NaN values with predefined values
+#         ItemInfo.fillna(ItemColumns, inplace=True)
+
+#         # Drop rows with all NaN values (if any)
+#         ItemInfo.dropna(how='all', inplace=True)
+
+#         # Data container for the bulk insertions
+#         ItemData = []
+
+#         # Process ItemInfo data
+#         for index, row in ItemInfo.iterrows():
+#             try:
+#                 ItemData.append(
+#                     ItemDtl(
+#                         Contry=row["CountryofOrigin"],
+#                         HSCode=row["HSCode"],
+#                         HSQty=row["HSQty"],
+#                         TotalLineAmount=row["TotalLineAmount"],
+#                         ItemCode=row['ItemCode'],
+#                         Description=row["Description"],
+#                         Hawblno=row["HAWBOBL"],
+#                         HSUOM=row["HSUOM"],
+#                         UnitPriceCurrency=row["ItemCurrency"],
+#                         UnitPrice=row["UnitPrice"],
+#                         ShippingMarks1=row["ShippingMarks1"],
+#                         ShippingMarks2=row["ShippingMarks2"],
+#                         ShippingMarks3=row["ShippingMarks3"],
+#                         ShippingMarks4=row["ShippingMarks4"],
+#                         CerItemQty=row["CerItemQty"],
+#                         CerItemUOM=row["CerItemUOM"],
+#                         CIFFOB=row["CIFValOfCer"],
+#                         ManfCostDate=row["ManufactureCostDate"],
+#                         TextileCat=row["TexCat"],
+#                         TextileQuotaQty=row["TexQuotaQty"],
+#                         TextileQuotaQtyUOM=row["TexQuotaUOM"],
+#                         InvoiceNumber=row["CerInvNo"],
+#                         InvoiceDate=row["CerInvDate"],
+#                         HSOnCer=row["OriginOfCer"],
+#                         OriginCriterion=row["HSCodeCer"],
+#                         PerOrgainCRI=row["PerContent"],
+#                         CertificateDes=row["CertificateDescription"],
+#                         Touch_user=userName,
+#                         TouchTime=TouchTime
+#                     )
+#                 )
+#             except Exception as e:
+#                 print(f"Error while processing Item Info: {e}")
+
+#         # Bulk create ItemDtl records if any data is collected
+#         if ItemData:
+#             ItemDtl.objects.bulk_create(ItemData)
+
+#         # Fetch inserted data for response
+#         Item = list(ItemDtl.objects.filter(PermitId=PermitId).order_by("ItemNo").values())
+
+#         # Debugging: Print inserted data types
+#         print("Item Data:")
+#         for item in Item:
+#             for key, value in item.items():
+#                 print(f"{key}: {type(value)}")
+
+#         # Return a success message with the data
+#         return JsonResponse({"Item": Item, "message": "All Items Inserted Successfully", "Result": "Success"})
 
 
 # class CooShow(View,SqlDb):

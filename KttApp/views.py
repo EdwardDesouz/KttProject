@@ -282,7 +282,6 @@ def InpaymentNew(request, arg):
             "Country": COUNTRY.objects.all().order_by("CountryCode"),
         }
     )
-
     return render(request, "Inpayment/InpaymentNew.html", context)
 
 

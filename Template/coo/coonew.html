@@ -502,7 +502,7 @@
             </div>
             <div class="row mt-1" id="CooGPS" style="display: none;" >
                 <div class="row mt-2" id="CurrencyVisible">
-                    <div class="col-4">GSP DONOR COUNTRY</div>
+                    <div class="col-4">GSP DONOR REGION</div>
 
                 </div>
                 <div class="col-4">
@@ -1003,7 +1003,7 @@
                                 </div>
                                 <div class="container mt-3" style="display: block;" id="FinalDestinationCountryVisible">
                                     <div class="row">
-                                        <div class="col-4">FINAL DESTINATION COUNTRY</div>
+                                        <div class="col-4">FINAL DESTINATION REGION</div>
                                         <div class="col-6">
                                             <select id="FinalDestinationSelect" class="Dropdown HighLight">
                                                 <option selected>--Select--</option>
@@ -1011,7 +1011,7 @@
                                                 <option>{{i.CountryCode}} : {{i.Description}}</option>
                                                 {% endfor %}
                                             </select>
-                                            <span1 class="ErrColor" class="ErrorColor" id="FinalDestinationCountryModeSpan">PLEASE CHOOSE THE COUNTRY
+                                            <span1 class="ErrColor" class="ErrorColor" id="FinalDestinationCountryModeSpan">PLEASE CHOOSE THE REGION
                                             </span1>
                                         </div>
                                     </div>
@@ -1236,13 +1236,13 @@
                     </div>
                     <div class="row mt-4">
                         <div class="row">
-                            <div class="col-2">COO</div>
+                            <div class="col-2">ROO</div>
                             <div class="col-2 mt-1"><i class="fa-solid fa-magnifying-glass fa-lg"
                                     onclick="ItemCooSearch()"></i></div>
                             <div class="col-3">
                                 <input type="text" class="inputStyle HighLight" id="ItemCooInput" onfocus="ItemCooIn()"
                                     onfocusout="ItemCooOut(this.value)" tabindex="3">
-                                <span1 class="ErrColor" id="ItemCooInputSpan">FILL COO</span1>
+                                <span1 class="ErrColor" id="ItemCooInputSpan">FILL ROO</span1>
                             </div>
                             <div class="col-5"><input type="text" class="inputStyle" id="ItemCooInputText" disabled tabindex="1 ">
                             </div>
@@ -1532,7 +1532,7 @@
                             <th>S.NO</th>
                             <th>HS CODE</th>
                             <th>GOODS DESCRIPTION</th>
-                            <th>COO</th>
+                            <th>ROO</th>
                             <th>CUR</th>
                             <th>CIF/FOB (S$)</th>
                             <th>HS QTY</th>

@@ -147,6 +147,16 @@ DATABASES = {
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },
+        # "default": {
+        # "ENGINE": "mssql",
+        # "NAME": "TestPortal",#TestPortal#KaizenPortal
+        # "USER": "KTTUSER", 
+        # "PASSWORD": "Ktt@2021",
+        # "HOST": "ec2-54-179-0-97.ap-southeast-1.compute.amazonaws.com",
+        # 'PORT': '',
+        # 'OPTIONS': {
+        #     'driver': 'ODBC Driver 17 for SQL Server',
+        # },
     },
         "SecondDb": {
         "ENGINE": "mssql",

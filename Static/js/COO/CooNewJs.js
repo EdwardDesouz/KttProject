@@ -1,8 +1,6 @@
 const NowDate = new Date();
 const TOUCHTIME = NowDate.toISOString().slice(0, 19).replace("T", " ");
 
-
-
 $(document).ready(function () {
   $("#COOLIST").css("background-color", "white");
   $("#COOLIST a").css("color", "green");
@@ -11,7 +9,6 @@ $(document).ready(function () {
   $('#declarationType').focus();
   $("#Loading").hide()
 });
-
 
 var ItemData = [];
 
@@ -26,8 +23,6 @@ $(document).ready(() => {
   })
 })
 
-
-
 var HsCodeData = []
 var hsCodeData = fetch('/CooHsCodeUrl/').then(function (res) {
   return res.json()
@@ -39,7 +34,6 @@ hsCodeData.then(function (response) {
   // console.log(HsCodeData)
   ItemLoad()
 })
-
 
 function ItemLoad(){
   $("#ItemNumbereCoo").val(ItemData.length + 1)
@@ -125,14 +119,6 @@ function SummarySumofItemAmd(itemcorrectamount) {
   let artst = c.toString()
   document.getElementById('SummaryItemAmount').innerHTML = artst.replaceAll(",", " ");
 }
-
-
-
-
-
-
-
-
 
 function TabHead(ID) {
   $("#HeaderTab").removeClass("HeadTabStyleChange");
@@ -325,8 +311,6 @@ $(document).ready(() => {
     }
   })
 })
-
-
 
 var Outwardcarrieragent = [];
 $(document).ready(() => {
@@ -2916,7 +2900,6 @@ if(ItemAllDataInNon !=0){
 }
 
 
-
 /*-------------------Item page Item Code-------------------------------------------------*/ 
 var InhouseItemCode = [];
 var HsCode = [];
@@ -2972,8 +2955,6 @@ function ItemcodeFocusOut(val){
   }
   ItemHscodeFocusOut()
 }
-
-
 
 
 function ItemCodeSave() {

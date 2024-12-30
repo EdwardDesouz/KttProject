@@ -191,18 +191,18 @@ class InonPaymentShow(View,SqlDb):
         Username = request.session["Username"]
         self.cursor.execute(f"SELECT * FROM InNonHeaderTbl WHERE id = {id}")
         headers = [i[0] for i in self.cursor.description]
-        outAll = list(self.cursor.fetchall())
-        self.cursor.execute(f"SELECT * FROM InNonHeaderTbl WHERE id = {id}")
-        result = self.cursor.fetchone()
+        innonALL = list(self.cursor.fetchall())
 
-        if result:
-            fetched_id = result[0] 
-            print("Fetched permit's ID:", fetched_id)
-        else:
-            print("No records found for the given ID.") 
+        for i in innonALL:
+            print("test ans :",i)
+
+        jobDate = datetime.now().strftime("%Y-%m-%d")
 
         self.cursor.execute("SELECT AccountId FROM ManageUser WHERE UserName = '{}' ".format(Username))
         AccountId = self.cursor.fetchone()[0]
+
+        self.cursor.execute(
+            "SELECT COUNT(*) + 1  FROM PermitCount WHERE TouchTime LIKE '%{}%' AND AccountId = '{}' ".format(jobDate, AccountId))
         
 
         self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='"+ Username+ "'")
@@ -215,24 +215,14 @@ class InonPaymentShow(View,SqlDb):
 
         self.cursor.execute("select Top 1 manageuser.LoginStatus,manageuser.DateLastUpdated,manageuser.MailBoxId,manageuser.SeqPool,SequencePool.StartSequence,DeclarantCompany.TradeNetMailboxID,DeclarantCompany.DeclarantName,DeclarantCompany.DeclarantCode,DeclarantCompany.DeclarantTel,DeclarantCompany.CRUEI,DeclarantCompany.Code,DeclarantCompany.name,DeclarantCompany.name1 from manageuser inner join SequencePool on manageuser.SeqPool=SequencePool.Description inner join DeclarantCompany on DeclarantCompany.TradeNetMailboxID=ManageUser.MailBoxId where ManageUser.UserId='" + request.session['Username'] + "'")
         InNonHeadData = self.cursor.fetchone()
-
-        self.cursor.execute("SELECT Refid,JobId,MSGId,PermitId,TradeNetMailboxID,MessageType,DeclarationType,PreviousPermit,CargoPackType,InwardTransportMode,OutwardTransportMode,BGIndicator,SupplyIndicator,ReferenceDocuments,License,Recipient,DeclarantCompanyCode,ImporterCompanyCode,ExporterCompanyCode,InwardCarrierAgentCode,OutwardCarrierAgentCode,ConsigneeCode,FreightForwarderCode,ClaimantPartyCode,ArrivalDate,LoadingPortCode,VoyageNumber,VesselName,OceanBillofLadingNo,ConveyanceRefNo,TransportId,FlightNO,AircraftRegNo,MasterAirwayBill,ReleaseLocation,RecepitLocation,RecepilocaName,StorageLocation,ExhibitionSDate,ExhibitionEDate,BlanketStartDate,TradeRemarks,InternalRemarks,CustomerRemarks,DepartureDate,DischargePort,FinalDestinationCountry,OutVoyageNumber,OutVesselName,OutOceanBillofLadingNo,VesselType,VesselNetRegTon,VesselNationality,TowingVesselID,TowingVesselName,NextPort,LastPort,OutConveyanceRefNo,OutTransportId,OutFlightNO,OutAircraftRegNo,OutMasterAirwayBill,TotalOuterPack,TotalOuterPackUOM,TotalGrossWeight,TotalGrossWeightUOM,GrossReference,DeclareIndicator,NumberOfItems,TotalCIFFOBValue,TotalGSTTaxAmt,TotalExDutyAmt,TotalCusDutyAmt,TotalODutyAmt,TotalAmtPay,Status,TouchUser,TouchTime,PermitNumber,prmtStatus,ReleaseLocaName,Inhabl,outhbl,seastore,Cnb,DeclarningFor,MRDate,MRTime FROM InNonHeaderTbl WHERE Id = '{}' ".format(id))
-
-        InNonHeaderData = self.cursor.fetchall()
-
-
-        self.RefId = InNonHeaderData[0][0]
-        self.JobId = InNonHeaderData[0][1]
-        self.MsgId = InNonHeaderData[0][2]
-        self.PermitIdInNon = InNonHeaderData[0][3]
-     
+   
 
         context = { 
                 "UserName" : Username,
-                "PermitIdInNon":self.PermitIdInNon,
-                "JobId" : self.JobId,
-                "RefId" : self.RefId,
-                "MsgId" : self.MsgId,
+                "PermitIdInNon":innonALL[0][4],
+                "JobId" : innonALL[0][2],
+                "RefId" : innonALL[0][1],
+                "MsgId" : innonALL[0][3],
                 "AccountId" : AccountId,
                 "LoginStatus" : InNonHeadData[0],
                 "DateLastUpdated" : InNonHeadData[1],
@@ -254,14 +244,241 @@ class InonPaymentShow(View,SqlDb):
                 'BgIndicator': CommonMaster.objects.filter(TypeId=4, StatusId=1).order_by('Name'),
                 'DocumentAttachmentType': CommonMaster.objects.filter(TypeId=5, StatusId=1).order_by('Name'),
                 'ContainerSizeDrop': CommonMaster.objects.filter(TypeId=6, StatusId=1).order_by('Name'),
-                'InNonHeaderData' : (pd.DataFrame(list(InNonHeaderData), columns=['Refid','JobId','MSGId','PermitId','TradeNetMailboxID','MessageType','DeclarationType','PreviousPermit','CargoPackType','InwardTransportMode','OutwardTransportMode','BGIndicator','SupplyIndicator','ReferenceDocuments','License','Recipient','DeclarantCompanyCode','ImporterCompanyCode','ExporterCompanyCode','InwardCarrierAgentCode','OutwardCarrierAgentCode','ConsigneeCode','FreightForwarderCode','ClaimantPartyCode','ArrivalDate','LoadingPortCode','VoyageNumber','VesselName','OceanBillofLadingNo','ConveyanceRefNo','TransportId','FlightNO','AircraftRegNo','MasterAirwayBill','ReleaseLocation','RecepitLocation','RecepilocaName','StorageLocation','ExhibitionSDate','ExhibitionEDate','BlanketStartDate','TradeRemarks','InternalRemarks','CustomerRemarks','DepartureDate','DischargePort','FinalDestinationCountry','OutVoyageNumber','OutVesselName','OutOceanBillofLadingNo','VesselType','VesselNetRegTon','VesselNationality','TowingVesselID','TowingVesselName','NextPort','LastPort','OutConveyanceRefNo','OutTransportId','OutFlightNO','OutAircraftRegNo','OutMasterAirwayBill','TotalOuterPack','TotalOuterPackUOM','TotalGrossWeight','TotalGrossWeightUOM','GrossReference','DeclareIndicator','NumberOfItems','TotalCIFFOBValue','TotalGSTTaxAmt','TotalExDutyAmt','TotalCusDutyAmt','TotalODutyAmt','TotalAmtPay','Status','TouchUser','TouchTime','PermitNumber','prmtStatus','ReleaseLocaName','Inhabl','outhbl','seastore','Cnb','DeclarningFor','MRDate','MRTime'])).to_dict('records'),
+
             }
 
 
         context.update({
-            "Show" : (pd.DataFrame(outAll, columns=headers)).to_dict("records"),
+            "Show" : (pd.DataFrame(innonALL, columns=headers)).to_dict("records"),
  
         }) 
+
+        status = innonALL[0][76]
+        print('status:',status)
+
+        if status == 'REJ':
+        
+            msgid = innonALL[0][3]  
+            print('msgid:',msgid)
+            chkMailId = InNonHeadData[2]  
+            print('chkMailId:',chkMailId)
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorID as Code, 
+                    ErrorDescription as Description 
+                FROM InnonRejectStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                AND RType = 'REJ' 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'QRY':
+            msgid = innonALL[0][3]  
+            chkMailId = InNonHeadData[2] 
+        
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorID as Code, 
+                    ErrorDescription as Description 
+                FROM InnonRejectStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                AND RType = 'QRY' 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'APR':
+            self.cursor.execute("""
+                    SELECT Sno as SNo, ConditionCode as Code, ConditionDescription as Description 
+                    FROM Innonpmt 
+                    WHERE permitnumber = %s 
+                    ORDER BY Sno
+                """, [innonALL[0][75]])
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store APR data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+        elif status == 'ERR':
+        
+            msgid = innonALL[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorCode  as Code, 
+                    ErrorDescription+' '+ErrorTrace as Description 
+                FROM InnonErrorStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+
+        
+        elif status == 'CNL':
+        
+            msgid = innonALL[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ConditionCde  as Code, 
+                    ConditionDes as Description 
+                FROM InnonCancelPermit 
+                WHERE permitnumber = %s
+                AND MsgID = %s 
+                AND MailBoxId = %s  
+                ORDER BY Sno
+            """, [innonALL[0][75],msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'AME':
+        
+            msgid = innonALL[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ConditionCode as Code, 
+                    ConditionDescription as Description 
+                FROM InnonAMDPMT 
+                 WHERE permitnumber = %s
+                AND MsgID = %s 
+                AND MailBoxId = %s  
+                ORDER BY Sno
+            """, [innonALL[0][75],msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+        
+        else:
+            context['APRData'] =[]
+
+
+        # Debugging: Print out the APR Data
+        print("APR Data:", context['APRData'])
         for item in context["Show"]:
             print("Row:")
             for key, value in item.items():

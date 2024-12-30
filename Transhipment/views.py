@@ -1295,6 +1295,233 @@ class Transshow(View,SqlDb):
         context.update({
             "Show" : (pd.DataFrame(transAll, columns=headers)).to_dict("records"),
         })
+
+        status = transAll[0][72]
+
+        if status == 'REJ':
+        
+            msgid = transAll[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorID as Code, 
+                    ErrorDescription as Description 
+                FROM TransRejectStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                AND RType = 'REJ' 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'QRY':
+            msgid = transAll[0][3]  
+            chkMailId = InNonHeadData[2] 
+        
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorID as Code, 
+                    ErrorDescription as Description 
+                FROM TransRejectStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                AND RType = 'QRY' 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'APR':
+            self.cursor.execute("""
+                    SELECT Sno as SNo, ConditionCode as Code, ConditionDescription as Description 
+                    FROM transpmt 
+                    WHERE permitnumber = %s 
+                    ORDER BY Sno
+                """, [transAll[0][75]])
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store APR data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+        elif status == 'ERR':
+        
+            msgid = transAll[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ErrorCode  as Code, 
+                    ErrorDescription+' '+ErrorTrace as Description 
+                FROM TransErrorStatus 
+                WHERE MsgID = %s 
+                AND MailBoxId = %s 
+                ORDER BY Sno
+            """, [msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+
+        
+        elif status == 'CNL':
+        
+            msgid = transAll[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ConditionCde  as Code, 
+                    ConditionDes as Description 
+                FROM TransCancelPermit 
+                WHERE permitnumber = %s
+                AND MsgID = %s 
+                AND MailBoxId = %s  
+                ORDER BY Sno
+            """, [transAll[0][75],msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+
+        elif status == 'AME':
+        
+            msgid = transAll[0][3]  
+            chkMailId = InNonHeadData[2]  
+
+            self.cursor.execute("""
+                SELECT 
+                    Sno as SNo, 
+                    ConditionCode as Code, 
+                    ConditionDescription as Description 
+                FROM TransAMDPMT 
+                 WHERE permitnumber = %s
+                AND MsgID = %s 
+                AND MailBoxId = %s  
+                ORDER BY Sno
+            """, [transAll[0][75],msgid, chkMailId])
+
+            apr_data = self.cursor.fetchall()
+
+            apr_data_dict = []  # This will store rejection data
+            if apr_data:
+                for row in apr_data:
+                    apr_data_dict.append({
+                        'SNo': row[0],
+                        'Code': row[1],
+                        'Description': row[2]
+                    })
+            else:
+                apr_data_dict.append({
+                    'SNo': 'No Data',
+                    'Code': 'No Data',
+                    'Description': 'No Data'
+                })
+
+            context['APRData'] = apr_data_dict
+
+            print("Rejection Data:", context['APRData'])
+        
+        else:
+            context['APRData'] =[]
+
+
+        # Debugging: Print out the APR Data
+        print("APR Data:", context['APRData'])
+
+
+    
         for item in context["Show"]:
             print("Row:")
             for key, value in item.items():
